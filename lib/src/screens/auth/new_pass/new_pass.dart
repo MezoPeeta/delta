@@ -1,0 +1,333 @@
+import 'package:delta/src/screens/auth/new_pass/providers/new_pass.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../shared/app_sheet.dart';
+import '../../../styles/colors.dart';
+import '../../../styles/icons.dart';
+
+class NewPassScreen extends StatefulWidget {
+  const NewPassScreen({super.key, required this.email});
+  final String email;
+
+  @override
+  State<NewPassScreen> createState() => _NewPassScreenState();
+}
+
+class _NewPassScreenState extends State<NewPassScreen> {
+  bool isPassHidden = true;
+  bool isConfirmPassHidden = true;
+
+  bool hasNumPassword = false;
+  bool hasCapitalPassword = false;
+  bool isValidLength = false;
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
+
+  bool isValidPassword(String password) {
+    RegExp numberRegExp = RegExp(r'\d');
+    RegExp capitalLetterRegExp = RegExp(r'[A-Z]');
+
+    bool hasNumber = numberRegExp.hasMatch(password);
+    bool hasCapitalLetter = capitalLetterRegExp.hasMatch(password);
+    bool hasValidLength = password.length >= 8 && password.length >= 10;
+
+    setState(() {
+      hasNumPassword = hasNumber;
+      hasCapitalPassword = hasCapitalLetter;
+      isValidLength = hasValidLength;
+    });
+
+    return hasNumber && hasCapitalLetter && hasValidLength;
+  }
+
+  bool loading = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 18,
+              ),
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minWidth: constraints.maxWidth,
+                      minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Column(mainAxisSize: MainAxisSize.max, children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "انشاء كلمة المرور",
+                        style: TextStyle(
+                            fontSize: 32, fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        "يرجي اضافة كلمة مرور قوية للحفاظ علي بياناتك",
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "كلمة المرور الجديدة",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            controller: passwordController,
+                            obscureText: isPassHidden,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "ارجو ادخال لكمة المرور الخاص بك";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              isValidPassword(value);
+                            },
+                            decoration: InputDecoration(
+                              hintText: "قم بأدخل كلمة المرور الخاصه بك",
+                              prefixIcon: Container(
+                                width: 18,
+                                height: 18,
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  AppAssets.lockPath,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isPassHidden = !isPassHidden;
+                                  });
+                                },
+                                icon: Icon(
+                                  isPassHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "كلمة المرور الجديدة",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            controller: passwordConfirmController,
+                            obscureText: isConfirmPassHidden,
+                            onChanged: (value) {
+                              isValidPassword(value);
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "ارجو ادخال كلمة المرور الخاص بك";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "قم بتاكيد كلمة المرور الخاصه بك",
+                              prefixIcon: Container(
+                                width: 18,
+                                height: 18,
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  AppAssets.lockPath,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isConfirmPassHidden = !isConfirmPassHidden;
+                                  });
+                                },
+                                icon: Icon(
+                                  isConfirmPassHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox.adaptive(
+                              value: isValidLength,
+                              onChanged: (v) {},
+                              activeColor: Colors.transparent,
+                              side: WidgetStateBorderSide.resolveWith(
+                                (states) => BorderSide(
+                                    width: 1.0, color: AppColors.grayColor),
+                              ),
+                              checkColor: AppColors.grayColor),
+                          Text(
+                            "10-8 احرف علي الاقل",
+                            style: TextStyle(color: AppColors.grayColor),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox.adaptive(
+                              value: hasNumPassword,
+                              onChanged: (v) {},
+                              activeColor: Colors.transparent,
+                              side: WidgetStateBorderSide.resolveWith(
+                                (states) => BorderSide(
+                                    width: 1.0, color: AppColors.errorColor),
+                              ),
+                              checkColor: AppColors.errorColor),
+                          Text(
+                            "رقم واحد علي الاقل",
+                            style: TextStyle(
+                                color: hasNumPassword
+                                    ? AppColors.errorColor
+                                    : AppColors.grayColor),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox.adaptive(
+                              value: hasCapitalPassword,
+                              onChanged: (v) {},
+                              activeColor: Colors.transparent,
+                              side: WidgetStateBorderSide.resolveWith(
+                                (states) => BorderSide(
+                                    width: 1.0, color: AppColors.doneColor),
+                              ),
+                              checkColor: AppColors.doneColor),
+                          Text(
+                            "حرف كبير واحد على الأقل",
+                            style: TextStyle(
+                                color: hasCapitalPassword
+                                    ? AppColors.doneColor
+                                    : AppColors.grayColor),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox.adaptive(
+                              value: passwordConfirmController.text ==
+                                      passwordController.text &&
+                                  passwordController.text.isNotEmpty,
+                              onChanged: (v) {},
+                              activeColor: Colors.transparent,
+                              side: WidgetStateBorderSide.resolveWith(
+                                (states) => BorderSide(
+                                    width: 1.0, color: AppColors.doneColor),
+                              ),
+                              checkColor: AppColors.doneColor),
+                          Text(
+                            "كلماتين المرور متشابهة",
+                            style: TextStyle(
+                                color: passwordConfirmController.text ==
+                                            passwordController.text &&
+                                        passwordController.text.isNotEmpty
+                                    ? AppColors.doneColor
+                                    : AppColors.grayColor),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Consumer(builder: (context, ref, child) {
+                        return ConstrainedBox(
+                          constraints: const BoxConstraints(
+                              minWidth: double.infinity, minHeight: 54),
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                await ref
+                                    .read(setPasswordProvider(
+                                            email: widget.email,
+                                            password: passwordController.text,
+                                            confirmPassword:
+                                                passwordConfirmController.text)
+                                        .future)
+                                    .then((status) {
+                                  if (!mounted) return;
+                                  appBottomSheet(context,
+                                      actionButtons: [
+                                        Expanded(
+                                          child: ConstrainedBox(
+                                            constraints: const BoxConstraints(
+                                                minHeight: 54),
+                                            child: ElevatedButton(
+                                                onPressed: () =>
+                                                    context.push("/"),
+                                                child: const Text(
+                                                  "هيا بنا",
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                      header: "انشاء حساب",
+                                      endHeader:
+                                          "شكرا لانضمامك الي تطبيق الدلتا يمكنك الان التمتع بجميع خدمات التطبيق",
+                                      subHeader: "تم تفعيل حسابك",
+                                      isWarning: false,
+                                      isDanger: false,
+                                      coloredText: TextSpan(
+                                        text: "بنجاح",
+                                        style: TextStyle(
+                                            color: AppColors.doneColor),
+                                      ));
+                                });
+                                setState(() {
+                                  loading = false;
+                                });
+                              },
+                              child: loading
+                                  ? const CircularProgressIndicator.adaptive()
+                                  : const Text("تاكيد")),
+                        );
+                      }),
+                      const SizedBox(
+                        height: 10,
+                      )
+                    ]),
+                  ),
+                ),
+              ));
+        }));
+  }
+}
