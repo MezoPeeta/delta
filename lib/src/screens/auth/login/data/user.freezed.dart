@@ -20,13 +20,13 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
+  List<dynamic> get addresses => throw _privateConstructorUsedError;
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
-  List<String> get addresses => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,12 +39,12 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
+      {List<dynamic> addresses,
+      @JsonKey(name: '_id') String id,
       String name,
       String email,
       String role,
-      String phone,
-      List<String> addresses});
+      String phone});
 }
 
 /// @nodoc
@@ -60,14 +60,18 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? addresses = null,
     Object? id = null,
     Object? name = null,
     Object? email = null,
     Object? role = null,
     Object? phone = null,
-    Object? addresses = null,
   }) {
     return _then(_value.copyWith(
+      addresses: null == addresses
+          ? _value.addresses
+          : addresses // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -88,10 +92,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      addresses: null == addresses
-          ? _value.addresses
-          : addresses // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ) as $Val);
   }
 }
@@ -104,12 +104,12 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
+      {List<dynamic> addresses,
+      @JsonKey(name: '_id') String id,
       String name,
       String email,
       String role,
-      String phone,
-      List<String> addresses});
+      String phone});
 }
 
 /// @nodoc
@@ -122,14 +122,18 @@ class __$$UserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? addresses = null,
     Object? id = null,
     Object? name = null,
     Object? email = null,
     Object? role = null,
     Object? phone = null,
-    Object? addresses = null,
   }) {
     return _then(_$UserImpl(
+      null == addresses
+          ? _value._addresses
+          : addresses // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -150,10 +154,6 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      addresses: null == addresses
-          ? _value._addresses
-          : addresses // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ));
   }
 }
@@ -161,17 +161,24 @@ class __$$UserImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserImpl implements _User {
-  const _$UserImpl(
+  const _$UserImpl(final List<dynamic> addresses,
       {@JsonKey(name: '_id') required this.id,
       required this.name,
       required this.email,
       required this.role,
-      required this.phone,
-      required final List<String> addresses})
+      required this.phone})
       : _addresses = addresses;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
+
+  final List<dynamic> _addresses;
+  @override
+  List<dynamic> get addresses {
+    if (_addresses is EqualUnmodifiableListView) return _addresses;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_addresses);
+  }
 
   @override
   @JsonKey(name: '_id')
@@ -184,17 +191,10 @@ class _$UserImpl implements _User {
   final String role;
   @override
   final String phone;
-  final List<String> _addresses;
-  @override
-  List<String> get addresses {
-    if (_addresses is EqualUnmodifiableListView) return _addresses;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_addresses);
-  }
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, role: $role, phone: $phone, addresses: $addresses)';
+    return 'User(addresses: $addresses, id: $id, name: $name, email: $email, role: $role, phone: $phone)';
   }
 
   @override
@@ -202,19 +202,25 @@ class _$UserImpl implements _User {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
+            const DeepCollectionEquality()
+                .equals(other._addresses, _addresses) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.role, role) || other.role == role) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            const DeepCollectionEquality()
-                .equals(other._addresses, _addresses));
+            (identical(other.phone, phone) || other.phone == phone));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email, role, phone,
-      const DeepCollectionEquality().hash(_addresses));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_addresses),
+      id,
+      name,
+      email,
+      role,
+      phone);
 
   @JsonKey(ignore: true)
   @override
@@ -231,16 +237,17 @@ class _$UserImpl implements _User {
 }
 
 abstract class _User implements User {
-  const factory _User(
+  const factory _User(final List<dynamic> addresses,
       {@JsonKey(name: '_id') required final String id,
       required final String name,
       required final String email,
       required final String role,
-      required final String phone,
-      required final List<String> addresses}) = _$UserImpl;
+      required final String phone}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
+  @override
+  List<dynamic> get addresses;
   @override
   @JsonKey(name: '_id')
   String get id;
@@ -252,8 +259,6 @@ abstract class _User implements User {
   String get role;
   @override
   String get phone;
-  @override
-  List<String> get addresses;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

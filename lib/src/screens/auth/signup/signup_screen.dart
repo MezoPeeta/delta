@@ -143,6 +143,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             IntlPhoneField(
                               initialCountryCode: 'QA',
                               showDropdownIcon: false,
+                              searchText: "ابحث عن الدولة",
                               invalidNumberMessage:
                                   "الرجاء التاكد من الرقم الهاتف",
                               languageCode: "ar",

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,16 +8,27 @@ import 'data/user.dart';
 
 part 'login_providers.g.dart';
 
-final userStorageProvider = FutureProvider<User>((ref) async {
+final userStorageProvider = FutureProvider<User?>((ref) async {
   final currentUser = ref.watch(userProvider);
-  final user = await StorageRepository().read(key: "user");
+  final user = await ref.watch(currentUserProvider.future);
 
-  return currentUser ?? User.fromJson(jsonDecode(user!));
+  return currentUser ?? user;
 });
 
 final userProvider = StateProvider<User?>((ref) {
   return null;
 });
+
+@Riverpod(keepAlive: true)
+Future<User> currentUser(CurrentUserRef ref) async {
+  final userToken = await ref.watch(tokenProvider.future);
+  print(userToken);
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP("/api/users/me", token: userToken!);
+  final user = User.fromJson(request?.data["data"]["user"]);
+  return user;
+}
 
 @riverpod
 Future<User> login(LoginRef ref,
@@ -28,13 +37,10 @@ Future<User> login(LoginRef ref,
       .watch(dioHelperProvider)
       .postHTTP("/api/users/login", {"phone": phone, "password": password});
 
-  final String token = request!.data["token"];
+  final String token = request?.data["token"];
   await StorageRepository().write(key: "token", value: token);
-  final user = User.fromJson(request.data["data"]["user"]);
-
-  // ref.watch(userProvider.notifier).state = user;
-  await StorageRepository()
-      .write(key: "user", value: jsonEncode(user.toJson()));
+  final user = User.fromJson(request?.data["data"]["user"]);
+  ref.watch(userProvider.notifier).state = user;
 
   ref.watch(goRouterProvider).push("/");
 

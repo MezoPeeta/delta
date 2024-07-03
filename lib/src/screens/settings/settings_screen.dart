@@ -10,15 +10,20 @@ import 'package:go_router/go_router.dart';
 import '../../shared/app_sheet.dart';
 import 'settings.dart';
 
+final isNotifyProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isNotified = ref.watch(isNotifyProvider.notifier).state;
     final List<Settings> tiles = [
       Settings(
         label: "الملف الشخصي",
-        onTap: () => context.push("/profile", extra: ref.watch(userProvider)),
+        onTap: () => context.push("/profile",
+            extra: ref.watch(userStorageProvider).requireValue),
         icon: const Icon(Icons.person_outline),
       ),
       Settings(
@@ -47,10 +52,10 @@ class SettingsScreen extends ConsumerWidget {
           label: "الاشعارات",
           onTap: () => context.push("/notifications"),
           trailing: SizedBox(
-            width: 100,
+            width: isNotified ? 90 : 110,
             child: Row(
               children: [
-                const Text("غير مفعل"),
+                isNotified ? const Text("مفعل") : const Text("غير مفعل"),
                 SizedBox(
                   height: 35,
                   width: 50,
@@ -58,9 +63,13 @@ class SettingsScreen extends ConsumerWidget {
                     fit: BoxFit.fill,
                     child: Switch(
                       inactiveTrackColor: Colors.white,
-                      value: false,
-                      onChanged: (v) {},
-                      thumbColor: WidgetStatePropertyAll(AppColors.linkColor),
+                      activeTrackColor: Colors.black.withOpacity(0.05),
+                      value: ref.watch(isNotifyProvider),
+                      onChanged: (v) async {
+                        ref.watch(isNotifyProvider.notifier).state = v;
+                      },
+                      inactiveThumbColor: AppColors.linkColor,
+                      activeColor: AppColors.buttonColor,
                     ),
                   ),
                 ),
@@ -152,7 +161,9 @@ class SettingsScreen extends ConsumerWidget {
                             shape: WidgetStatePropertyAll(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12)))),
-                        onPressed: () {},
+                        onPressed: () {
+                          ref.read(deleteUserProvider);
+                        },
                         child: const Text("حذف")),
                   ),
                 ),

@@ -45,9 +45,12 @@ class DioHelper {
     return options;
   }
 
-  Future<Response?> getHTTP(String url) async {
+  Future<Response?> getHTTP(String url, {String token = ""}) async {
     try {
-      Response response = await dio.get(url);
+      Response response = await dio.get(url,
+          options: token != ""
+              ? Options(headers: {"Authorization": "Bearer $token"})
+              : null);
       return response;
     } on DioException catch (e) {
       log("[Get Request Error]", error: e);
@@ -63,9 +66,14 @@ class DioHelper {
       return response;
     } on DioException catch (e) {
       final errorMessage = e.response!.data["message"];
+
       if (errorMessage == "Incorrect phone or password") {
         snackbarKey.currentState!.showSnackBar(const SnackBar(
             content: Text("رقم الهاتف أو كلمة المرور غير صحيحة")));
+      }
+      if (errorMessage == "User already exists") {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("هذا الحساب موجود بالفعل")));
       }
       if (errorMessage.contains("phone") && errorMessage.contains("index")) {
         snackbarKey.currentState!.showSnackBar(
@@ -79,7 +87,15 @@ class DioHelper {
         snackbarKey.currentState!
             .showSnackBar(const SnackBar(content: Text("لا يوجد ايميل بهذا")));
       }
-      log("PostError", error: e);
+      if (e.response!.statusCode == 500) {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("حدث خطأ ما, حاول من جديد")));
+      }
+      if (e.response!.statusCode == 403) {
+        snackbarKey.currentState!.showSnackBar(const SnackBar(
+            content: Text("الحساب غير مفعل, ارجو من تفعيل الحساب")));
+      }
+      log("PostError", error: "$errorMessage | ${e.response!.statusCode}");
     }
     return null;
   }

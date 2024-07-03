@@ -96,8 +96,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ),
                             IntlPhoneField(
-                              
                               initialCountryCode: 'QA',
+                              languageCode: "ar",
+                              searchText: "ابحث عن الدولة",
                               showDropdownIcon: false,
                               invalidNumberMessage:
                                   "الرجاء التاكد من الرقم الهاتف",
@@ -223,7 +224,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   minWidth: double.infinity, minHeight: 54),
                               child: Consumer(builder: (context, ref, child) {
                                 return ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (phoneNumber.isEmpty) {
                                         snackbarKey.currentState!.showSnackBar(
                                             const SnackBar(
@@ -234,9 +235,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                         setState(() {
                                           loading = true;
                                         });
+
                                         ref.read(loginProvider(
                                             phone: phoneNumber,
                                             password: passwordController.text));
+
                                         setState(() {
                                           loading = false;
                                         });
@@ -244,7 +247,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                     },
                                     child: loading
                                         ? const CircularProgressIndicator
-                                            .adaptive()
+                                            .adaptive(
+                                            valueColor: AlwaysStoppedAnimation(
+                                                Colors.white))
                                         : const Text("تسجيل الدخول"));
                               }),
                             ),

@@ -65,6 +65,9 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                           IntlPhoneField(
                             initialCountryCode: 'QA',
                             showDropdownIcon: false,
+                            languageCode: "ar",
+                              searchText: "ابحث عن الدولة",
+
                             onChanged: (v) {
                               setState(() {
                                 phoneNumber = v.completeNumber;

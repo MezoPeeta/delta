@@ -5,6 +5,7 @@ import 'package:delta/src/screens/auth/otp_verify/otp_verify.dart';
 import 'package:delta/src/screens/auth/reset_pass/reset_pass.dart';
 import 'package:delta/src/screens/auth/signup/signup_screen.dart';
 import 'package:delta/src/screens/boarding/boarding_screen.dart';
+import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/change_pass/change_pass.dart';
 import 'package:delta/src/screens/settings/feedback/feedback_screen.dart';
 import 'package:delta/src/screens/settings/profile/profile_screen.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/auth/login/signin_screen.dart';
+import '../screens/order/order_screen.dart';
 import '../screens/settings/about/about_screen.dart';
 import '../screens/settings/addresses/add_address_screen.dart';
 import '../screens/settings/addresses/addresses_screen.dart';
@@ -22,11 +24,12 @@ import '../screens/settings/notifications/notifications_screen.dart';
 final goRouterProvider = StateProvider<GoRouter>((ref) => _routes);
 
 final tokenProvider = FutureProvider<String?>((ref) async {
-  return StorageRepository().read(key: "token");
+  return await StorageRepository().read(key: "token");
 });
 
-final _routes = GoRouter(initialLocation: '/boarding', routes: [
+final _routes = GoRouter(initialLocation: '/', routes: [
   GoRoute(path: "/", builder: (context, state) => const Navigation()),
+  GoRoute(path: "/order", builder: (context, state) => const OrderScreen()),
   GoRoute(
       path: "/boarding", builder: (context, state) => const BoardingScreen()),
   GoRoute(path: "/signin", builder: (context, state) => const SignInScreen()),
@@ -67,5 +70,5 @@ final _routes = GoRouter(initialLocation: '/boarding', routes: [
           )),
   GoRoute(
       path: "/add_address",
-      builder: (context, state) => const AddAddressScreen()),
+      builder: (context, state) => AddAddressScreen(state.extra as Address?)),
 ]);

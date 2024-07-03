@@ -20,5 +20,19 @@ final logOutProvider = AutoDisposeFutureProvider<void>.internal(
 );
 
 typedef LogOutRef = AutoDisposeFutureProviderRef<void>;
+String _$deleteUserHash() => r'fa8f4f95ab228ff74c977018496cd415c7673ff7';
+
+/// See also [deleteUser].
+@ProviderFor(deleteUser)
+final deleteUserProvider = AutoDisposeFutureProvider<void>.internal(
+  deleteUser,
+  name: r'deleteUserProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$deleteUserHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef DeleteUserRef = AutoDisposeFutureProviderRef<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

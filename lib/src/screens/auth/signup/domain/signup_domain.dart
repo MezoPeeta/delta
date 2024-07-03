@@ -1,4 +1,3 @@
-import 'package:delta/src/app.dart';
 import 'package:delta/src/shared/routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:delta/src/shared/dio_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,9 +22,7 @@ Future<int?> setPassword(SetPasswordRef ref,
   await StorageRepository().write(key: "token", value: token);
   final user = User.fromJson(request.data["data"]["user"]);
 
-  // ref.watch(userProvider.notifier).state = user;
-  await StorageRepository()
-      .write(key: "user", value: jsonEncode(user.toJson()));
+
 
   ref.watch(userProvider.notifier).state = user;
 
