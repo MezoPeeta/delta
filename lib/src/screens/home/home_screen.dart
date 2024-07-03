@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:delta/src/screens/auth/login/login_providers.dart';
+import 'package:delta/src/screens/products/provider/product_provider.dart';
+import 'package:delta/src/screens/repair/repair_screen.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
+    final products = ref.watch(getProductsProvider);
 
     return Scaffold(
         body: SafeArea(
@@ -185,7 +188,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(
                       height: 13,
                     ),
-                    const ProductContainer()
+                    products.when(
+                        data: (data) {
+                          return Column(
+                            children: data
+                                .map((e) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12),
+                                      child: ProductContainer(
+                                        name: e.name,
+                                        description: e.description,
+                                        image: e.mainPhoto,
+                                      ),
+                                    ))
+                                .toList(),
+                          );
+                        },
+                        error: (e, s) => const Text("حدث خطأ ما"),
+                        loading: () => const CircularProgressIndicator())
                   ],
                 ),
               );
@@ -204,7 +224,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 class ProductContainer extends StatelessWidget {
   const ProductContainer({
     super.key,
+    required this.name,
+    required this.description,
+    required this.image,
   });
+
+  final String name, description, image;
 
   @override
   Widget build(BuildContext context) {
@@ -222,18 +247,18 @@ class ProductContainer extends StatelessWidget {
               width: double.infinity,
               height: 150,
               decoration: BoxDecoration(
-                  color: AppColors.grayColor,
+                  image: DecorationImage(image: NetworkImage(image)),
                   borderRadius: BorderRadius.circular(12))),
           const SizedBox(
             height: 18,
           ),
-          const Text(
-            "اسم المنتج",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
-          const Text(
-            "الوصف",
-            style: TextStyle(
+          Text(
+            description,
+            style: const TextStyle(
               fontSize: 16,
             ),
           )

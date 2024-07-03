@@ -5,6 +5,7 @@ import 'package:delta/src/screens/auth/otp_verify/otp_verify.dart';
 import 'package:delta/src/screens/auth/reset_pass/reset_pass.dart';
 import 'package:delta/src/screens/auth/signup/signup_screen.dart';
 import 'package:delta/src/screens/boarding/boarding_screen.dart';
+import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/change_pass/change_pass.dart';
 import 'package:delta/src/screens/settings/feedback/feedback_screen.dart';
@@ -16,6 +17,7 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/auth/login/signin_screen.dart';
 import '../screens/order/order_screen.dart';
+import '../screens/products/products_screen.dart';
 import '../screens/settings/about/about_screen.dart';
 import '../screens/settings/addresses/add_address_screen.dart';
 import '../screens/settings/addresses/addresses_screen.dart';
@@ -71,4 +73,8 @@ final _routes = GoRouter(initialLocation: '/', routes: [
   GoRoute(
       path: "/add_address",
       builder: (context, state) => AddAddressScreen(state.extra as Address?)),
+  GoRoute(
+      path: "/products", builder: (context, state) => const ProductsScreen()),
+       GoRoute(
+      path: "/products/detail", builder: (context, state) => const ProductDetail()),
 ]);

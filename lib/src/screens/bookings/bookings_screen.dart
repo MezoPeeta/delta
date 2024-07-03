@@ -1,6 +1,7 @@
 import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:delta/src/shared/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BookingsScreen extends StatelessWidget {
   const BookingsScreen({super.key});
@@ -27,7 +28,10 @@ class BookingsScreen extends StatelessWidget {
               constraints: const BoxConstraints(
                   minWidth: double.infinity, minHeight: 54),
               child: ElevatedButton(
-                  onPressed: () {}, child: const Text("منتجاتنا")),
+                  onPressed: () {
+                    context.push("/products");
+                  },
+                  child: const Text("منتجاتنا")),
             ),
           ],
         ),
