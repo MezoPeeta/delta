@@ -6,7 +6,7 @@ part of 'login_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentUserHash() => r'cbe7346ec70e06af49cd159fbedeafb298f1ec5c';
+String _$currentUserHash() => r'2b306f10a75853cdc4a85e3a7e2a79aa5ec77e24';
 
 /// See also [currentUser].
 @ProviderFor(currentUser)
@@ -20,7 +20,7 @@ final currentUserProvider = FutureProvider<User>.internal(
 );
 
 typedef CurrentUserRef = FutureProviderRef<User>;
-String _$loginHash() => r'592ff986a4af65734e11897d705c77b71d96f2b9';
+String _$loginHash() => r'e68d64667d03a0b925503447b2ea050891e62993';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -11,11 +11,13 @@ import '../screens/repair/repair_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import 'routes.dart';
 
+final currentIndexProvider = StateProvider<int>((ref) => 0);
+
 final List<Widget> _children = [
   const HomeScreen(),
   const BookingsScreen(),
   const RepairScreen(),
-  DiscountScreen(),
+  const DiscountScreen(),
   const SettingsScreen(),
 ];
 
@@ -27,16 +29,8 @@ class Navigation extends ConsumerStatefulWidget {
 }
 
 class _NavigationState extends ConsumerState<Navigation> {
-  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    ref.listen(tokenProvider, (_, token) {
-      if (token.requireValue == null) {
-        context.go("/signin");
-        return;
-      }
-    });
-
     return Scaffold(
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
@@ -54,17 +48,16 @@ class _NavigationState extends ConsumerState<Navigation> {
               indicatorColor: Colors.transparent,
               overlayColor: const WidgetStatePropertyAll(Colors.transparent),
               elevation: 15,
-              selectedIndex: currentIndex,
+              selectedIndex: ref.watch(currentIndexProvider),
               backgroundColor: Colors.white,
-              onDestinationSelected: (value) => setState(() {
-                    currentIndex = value;
-                  }),
+              onDestinationSelected: (value) =>
+                  ref.read(currentIndexProvider.notifier).state = value,
               destinations: [
                 NavigationDestination(
                     icon: SvgPicture.asset(
                       "assets/img/icons/home.svg",
                       colorFilter: ColorFilter.mode(
-                          currentIndex == 0
+                          ref.watch(currentIndexProvider) == 0
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),
@@ -74,7 +67,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                     icon: SvgPicture.asset(
                       "assets/img/icons/reservations.svg",
                       colorFilter: ColorFilter.mode(
-                          currentIndex == 1
+                          ref.watch(currentIndexProvider) == 1
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),
@@ -84,7 +77,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                     icon: SvgPicture.asset(
                       "assets/img/icons/repair.svg",
                       colorFilter: ColorFilter.mode(
-                          currentIndex == 2
+                          ref.watch(currentIndexProvider) == 2
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),
@@ -94,7 +87,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                     icon: SvgPicture.asset(
                       "assets/img/icons/order.svg",
                       colorFilter: ColorFilter.mode(
-                          currentIndex == 3
+                          ref.watch(currentIndexProvider) == 3
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),
@@ -104,7 +97,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                     icon: SvgPicture.asset(
                       "assets/img/icons/settings.svg",
                       colorFilter: ColorFilter.mode(
-                          currentIndex == 4
+                          ref.watch(currentIndexProvider) == 4
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),
@@ -113,7 +106,7 @@ class _NavigationState extends ConsumerState<Navigation> {
               ]),
         ),
       ),
-      body: _children[currentIndex],
+      body: _children[ref.watch(currentIndexProvider)],
     );
   }
 }

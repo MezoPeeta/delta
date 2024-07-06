@@ -9,10 +9,12 @@ import 'data/user.dart';
 part 'login_providers.g.dart';
 
 final userStorageProvider = FutureProvider<User?>((ref) async {
-  final currentUser = ref.watch(userProvider);
-  final user = await ref.watch(currentUserProvider.future);
-
-  return currentUser ?? user;
+  final user = ref.watch(userProvider);
+  if (user != null) {
+    return user;
+  }
+  final currentUser = await ref.watch(currentUserProvider.future);
+  return currentUser;
 });
 
 final userProvider = StateProvider<User?>((ref) {
@@ -22,10 +24,9 @@ final userProvider = StateProvider<User?>((ref) {
 @Riverpod(keepAlive: true)
 Future<User> currentUser(CurrentUserRef ref) async {
   final userToken = await ref.watch(tokenProvider.future);
-  print(userToken);
   final request = await ref
       .watch(dioHelperProvider)
-      .getHTTP("/api/users/me", token: userToken!);
+      .getHTTP("/api/users/me", token: userToken ?? "");
   final user = User.fromJson(request?.data["data"]["user"]);
   return user;
 }
@@ -37,10 +38,14 @@ Future<User> login(LoginRef ref,
       .watch(dioHelperProvider)
       .postHTTP("/api/users/login", {"phone": phone, "password": password});
 
-  final String token = request?.data["token"];
-  await StorageRepository().write(key: "token", value: token);
   final user = User.fromJson(request?.data["data"]["user"]);
+
   ref.watch(userProvider.notifier).state = user;
+
+  final String token = request?.data["token"];
+
+  ref.watch(tokenSProvider.notifier).state = token;
+  await StorageRepository().write(key: "token", value: token);
 
   ref.watch(goRouterProvider).push("/");
 

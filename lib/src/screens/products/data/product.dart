@@ -7,9 +7,9 @@ part 'product.g.dart';
 class Product with _$Product {
   const factory Product(
       {@JsonKey(name: '_id') required String id,
-      required String name,
-      required String description,
-      required String mainPhoto,
+      String? name,
+      String? description,
+      String? mainPhoto,
       List<String>? photos,
      }) = _Product;
 

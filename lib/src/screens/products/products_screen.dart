@@ -16,7 +16,7 @@ class ProductsScreen extends ConsumerStatefulWidget {
 }
 
 class _ProductsScreenState extends ConsumerState<ProductsScreen> {
-  String category = "Test18";
+  String category = "all";
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -93,9 +93,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                             ),
                         itemBuilder: (context, index) {
                           return ProductContainer(
-                            name: data[index].name,
-                            description: data[index].description,
-                            image: data[index].mainPhoto,
+                            product: data[index],
                           );
                         });
                   },

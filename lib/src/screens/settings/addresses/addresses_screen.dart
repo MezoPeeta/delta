@@ -56,7 +56,6 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
                                 ),
                               )),
                     ),
-                    const Spacer(),
                     selectedIndex != null
                         ? ConstrainedBox(
                             constraints: const BoxConstraints(

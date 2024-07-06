@@ -1,6 +1,7 @@
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/settings/providers/settings_providers.dart';
 import 'package:delta/src/shared/app_bar.dart';
+import 'package:delta/src/shared/storage.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,14 +12,21 @@ import '../../shared/app_sheet.dart';
 import 'settings.dart';
 
 final isNotifyProvider = StateProvider<bool>((ref) {
-  return false;
+  return true;
+});
+
+final isNotifiedStorageProvider = FutureProvider<bool>((ref) async {
+  final isNotif = ref.watch(isNotifyProvider);
+
+  final isNotified = await StorageRepository().read(key: "isNotified");
+  return isNotified != null ? bool.parse(isNotified) : isNotif;
 });
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNotified = ref.watch(isNotifyProvider.notifier).state;
+    final isNotified = ref.watch(isNotifiedStorageProvider).value ?? true;
     final List<Settings> tiles = [
       Settings(
         label: "الملف الشخصي",
@@ -64,9 +72,12 @@ class SettingsScreen extends ConsumerWidget {
                     child: Switch(
                       inactiveTrackColor: Colors.white,
                       activeTrackColor: Colors.black.withOpacity(0.05),
-                      value: ref.watch(isNotifyProvider),
+                      value:
+                          ref.watch(isNotifiedStorageProvider).value ?? false,
                       onChanged: (v) async {
                         ref.watch(isNotifyProvider.notifier).state = v;
+                        await StorageRepository()
+                            .write(key: "isNotified", value: v.toString());
                       },
                       inactiveThumbColor: AppColors.linkColor,
                       activeColor: AppColors.buttonColor,

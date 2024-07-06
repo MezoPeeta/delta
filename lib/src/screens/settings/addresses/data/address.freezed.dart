@@ -20,7 +20,6 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Address {
-// ignore: invalid_annotation_target
   String? get city => throw _privateConstructorUsedError;
   String? get area => throw _privateConstructorUsedError;
   String? get street => throw _privateConstructorUsedError;
@@ -28,6 +27,8 @@ mixin _$Address {
   String? get flat => throw _privateConstructorUsedError;
   int? get latitude => throw _privateConstructorUsedError;
   int? get longitude => throw _privateConstructorUsedError;
+  @JsonKey(name: '_id')
+  String get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +47,8 @@ abstract class $AddressCopyWith<$Res> {
       String? building,
       String? flat,
       int? latitude,
-      int? longitude});
+      int? longitude,
+      @JsonKey(name: '_id') String id});
 }
 
 /// @nodoc
@@ -69,6 +71,7 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
     Object? flat = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
+    Object? id = null,
   }) {
     return _then(_value.copyWith(
       city: freezed == city
@@ -99,6 +102,10 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as int?,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -117,7 +124,8 @@ abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
       String? building,
       String? flat,
       int? latitude,
-      int? longitude});
+      int? longitude,
+      @JsonKey(name: '_id') String id});
 }
 
 /// @nodoc
@@ -138,6 +146,7 @@ class __$$AddressImplCopyWithImpl<$Res>
     Object? flat = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
+    Object? id = null,
   }) {
     return _then(_$AddressImpl(
       freezed == city
@@ -168,6 +177,10 @@ class __$$AddressImplCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as int?,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -176,12 +189,12 @@ class __$$AddressImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AddressImpl implements _Address {
   const _$AddressImpl(this.city, this.area, this.street, this.building,
-      this.flat, this.latitude, this.longitude);
+      this.flat, this.latitude, this.longitude,
+      {@JsonKey(name: '_id') required this.id});
 
   factory _$AddressImpl.fromJson(Map<String, dynamic> json) =>
       _$$AddressImplFromJson(json);
 
-// ignore: invalid_annotation_target
   @override
   final String? city;
   @override
@@ -196,10 +209,13 @@ class _$AddressImpl implements _Address {
   final int? latitude;
   @override
   final int? longitude;
+  @override
+  @JsonKey(name: '_id')
+  final String id;
 
   @override
   String toString() {
-    return 'Address(city: $city, area: $area, street: $street, building: $building, flat: $flat, latitude: $latitude, longitude: $longitude)';
+    return 'Address(city: $city, area: $area, street: $street, building: $building, flat: $flat, latitude: $latitude, longitude: $longitude, id: $id)';
   }
 
   @override
@@ -216,13 +232,14 @@ class _$AddressImpl implements _Address {
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
-                other.longitude == longitude));
+                other.longitude == longitude) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, city, area, street, building, flat, latitude, longitude);
+      runtimeType, city, area, street, building, flat, latitude, longitude, id);
 
   @JsonKey(ignore: true)
   @override
@@ -246,11 +263,12 @@ abstract class _Address implements Address {
       final String? building,
       final String? flat,
       final int? latitude,
-      final int? longitude) = _$AddressImpl;
+      final int? longitude,
+      {@JsonKey(name: '_id') required final String id}) = _$AddressImpl;
 
   factory _Address.fromJson(Map<String, dynamic> json) = _$AddressImpl.fromJson;
 
-  @override // ignore: invalid_annotation_target
+  @override
   String? get city;
   @override
   String? get area;
@@ -264,6 +282,9 @@ abstract class _Address implements Address {
   int? get latitude;
   @override
   int? get longitude;
+  @override
+  @JsonKey(name: '_id')
+  String get id;
   @override
   @JsonKey(ignore: true)
   _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>

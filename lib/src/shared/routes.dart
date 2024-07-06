@@ -5,6 +5,7 @@ import 'package:delta/src/screens/auth/otp_verify/otp_verify.dart';
 import 'package:delta/src/screens/auth/reset_pass/reset_pass.dart';
 import 'package:delta/src/screens/auth/signup/signup_screen.dart';
 import 'package:delta/src/screens/boarding/boarding_screen.dart';
+import 'package:delta/src/screens/bookings/data/order.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/change_pass/change_pass.dart';
@@ -17,6 +18,7 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/auth/login/signin_screen.dart';
 import '../screens/order/order_screen.dart';
+import '../screens/products/data/product.dart';
 import '../screens/products/products_screen.dart';
 import '../screens/settings/about/about_screen.dart';
 import '../screens/settings/addresses/add_address_screen.dart';
@@ -26,12 +28,20 @@ import '../screens/settings/notifications/notifications_screen.dart';
 final goRouterProvider = StateProvider<GoRouter>((ref) => _routes);
 
 final tokenProvider = FutureProvider<String?>((ref) async {
+  final token = ref.watch(tokenSProvider);
+  if (token != null) {
+    return token;
+  }
   return await StorageRepository().read(key: "token");
 });
 
-final _routes = GoRouter(initialLocation: '/', routes: [
+final tokenSProvider = StateProvider<String?>((ref) => null);
+
+final _routes = GoRouter(initialLocation: '/boarding', routes: [
   GoRoute(path: "/", builder: (context, state) => const Navigation()),
-  GoRoute(path: "/order", builder: (context, state) => const OrderScreen()),
+  GoRoute(
+      path: "/order",
+      builder: (context, state) => OrderScreen(order: state.extra as Order)),
   GoRoute(
       path: "/boarding", builder: (context, state) => const BoardingScreen()),
   GoRoute(path: "/signin", builder: (context, state) => const SignInScreen()),
@@ -75,6 +85,9 @@ final _routes = GoRouter(initialLocation: '/', routes: [
       builder: (context, state) => AddAddressScreen(state.extra as Address?)),
   GoRoute(
       path: "/products", builder: (context, state) => const ProductsScreen()),
-       GoRoute(
-      path: "/products/detail", builder: (context, state) => const ProductDetail()),
+  GoRoute(
+      path: "/products/detail",
+      builder: (context, state) => ProductDetail(
+            product: state.extra as Product,
+          )),
 ]);

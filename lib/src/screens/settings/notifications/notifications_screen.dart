@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:delta/src/providers/notification_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +47,10 @@ class NotificationsScreen extends ConsumerWidget {
                           ),
                         ));
               },
-              error: (e, s) => const Center(child: Text("حدث خطأ ما")),
+              error: (e, s) {
+                log("[Error Notification]", error: e, stackTrace: s);
+                return const Center(child: Text("حدث خطأ ما"));
+              },
               loading: () => const Center(child: CircularProgressIndicator()))),
     );
   }

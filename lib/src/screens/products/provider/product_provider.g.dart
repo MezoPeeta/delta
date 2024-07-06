@@ -21,7 +21,7 @@ final getProductsProvider = AutoDisposeFutureProvider<List<Product>>.internal(
 
 typedef GetProductsRef = AutoDisposeFutureProviderRef<List<Product>>;
 String _$getProductsbyCategoryHash() =>
-    r'd1f6e86f7d99999c72e5833061d56e849c77578b';
+    r'98b0467c90c800e2c6003075f011da93875b18b4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -187,5 +187,131 @@ final getCategoriesProvider = AutoDisposeFutureProvider<List>.internal(
 );
 
 typedef GetCategoriesRef = AutoDisposeFutureProviderRef<List>;
+String _$addToCartHash() => r'c5e7d0b7729d04b661039c3fd2cdda6b5c7eb6a4';
+
+/// See also [addToCart].
+@ProviderFor(addToCart)
+const addToCartProvider = AddToCartFamily();
+
+/// See also [addToCart].
+class AddToCartFamily extends Family<AsyncValue<void>> {
+  /// See also [addToCart].
+  const AddToCartFamily();
+
+  /// See also [addToCart].
+  AddToCartProvider call({
+    required String productID,
+  }) {
+    return AddToCartProvider(
+      productID: productID,
+    );
+  }
+
+  @override
+  AddToCartProvider getProviderOverride(
+    covariant AddToCartProvider provider,
+  ) {
+    return call(
+      productID: provider.productID,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'addToCartProvider';
+}
+
+/// See also [addToCart].
+class AddToCartProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [addToCart].
+  AddToCartProvider({
+    required String productID,
+  }) : this._internal(
+          (ref) => addToCart(
+            ref as AddToCartRef,
+            productID: productID,
+          ),
+          from: addToCartProvider,
+          name: r'addToCartProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$addToCartHash,
+          dependencies: AddToCartFamily._dependencies,
+          allTransitiveDependencies: AddToCartFamily._allTransitiveDependencies,
+          productID: productID,
+        );
+
+  AddToCartProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.productID,
+  }) : super.internal();
+
+  final String productID;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(AddToCartRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: AddToCartProvider._internal(
+        (ref) => create(ref as AddToCartRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        productID: productID,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _AddToCartProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AddToCartProvider && other.productID == productID;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, productID.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin AddToCartRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `productID` of this provider.
+  String get productID;
+}
+
+class _AddToCartProviderElement extends AutoDisposeFutureProviderElement<void>
+    with AddToCartRef {
+  _AddToCartProviderElement(super.provider);
+
+  @override
+  String get productID => (origin as AddToCartProvider).productID;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,7 +1,7 @@
-
 import 'package:delta/src/shared/dio_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../shared/routes.dart';
 import '../../../../shared/storage.dart';
 import '../../login/data/user.dart';
 import '../../login/login_providers.dart';
@@ -19,10 +19,9 @@ Future<int?> setPassword(SetPasswordRef ref,
     "confirm_password": confirmPassword
   });
   final String token = request!.data["token"];
+  ref.watch(tokenSProvider.notifier).state = token;
   await StorageRepository().write(key: "token", value: token);
   final user = User.fromJson(request.data["data"]["user"]);
-
-
 
   ref.watch(userProvider.notifier).state = user;
 

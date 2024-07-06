@@ -54,7 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                            image:const DecorationImage(image:AssetImage("assets/img/brand.png")),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),

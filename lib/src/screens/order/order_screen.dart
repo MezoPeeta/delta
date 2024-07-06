@@ -1,16 +1,27 @@
+import 'package:collection/collection.dart';
+import 'package:delta/src/screens/order/data/order.dart';
+import 'package:delta/src/screens/products/data/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../styles/colors.dart';
+import '../auth/login/login_providers.dart';
+import '../bookings/data/order.dart';
+import '../products/product_detail.dart';
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends ConsumerWidget {
   const OrderScreen({
     super.key,
+    required this.order,
   });
+  final Order order;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStorageProvider).requireValue;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("طلب رقم: 4"),
+        title: Text("طلب رقم: ${order.id}"),
         centerTitle: true,
       ),
       body: Padding(
@@ -26,38 +37,34 @@ class OrderScreen extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              OrderStateItem(
-                  backgroundColor: AppColors.doneColor,
-                  icon: Icons.check,
-                  isActive: true,
-                  iconColor: Colors.white,
-                  title: "المرحلة الاولي",
-                  subTitle: "طلب المصعد من المنصع",
-                  description:
-                      "يتم في هذه الخطوة التواصل مع المصنع و طلب المصعد المطلوب للعميل",
-                  clarifyTextColor: AppColors.doneColor,
-                  clarifyText: "اكتمل"),
-              const OrderStateItem(
-                  backgroundColor: Color(0xFF343434),
-                  icon: Icons.arrow_back,
-                  isActive: true,
-                  iconColor: Colors.white,
-                  title: "المرحلة التانية",
-                  subTitle: "الشحن و الجمارك",
-                  description:
-                      "تخليص كل الاوراق الخاصه بالجمارك و شحن المصعد من المصنع",
-                  clarifyTextColor: Color(0xFF343434),
-                  clarifyText: "جاري التنفيذ"),
-              const OrderStateItem(
-                  backgroundColor: Color(0xFF343434),
-                  icon: Icons.arrow_back,
-                  iconColor: Colors.white,
-                  title: "المرحلة التانية",
-                  subTitle: "الشحن و الجمارك",
-                  description:
-                      "تخليص كل الاوراق الخاصه بالجمارك و شحن المصعد من المصنع",
-                  clarifyTextColor: Color(0xFF343434),
-                  clarifyText: "جاري التنفيذ"),
+              ...OrderStatus.values.mapIndexed((i, e) {
+                bool isActive = OrderStatus.values.indexOf(OrderStatus.values
+                        .firstWhere(
+                            (e) => e.name == order.status.toLowerCase())) >=
+                    i;
+                if (e.title.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return OrderStateItem(
+                    backgroundColor: AppColors.doneColor,
+                    icon: isActive ? Icons.check : Icons.arrow_back,
+                    iconColor: Colors.white,
+                    title: e.title,
+                    isActive: isActive,
+                    subTitle: e.subTitle,
+                    description: e.description,
+                    isFinalStep: e.name == "completed",
+                    clarifyTextColor:
+                        isActive ? AppColors.doneColor : AppColors.grayColor,
+                    clarifyText: isActive ? "اكتمل" : "قيد الانتظار");
+              }),
+              const SizedBox(
+                height: 12,
+              ),
+              const Text(
+                "معلومات المنتج",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
               const SizedBox(
                 height: 12,
               ),
@@ -77,26 +84,9 @@ class OrderScreen extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
                         ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
                         Text(
-                          "الاسم:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
+                          user!.name,
+                          style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -111,77 +101,9 @@ class OrderScreen extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
                         ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
                         Text(
-                          "التاريخ:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        Text(
-                          "الدفعة الاولي:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        Text(
-                          "الدفعة الثانية:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        Text(
-                          "الدفعة الثالثة:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
+                          user.phone,
+                          style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -199,15 +121,19 @@ class OrderScreen extends StatelessWidget {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500),
                             ),
-                            const Text(
-                              "456456",
-                              style: TextStyle(
+                            Text(
+                              order.id,
+                              style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
                         IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.copy))
+                            onPressed: () async {
+                              await Clipboard.setData(
+                                  ClipboardData(text: order.id));
+                            },
+                            icon: const Icon(Icons.copy))
                       ],
                     ),
                     const Divider(),
@@ -259,62 +185,21 @@ class OrderScreen extends StatelessWidget {
                 height: 12,
               ),
               const Text(
-                "معلومات المنتج",
+                "طلباتك",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 12,
               ),
-              Container(
-                padding: const EdgeInsets.only(right: 10, top: 8, bottom: 8),
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(12)),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "الاسم:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Text(
-                          "احمد حسام الموكوس",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        Container(
-                          width: 55,
-                          height: 55,
-                          decoration: BoxDecoration(
-                              color: AppColors.grayColor,
-                              borderRadius: BorderRadius.circular(4)),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Column(
-                          children: [
-                            const Text("الاسم"),
-                            Text(
-                              "الوصف",
-                              style: TextStyle(color: AppColors.grayColor),
-                            )
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )
+              Column(
+                children: order.cartItems
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: SmallProductContainer(
+                              product: e),
+                        ))
+                    .toList(),
+              ),
             ],
           ),
         ),

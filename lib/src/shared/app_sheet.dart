@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 Future<dynamic> appBottomSheet(BuildContext context,
     {required String header,
     required String endHeader,
     bool isWarning = false,
     bool isDanger = false,
+    bool isRow = true,
     required TextSpan coloredText,
     required List<Widget> actionButtons,
     required String subHeader}) {
@@ -72,9 +72,14 @@ Future<dynamic> appBottomSheet(BuildContext context,
                       const SizedBox(
                         height: 24,
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: actionButtons),
+                      isRow
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: actionButtons)
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: actionButtons,
+                            ),
                       const SizedBox(
                         height: 40,
                       )

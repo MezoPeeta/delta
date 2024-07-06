@@ -6,7 +6,7 @@ part of 'new_pass.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$setPasswordHash() => r'13db953530ae1192c855afd830ad055deba4ebda';
+String _$setPasswordHash() => r'e3b3078bd187508ea15f9fd4bcdc9d954edee0b4';
 
 /// Copied from Dart SDK
 class _SystemHash {

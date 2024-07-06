@@ -22,9 +22,9 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 mixin _$Product {
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get mainPhoto => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  String? get mainPhoto => throw _privateConstructorUsedError;
   List<String>? get photos => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,9 +39,9 @@ abstract class $ProductCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: '_id') String id,
-      String name,
-      String description,
-      String mainPhoto,
+      String? name,
+      String? description,
+      String? mainPhoto,
       List<String>? photos});
 }
 
@@ -59,9 +59,9 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
-    Object? description = null,
-    Object? mainPhoto = null,
+    Object? name = freezed,
+    Object? description = freezed,
+    Object? mainPhoto = freezed,
     Object? photos = freezed,
   }) {
     return _then(_value.copyWith(
@@ -69,18 +69,18 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
+              as String?,
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      mainPhoto: null == mainPhoto
+              as String?,
+      mainPhoto: freezed == mainPhoto
           ? _value.mainPhoto
           : mainPhoto // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       photos: freezed == photos
           ? _value.photos
           : photos // ignore: cast_nullable_to_non_nullable
@@ -98,9 +98,9 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: '_id') String id,
-      String name,
-      String description,
-      String mainPhoto,
+      String? name,
+      String? description,
+      String? mainPhoto,
       List<String>? photos});
 }
 
@@ -116,9 +116,9 @@ class __$$ProductImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
-    Object? description = null,
-    Object? mainPhoto = null,
+    Object? name = freezed,
+    Object? description = freezed,
+    Object? mainPhoto = freezed,
     Object? photos = freezed,
   }) {
     return _then(_$ProductImpl(
@@ -126,18 +126,18 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
+              as String?,
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      mainPhoto: null == mainPhoto
+              as String?,
+      mainPhoto: freezed == mainPhoto
           ? _value.mainPhoto
           : mainPhoto // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       photos: freezed == photos
           ? _value._photos
           : photos // ignore: cast_nullable_to_non_nullable
@@ -151,9 +151,9 @@ class __$$ProductImplCopyWithImpl<$Res>
 class _$ProductImpl implements _Product {
   const _$ProductImpl(
       {@JsonKey(name: '_id') required this.id,
-      required this.name,
-      required this.description,
-      required this.mainPhoto,
+      this.name,
+      this.description,
+      this.mainPhoto,
       final List<String>? photos})
       : _photos = photos;
 
@@ -164,11 +164,11 @@ class _$ProductImpl implements _Product {
   @JsonKey(name: '_id')
   final String id;
   @override
-  final String name;
+  final String? name;
   @override
-  final String description;
+  final String? description;
   @override
-  final String mainPhoto;
+  final String? mainPhoto;
   final List<String>? _photos;
   @override
   List<String>? get photos {
@@ -220,9 +220,9 @@ class _$ProductImpl implements _Product {
 abstract class _Product implements Product {
   const factory _Product(
       {@JsonKey(name: '_id') required final String id,
-      required final String name,
-      required final String description,
-      required final String mainPhoto,
+      final String? name,
+      final String? description,
+      final String? mainPhoto,
       final List<String>? photos}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
@@ -231,11 +231,11 @@ abstract class _Product implements Product {
   @JsonKey(name: '_id')
   String get id;
   @override
-  String get name;
+  String? get name;
   @override
-  String get description;
+  String? get description;
   @override
-  String get mainPhoto;
+  String? get mainPhoto;
   @override
   List<String>? get photos;
   @override

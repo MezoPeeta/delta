@@ -9,9 +9,9 @@ part of 'product.dart';
 _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
     _$ProductImpl(
       id: json['_id'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
-      mainPhoto: json['mainPhoto'] as String,
+      name: json['name'] as String?,
+      description: json['description'] as String?,
+      mainPhoto: json['mainPhoto'] as String?,
       photos:
           (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );

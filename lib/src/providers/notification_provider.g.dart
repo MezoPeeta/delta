@@ -6,7 +6,7 @@ part of 'notification_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendFCMTokenHash() => r'f63d79f95def0cdb418f8bf3bf2cb828003c390c';
+String _$sendFCMTokenHash() => r'1f5fd4eff066d5d5bd531798118d09e6218616d5';
 
 /// See also [sendFCMToken].
 @ProviderFor(sendFCMToken)
@@ -20,7 +20,7 @@ final sendFCMTokenProvider = AutoDisposeFutureProvider<void>.internal(
 );
 
 typedef SendFCMTokenRef = AutoDisposeFutureProviderRef<void>;
-String _$getNotificationsHash() => r'1e0a8b785edb4ff12bd5b3d699c2512564d2b42f';
+String _$getNotificationsHash() => r'c5d142d1f41cd5a31f3c7768e374f20d150a1def';
 
 /// See also [getNotifications].
 @ProviderFor(getNotifications)

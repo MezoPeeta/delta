@@ -19,9 +19,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       leading: isSettings
-          ? IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset("assets/img/icons/search.svg"))
+          ? null
           : IconButton(
               onPressed: () => context.push('/profile',
                   extra: ref.watch(userStorageProvider).requireValue),

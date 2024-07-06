@@ -52,7 +52,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                            image: const DecorationImage(
+                                image: AssetImage("assets/img/brand.png")),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
@@ -176,29 +177,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Checkbox.adaptive(
-                                    value: saveLogin,
-                                    onChanged: (v) {
-                                      setState(() {
-                                        saveLogin = v!;
-                                      });
-                                    }),
-                                Text(
-                                  "حفظ الدخول",
-                                  style: TextStyle(color: AppColors.grayColor),
-                                ),
-                              ],
-                            ),
-                            HyperLinkWidget(
-                              text: "نسيت كلمة المرور",
-                              onTap: () => context.push("/reset_pass"),
-                            )
-                          ],
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: HyperLinkWidget(
+                            text: "نسيت كلمة المرور",
+                            onTap: () => context.push("/reset_pass"),
+                          ),
                         ),
                         const Spacer(),
                         Column(
