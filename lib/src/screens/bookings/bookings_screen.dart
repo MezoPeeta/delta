@@ -82,8 +82,8 @@ class BookingsScreen extends ConsumerWidget {
                                                       padding:
                                                           const EdgeInsets.only(
                                                               left: 5),
-                                                      child: Text(
-                                                          e!.name.toString()),
+                                                      child:
+                                                          Text(e.product.name!),
                                                     ))
                                                 .toList())),
                                   )

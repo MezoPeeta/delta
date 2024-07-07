@@ -11,9 +11,20 @@ part 'order.g.dart';
 class Order with _$Order {
   const factory Order(
       {@JsonKey(name: '_id') required String id,
-      required List<Product?> cartItems,
+      required List<CartItem> cartItems,
       required String status,
      }) = _Order;
 
   factory Order.fromJson(Map<String, Object?> json) => _$OrderFromJson(json);
+}
+
+
+@freezed
+class CartItem with _$CartItem {
+  const factory CartItem(
+      Product product,
+      int quantity,
+     ) = _CartItem;
+
+  factory CartItem.fromJson(Map<String, Object?> json) => _$CartItemFromJson(json);
 }

@@ -6,7 +6,6 @@ import 'package:delta/src/shared/dio_helper.dart';
 import 'package:delta/src/shared/notifications.dart';
 import 'package:delta/src/shared/routes.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../screens/settings/notifications/data/notification.dart';

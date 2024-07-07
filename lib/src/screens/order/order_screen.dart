@@ -195,8 +195,7 @@ class OrderScreen extends ConsumerWidget {
                 children: order.cartItems
                     .map((e) => Padding(
                           padding: const EdgeInsets.only(bottom: 10),
-                          child: SmallProductContainer(
-                              product: e),
+                          child: SmallProductContainer(product: e.product),
                         ))
                     .toList(),
               ),
