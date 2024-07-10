@@ -221,8 +221,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                         });
 
                                         await ref.read(loginProvider(
-                                            phone: phoneNumber,
-                                            password: passwordController.text));
+                                                phone: phoneNumber,
+                                                password:
+                                                    passwordController.text)
+                                            .future);
 
                                         setState(() {
                                           loading = false;

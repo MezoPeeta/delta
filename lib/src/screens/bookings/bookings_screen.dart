@@ -83,7 +83,7 @@ class BookingsScreen extends ConsumerWidget {
                                                           const EdgeInsets.only(
                                                               left: 5),
                                                       child:
-                                                          Text(e.product.name!),
+                                                          Text(e.product?.name ?? ""),
                                                     ))
                                                 .toList())),
                                   )

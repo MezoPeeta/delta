@@ -22,7 +22,7 @@ class Order with _$Order {
 @freezed
 class CartItem with _$CartItem {
   const factory CartItem(
-      Product product,
+      Product? product,
       int quantity,
      ) = _CartItem;
 

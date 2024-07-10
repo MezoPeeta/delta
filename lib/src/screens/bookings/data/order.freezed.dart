@@ -208,7 +208,7 @@ CartItem _$CartItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartItem {
-  Product get product => throw _privateConstructorUsedError;
+  Product? get product => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -222,9 +222,9 @@ abstract class $CartItemCopyWith<$Res> {
   factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
       _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
-  $Res call({Product product, int quantity});
+  $Res call({Product? product, int quantity});
 
-  $ProductCopyWith<$Res> get product;
+  $ProductCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -240,14 +240,14 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? product = null,
+    Object? product = freezed,
     Object? quantity = null,
   }) {
     return _then(_value.copyWith(
-      product: null == product
+      product: freezed == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
-              as Product,
+              as Product?,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -257,8 +257,12 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
 
   @override
   @pragma('vm:prefer-inline')
-  $ProductCopyWith<$Res> get product {
-    return $ProductCopyWith<$Res>(_value.product, (value) {
+  $ProductCopyWith<$Res>? get product {
+    if (_value.product == null) {
+      return null;
+    }
+
+    return $ProductCopyWith<$Res>(_value.product!, (value) {
       return _then(_value.copyWith(product: value) as $Val);
     });
   }
@@ -272,10 +276,10 @@ abstract class _$$CartItemImplCopyWith<$Res>
       __$$CartItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Product product, int quantity});
+  $Res call({Product? product, int quantity});
 
   @override
-  $ProductCopyWith<$Res> get product;
+  $ProductCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -289,14 +293,14 @@ class __$$CartItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? product = null,
+    Object? product = freezed,
     Object? quantity = null,
   }) {
     return _then(_$CartItemImpl(
-      null == product
+      freezed == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
-              as Product,
+              as Product?,
       null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -314,7 +318,7 @@ class _$CartItemImpl implements _CartItem {
       _$$CartItemImplFromJson(json);
 
   @override
-  final Product product;
+  final Product? product;
   @override
   final int quantity;
 
@@ -352,14 +356,14 @@ class _$CartItemImpl implements _CartItem {
 }
 
 abstract class _CartItem implements CartItem {
-  const factory _CartItem(final Product product, final int quantity) =
+  const factory _CartItem(final Product? product, final int quantity) =
       _$CartItemImpl;
 
   factory _CartItem.fromJson(Map<String, dynamic> json) =
       _$CartItemImpl.fromJson;
 
   @override
-  Product get product;
+  Product? get product;
   @override
   int get quantity;
   @override

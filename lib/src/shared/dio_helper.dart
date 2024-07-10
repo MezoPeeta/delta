@@ -94,8 +94,8 @@ class DioHelper {
             content: Text("الحساب غير مفعل, ارجو من تفعيل الحساب")));
       }
       log("PostError", error: "$errorMessage | ${e.response!.statusCode}");
+      return null;
     }
-    return null;
   }
 
   Future<Response?> patchHTTP(String url, dynamic data,

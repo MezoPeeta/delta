@@ -86,6 +86,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             Expanded(
               child: products.when(
                   data: (data) {
+                    if (data.isEmpty) {
+                      return const Center(
+                        child: Text("لا يوجد منتجات"),
+                      );
+                    }
                     return ListView.separated(
                         itemCount: data.length,
                         separatorBuilder: (context, index) => const SizedBox(
