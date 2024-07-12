@@ -8,16 +8,17 @@ class FirebaseNotifications {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   init() async {
-    if(Platform.isIOS){
+    if (Platform.isIOS) {
       await _messaging.requestPermission();
       final token = await getToken();
       log("Token $token");
+      return;
     }
     GooglePlayServicesAvailability availability = await GoogleApiAvailability
         .instance
         .checkGooglePlayServicesAvailability();
-      log("[Google Play Services] $availability");
-    
+    log("[Google Play Services] $availability");
+
     if (availability == GooglePlayServicesAvailability.success) {
       await _messaging.requestPermission();
       final token = await getToken();
