@@ -22,7 +22,7 @@ final getUserAddressesProvider =
 );
 
 typedef GetUserAddressesRef = AutoDisposeFutureProviderRef<List<Address>>;
-String _$getLocationHash() => r'2e67fc45cb35c3de17f4c809625c57eaac883f34';
+String _$getLocationHash() => r'e7926bb437cda4bdaa0f59b821d88b052975254c';
 
 /// See also [getLocation].
 @ProviderFor(getLocation)
@@ -36,7 +36,21 @@ final getLocationProvider = AutoDisposeFutureProvider<Position>.internal(
 );
 
 typedef GetLocationRef = AutoDisposeFutureProviderRef<Position>;
-String _$addAddressHash() => r'aa94a1776e553c57808a38b3525e98be65be9986';
+String _$getPlacemarkHash() => r'bd4fe63a9603d3436c0e603d40800a32e472e2b0';
+
+/// See also [getPlacemark].
+@ProviderFor(getPlacemark)
+final getPlacemarkProvider = AutoDisposeFutureProvider<Placemark?>.internal(
+  getPlacemark,
+  name: r'getPlacemarkProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$getPlacemarkHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetPlacemarkRef = AutoDisposeFutureProviderRef<Placemark?>;
+String _$addAddressHash() => r'd68e3472c92178f919d1fb380517f1065f195a7c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -280,6 +294,134 @@ class _AddAddressProviderElement extends AutoDisposeFutureProviderElement<void>
   double get latitude => (origin as AddAddressProvider).latitude;
   @override
   double get longitude => (origin as AddAddressProvider).longitude;
+}
+
+String _$deleteAddressHash() => r'7aefd3698fb15326a6742518e9d05134af8ff04a';
+
+/// See also [deleteAddress].
+@ProviderFor(deleteAddress)
+const deleteAddressProvider = DeleteAddressFamily();
+
+/// See also [deleteAddress].
+class DeleteAddressFamily extends Family<AsyncValue<void>> {
+  /// See also [deleteAddress].
+  const DeleteAddressFamily();
+
+  /// See also [deleteAddress].
+  DeleteAddressProvider call({
+    required String addressID,
+  }) {
+    return DeleteAddressProvider(
+      addressID: addressID,
+    );
+  }
+
+  @override
+  DeleteAddressProvider getProviderOverride(
+    covariant DeleteAddressProvider provider,
+  ) {
+    return call(
+      addressID: provider.addressID,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'deleteAddressProvider';
+}
+
+/// See also [deleteAddress].
+class DeleteAddressProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [deleteAddress].
+  DeleteAddressProvider({
+    required String addressID,
+  }) : this._internal(
+          (ref) => deleteAddress(
+            ref as DeleteAddressRef,
+            addressID: addressID,
+          ),
+          from: deleteAddressProvider,
+          name: r'deleteAddressProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$deleteAddressHash,
+          dependencies: DeleteAddressFamily._dependencies,
+          allTransitiveDependencies:
+              DeleteAddressFamily._allTransitiveDependencies,
+          addressID: addressID,
+        );
+
+  DeleteAddressProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.addressID,
+  }) : super.internal();
+
+  final String addressID;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(DeleteAddressRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DeleteAddressProvider._internal(
+        (ref) => create(ref as DeleteAddressRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        addressID: addressID,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _DeleteAddressProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DeleteAddressProvider && other.addressID == addressID;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, addressID.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin DeleteAddressRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `addressID` of this provider.
+  String get addressID;
+}
+
+class _DeleteAddressProviderElement
+    extends AutoDisposeFutureProviderElement<void> with DeleteAddressRef {
+  _DeleteAddressProviderElement(super.provider);
+
+  @override
+  String get addressID => (origin as DeleteAddressProvider).addressID;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

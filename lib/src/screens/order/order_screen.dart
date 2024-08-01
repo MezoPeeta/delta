@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/order/data/order.dart';
-import 'package:delta/src/screens/products/data/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +21,7 @@ class OrderScreen extends ConsumerWidget {
     final user = ref.watch(userStorageProvider).requireValue;
     return Scaffold(
       appBar: AppBar(
-        title: Text("طلب رقم: ${order.id}"),
+        title: Text("رقم طلب: ${order.id}"),
         centerTitle: true,
       ),
       body: Padding(
@@ -115,7 +115,7 @@ class OrderScreen extends ConsumerWidget {
                         Row(
                           children: [
                             Text(
-                              "رثم الطلب:",
+                              "رقم الطلب:",
                               style: TextStyle(
                                   color: AppColors.grayColor,
                                   fontSize: 14,
@@ -141,14 +141,16 @@ class OrderScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "العفد:",
+                          "العقد:",
                           style: TextStyle(
                               color: AppColors.grayColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            ref.read(downloadPDFProvider(userID: user.id));
+                          },
                           label: const Text(
                             "تنزيل",
                             textAlign: TextAlign.center,

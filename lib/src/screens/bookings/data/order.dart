@@ -1,5 +1,4 @@
 
-import 'package:delta/src/screens/auth/login/data/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../products/data/product.dart';

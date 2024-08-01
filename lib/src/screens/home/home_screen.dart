@@ -5,7 +5,6 @@ import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,10 +29,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(sendFCMTokenProvider);
   }
 
+  String category = "الكل";
+  int selectedIndex = 0;
+  final pageSize = 20;
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
-    final products = ref.watch(getProductsProvider);
+    final categories = ref.watch(getCategoriesProvider);
 
     return Scaffold(
         body: SafeArea(
@@ -41,8 +43,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         child: user.when(
             data: (data) {
-              return SingleChildScrollView(
-                child: Column(
+              return LayoutBuilder(builder: (context, constraints) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Visibility(
                       visible: ref.watch(queryProvider).isEmpty,
@@ -168,87 +171,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ],
                       ),
                     ),
-                    Visibility(
-                      visible: ref.watch(queryProvider).isEmpty,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: StaggeredGrid.count(
-                          crossAxisCount: 6,
-                          mainAxisSpacing: 6,
-                          crossAxisSpacing: 6,
-                          children: [
-                            const StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 2,
-                                child: CategoryContainer(
-                                  assetImage: "assets/img/cabins.png",
-                                  text: "كباين",
-                                )),
-                            const StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 1.5,
-                                child: CategoryContainer(
-                                  assetImage: "assets/img/kbsat.png",
-                                  text: "كبسات",
-                                )),
-                            const StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 2.5,
-                                child: CategoryContainer(
-                                  assetImage: "assets/img/sa2f.png",
-                                  text: "سقف المصعد",
-                                )),
-                            const StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 3,
-                                child: CategoryContainer(
-                                  assetImage: "assets/img/doors.png",
-                                  text: "ابواب",
-                                )),
-                            StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 2.5,
-                                child: CategoryContainer(
-                                  assetImage: "assets/img/all.png",
-                                  onTap: () => context.push("/products"),
-                                  text: "عرض الكل",
-                                )),
-                            const StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 2,
-                                child: CategoryContainer(
-                                  assetImage: "assets/img/ms3d.png",
-                                  text: "ارضية المصعد",
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // HERE
+                    categories.when(
+                        data: (data) {
+                          return Wrap(
+                            spacing: 13, // Add space between children
+                            runSpacing: 10,
+
+                            children: data
+                                .map((e) => GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          category = e.title!;
+                                        });
+                                      },
+                                      child: CategoryWidget(
+                                        image: e.photo!,
+                                        isSelected: e.title == category,
+                                        text: e.title ?? "",
+                                      ),
+                                    ))
+                                .toList(),
+                          );
+                        },
+                        error: (e, s) {
+                          log("[Category Error]", error: e, stackTrace: s);
+                          return const Text("حدث خطأ ما");
+                        },
+                        loading: () => const SizedBox.shrink()),
                     const SizedBox(
                       height: 12,
                     ),
                     Visibility(
                       visible: ref.watch(queryProvider).isEmpty,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "منتجاتنا",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                          GestureDetector(
-                            onTap: () => context.push('/products'),
-                            child: Text(
-                              "عرض الكل",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.grayColor,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: AppColors.grayColor),
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        "منتجات - $category",
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                     ),
                     const SizedBox(
@@ -256,26 +215,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     Visibility(
                       visible: ref.watch(queryProvider).isEmpty,
-                      child: products.when(
-                          data: (data) {
-                            return Column(
-                              children: data
-                                  .map((e) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 12),
-                                        child: ProductContainer(
-                                          product: e,
-                                        ),
-                                      ))
-                                  .toList(),
-                            );
-                          },
-                          error: (e, s) => const Text("حدث خطأ ما"),
-                          loading: () => const CircularProgressIndicator()),
-                    )
+                      child: Expanded(
+                        child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20,
+                                    mainAxisExtent: 270,
+                                    maxCrossAxisExtent: 200),
+                            itemBuilder: (context, index) {
+                              final page = index ~/ pageSize + 1;
+                              final indexInPage = index % pageSize;
+                              final products = ref.watch(
+                                  getProductsbyCategoryProvider(
+                                      category:
+                                          category == "الكل" ? "all" : category,
+                                      page: page.toString()));
+
+                              return products.when(
+                                  data: (data) {
+                                    if (indexInPage >= data.length) {
+                                      return null;
+                                    }
+                                    return ProductContainer(
+                                        product: data[indexInPage]);
+                                  },
+                                  error: (e, s) => const Text("حدث خطأ ما"),
+                                  loading: () => Center(
+                                          child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.grayColor
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(12)),
+                                      )));
+                            }),
+                      ),
+                    ),
                   ],
-                ),
-              );
+                );
+              });
             },
             error: (e, s) {
               log("[Home Screen Error]", error: e, stackTrace: s);
@@ -285,6 +266,64 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const Center(child: CircularProgressIndicator.adaptive())),
       ),
     ));
+  }
+}
+
+class CategoryWidget extends StatelessWidget {
+  const CategoryWidget({
+    super.key,
+    required this.isSelected,
+    required this.text,
+    required this.image,
+  });
+
+  final bool isSelected;
+  final String text, image;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return Container(
+      height: 56,
+      width: text.length <= 5
+          ? text != "الكل"
+              ? text == "ابواب"
+                  ? width / (width >= 481 ? 7 : 3.5)
+                  : width / (width >= 481 ? 7 : 3.7)
+              : 60
+          : 140,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+      decoration: BoxDecoration(
+          color: isSelected
+              ? Colors.blue.withOpacity(0.2)
+              : AppColors.grayColor.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(8)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          text != "الكل"
+              ? Container(
+                  width: 28,
+                  height: 28,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover, image: NetworkImage(image))),
+                )
+              : const SizedBox.shrink(),
+          Visibility(
+            visible: text != "الكل",
+            child: const SizedBox(
+              width: 8,
+            ),
+          ),
+          Text(
+            text,
+            maxLines: 1,
+            style: const TextStyle(color: Colors.black, fontSize: 16),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -326,6 +365,8 @@ class ProductContainer extends StatelessWidget {
             ),
             Text(
               product.description!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 16,
               ),

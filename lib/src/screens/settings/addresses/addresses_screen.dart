@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:delta/src/styles/colors.dart';
 
 class AddressesScreen extends ConsumerStatefulWidget {
   const AddressesScreen({super.key});
@@ -41,18 +42,39 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
                           separatorBuilder: (context, index) => const SizedBox(
                                 height: 16,
                               ),
-                          itemBuilder: (context, index) => GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                  ref
-                                      .read(choosenAddressProvider.notifier)
-                                      .state = data[index];
+                          itemBuilder: (context, index) => Dismissible(
+                                background: Container(
+                                  decoration: BoxDecoration(
+                                      color: AppColors.errorColor,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: const Center(
+                                    child: Text(
+                                      "حذف",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                key: UniqueKey(),
+                                onDismissed: (_) {
+                                  // data.remove(data[index]);
+                                  ref.read(deleteAddressProvider(
+                                      addressID: data[index].id));
                                 },
-                                child: AddContainer(
-                                  isSelected: selectedIndex == index,
-                                  address: data[index],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                    ref
+                                        .read(choosenAddressProvider.notifier)
+                                        .state = data[index];
+                                  },
+                                  child: AddContainer(
+                                    isSelected: selectedIndex == index,
+                                    address: data[index],
+                                  ),
                                 ),
                               )),
                     ),

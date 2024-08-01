@@ -48,8 +48,11 @@ class BookingsScreen extends ConsumerWidget {
                     ],
                   );
                 }
-                return ListView.builder(
+                return ListView.separated(
                     itemCount: data.length,
+                    separatorBuilder: (context, index) => const SizedBox(
+                          height: 16,
+                        ),
                     itemBuilder: (context, index) => GestureDetector(
                           onTap: () =>
                               context.push("/order", extra: data[index]),
@@ -57,7 +60,7 @@ class BookingsScreen extends ConsumerWidget {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                   border: Border.all(),
-                                  color: AppColors.grayColor.withOpacity(0.3),
+                                  color: const Color(0xFFF4F4F4),
                                   borderRadius: BorderRadius.circular(12)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,8 +85,9 @@ class BookingsScreen extends ConsumerWidget {
                                                       padding:
                                                           const EdgeInsets.only(
                                                               left: 5),
-                                                      child:
-                                                          Text(e.product?.name ?? ""),
+                                                      child: Text(
+                                                          e.product?.name ??
+                                                              ""),
                                                     ))
                                                 .toList())),
                                   )

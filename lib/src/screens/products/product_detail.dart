@@ -1,9 +1,8 @@
-import 'package:delta/src/app.dart';
+
 import 'package:delta/src/screens/products/data/product.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../styles/colors.dart';
@@ -116,6 +115,10 @@ class ProductDetail extends StatelessWidget {
                       child: Consumer(builder: (context, ref, child) {
                         return ElevatedButton(
                             onPressed: () {
+                              final products = ref.read(listOfProductsProvider);
+                              if (products.contains(product)) {
+                                return;
+                              }
                               ref.read(listOfProductsProvider.notifier).update(
                                   (state) => List.from(state)..add(product));
                               ref.read(
@@ -141,6 +144,9 @@ class SmallProductContainer extends StatelessWidget {
   final Product? product;
   @override
   Widget build(BuildContext context) {
+    if (product == null) {
+      return const SizedBox.shrink();
+    }
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(

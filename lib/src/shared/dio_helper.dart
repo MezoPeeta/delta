@@ -53,6 +53,12 @@ class DioHelper {
     } on DioException catch (e) {
       log("[Get Request Error]", error: e);
       log("[Get Request Error Data]| ${e.response!.data}");
+      final errorMessage = e.response!.data["message"];
+      if (errorMessage == "PDF not found") {
+        snackbarKey.currentState!
+            .showSnackBar(const SnackBar(content: Text("لا يوجد عقد حاليا")));
+        return null;
+      }
     }
     return null;
   }
@@ -85,6 +91,10 @@ class DioHelper {
         snackbarKey.currentState!
             .showSnackBar(const SnackBar(content: Text("لا يوجد ايميل بهذا")));
       }
+      if (errorMessage == "Product is already in the cart") {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("هذا المنتج موجود بالفعل")));
+      }
       if (e.response!.statusCode == 500) {
         snackbarKey.currentState!.showSnackBar(
             const SnackBar(content: Text("حدث خطأ ما, حاول من جديد")));
@@ -110,6 +120,22 @@ class DioHelper {
     } on DioException catch (e) {
       log("[PATCH Request Error]", error: e);
       log("[PATCH Request Error Data]| ${e.response!.data}");
+    }
+    return null;
+  }
+
+  Future<Response?> deleteHTTP(String url, dynamic data,
+      {String token = ""}) async {
+    try {
+      Response response = await dio.delete(url,
+          data: data,
+          options: token != ""
+              ? Options(headers: {"Authorization": "Bearer $token"})
+              : null);
+      return response;
+    } on DioException catch (e) {
+      log("[Delete Request Error]", error: e);
+      log("[Delete Request Error Data]| ${e.response!.data}");
     }
     return null;
   }

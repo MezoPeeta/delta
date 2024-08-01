@@ -1,5 +1,4 @@
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
-import 'package:delta/src/shared/routes.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +25,7 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
   final timeController = TextEditingController();
   final orderController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
+  final formKey2 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
@@ -79,7 +78,7 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                       TabBarView(children: [
                         SingleChildScrollView(
                           child: Form(
-                            key: formKey,
+                            key: formKey2,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -393,9 +392,10 @@ class AddContainer extends ConsumerWidget {
             ),
             IconButton(
                 onPressed: () {
-                  ref
-                      .read(goRouterProvider)
-                      .push("/add_address", extra: address);
+                  context.push(
+                    "/add_address",
+                    extra: address
+                  );
                 },
                 icon: const Icon(Icons.edit_outlined)),
           ],

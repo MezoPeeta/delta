@@ -13,8 +13,7 @@ _$AddressImpl _$$AddressImplFromJson(Map<String, dynamic> json) =>
       json['street'] as String?,
       json['building'] as String?,
       json['flat'] as String?,
-      (json['latitude'] as num?)?.toInt(),
-      (json['longitude'] as num?)?.toInt(),
+      json['locationLink'] as String?,
       id: json['_id'] as String,
     );
 
@@ -25,7 +24,6 @@ Map<String, dynamic> _$$AddressImplToJson(_$AddressImpl instance) =>
       'street': instance.street,
       'building': instance.building,
       'flat': instance.flat,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
+      'locationLink': instance.locationLink,
       '_id': instance.id,
     };

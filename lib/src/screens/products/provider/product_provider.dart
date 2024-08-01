@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../app.dart';
 import '../../../shared/dio_helper.dart';
+import '../data/category.dart';
 
 part 'product_provider.g.dart';
 
@@ -16,7 +17,7 @@ Future<List<Product>> getProducts(GetProductsRef ref) async {
   final userToken = await ref.watch(tokenProvider.future);
   final request = await ref
       .watch(dioHelperProvider)
-      .getHTTP("/api/products/?page=1?limit=4", token: userToken ?? "");
+      .getHTTP("/api/products/?page=1&limit=4", token: userToken ?? "");
 
   return request!.data["data"]["products"]
       .map<Product>((e) => Product.fromJson(e))
@@ -25,12 +26,12 @@ Future<List<Product>> getProducts(GetProductsRef ref) async {
 
 @riverpod
 Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
-    {required String category}) async {
+    {required String category, required String page}) async {
   final userToken = await ref.watch(tokenProvider.future);
 
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP("/api/products/?category=$category", token: userToken ?? "");
+  final request = await ref.watch(dioHelperProvider).getHTTP(
+      "/api/products/?category=$category&page=$page",
+      token: userToken ?? "");
 
   List<Product> products = request!.data["data"]["products"]
       .map<Product>((e) => Product.fromJson(e))
@@ -40,18 +41,20 @@ Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
 }
 
 @riverpod
-Future<List> getCategories(
+Future<List<Category>> getCategories(
   GetCategoriesRef ref,
 ) async {
-  final request =
-      await ref.watch(dioHelperProvider).getHTTP("/api/product-categories/");
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP("/api/product-categories/?limit=6");
 
-  return request!.data["data"]["categories"].map((e) => e["title"]).toList();
+  return request!.data["data"]["categories"]
+      .map<Category>((e) => Category.fromJson(e))
+      .toList();
 }
 
 @riverpod
-Future<void> addToCart(AddToCartRef ref,
-    {required String productID}) async {
+Future<void> addToCart(AddToCartRef ref, {required String productID}) async {
   final userToken = await ref.watch(tokenProvider.future);
 
   final request = await ref.watch(dioHelperProvider).postHTTP(
@@ -61,5 +64,20 @@ Future<void> addToCart(AddToCartRef ref,
     log("[Product Added: $productID]");
     snackbarKey.currentState!
         .showSnackBar(const SnackBar(content: Text("تم اضافة المنتج بنجاح")));
+  }
+}
+
+@riverpod
+Future<void> deleteFromCart(DeleteFromCartRef ref,
+    {required String productID}) async {
+  final userToken = await ref.watch(tokenProvider.future);
+
+  final request = await ref.watch(dioHelperProvider).postHTTP(
+      "/api/carts/remove", {"productId": productID},
+      options: Options(headers: {"Authorization": "Bearer $userToken"}));
+  if (request!.statusCode == 200) {
+    log("[Product Deleted: $productID]");
+    snackbarKey.currentState!
+        .showSnackBar(const SnackBar(content: Text("تم حذف المنتج بنجاح")));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:readmore/readmore.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -90,6 +91,21 @@ class AboutScreen extends StatelessWidget {
               child: ListTile(
                 leading: SvgPicture.asset("assets/img/icons/twitter.svg"),
                 title: const Text("تويتر (اكس)"),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            GestureDetector(
+              onTap: ()=>context.push("/contact"),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(12)),
+                child: const ListTile(
+                  leading: Icon(Icons.phone),
+                  title: Text("اتصل بنا"),
+                ),
               ),
             ),
           ],

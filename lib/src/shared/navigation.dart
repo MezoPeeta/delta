@@ -3,13 +3,11 @@ import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import '../screens/discount/discount_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/repair/repair_screen.dart';
 import '../screens/settings/settings_screen.dart';
-import 'routes.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 

@@ -1,9 +1,6 @@
 import 'package:delta/src/screens/settings/addresses/providers/address_providers.dart';
-import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geolocator/geolocator.dart';
 
 import '../../auth/widgets/text_form.dart';
 import 'data/address.dart';
@@ -17,24 +14,46 @@ class AddAddressScreen extends ConsumerStatefulWidget {
 
 class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
   final formKey = GlobalKey<FormState>();
+  final locationController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+
+  TextEditingController apartmentController = TextEditingController();
+
+  TextEditingController houseController = TextEditingController();
+
+  TextEditingController areaController = TextEditingController();
+
+  String city = "الدوحة";
+
+  @override
+  void initState() {
+    locationController.text = widget.address?.locationLink ?? "";
+    streetController.text = widget.address?.street ?? "";
+    houseController.text = widget.address?.flat ?? "";
+    city = widget.address?.city ?? "الدوحة";
+    areaController.text = widget.address?.city ?? "";
+    super.initState();
+  }
+
+  final List<String> cities = [
+    "الدوحة",
+    "الخور",
+    "الوكرة",
+    "الخوير",
+    "الرويس",
+    "الريان",
+    "رأس لفان",
+    "دخان",
+    "أم سعيد",
+    "أم صلال علي",
+    "أم باب",
+    "أم صلال محمد",
+    "مدينة الشمال",
+    "مدينة الزبارة",
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final streetController =
-        TextEditingController(text: widget.address?.street);
-
-    final apartmentController =
-        TextEditingController(text: widget.address?.building);
-
-    final houseController = TextEditingController(text: widget.address?.flat);
-
-    final latitiudeController =
-        TextEditingController(text: widget.address?.latitude.toString());
-
-    final longitudeController =
-        TextEditingController(text: widget.address?.longitude.toString());
-    String city = widget.address?.city ?? "النص";
-    String area = widget.address?.area ?? "النص";
     return Scaffold(
       appBar: AppBar(
         title: const Text("اضافة عنوان"),
@@ -65,16 +84,10 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                     DropdownButtonFormField(
                         hint: const Text("اختار مدينتك"),
                         value: city,
-                        items: const [
-                          DropdownMenuItem(
-                            value: "النص",
-                            child: Text("1"),
-                          ),
-                          DropdownMenuItem(
-                            value: "sd",
-                            child: Text("2"),
-                          ),
-                        ],
+                        items: cities
+                            .map((city) => DropdownMenuItem(
+                                value: city, child: Text(city)))
+                            .toList(),
                         onChanged: (v) {
                           setState(() {
                             city = v!;
@@ -83,34 +96,17 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                     const SizedBox(
                       height: 8,
                     ),
-                    const Text(
-                      "المنطقة",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    TextForm(
+                      labelName: "المنطقة",
+                      controller: areaController,
+                      validator: (v) {
+                        if (v!.isEmpty) {
+                          return "ارجو بكتابة اسم المنطقة";
+                        }
+                        return null;
+                      },
+                      hintText: "قم بأدخال اسم المنطقة",
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    DropdownButtonFormField(
-                        hint: const Text("اختار منطقتك"),
-                        value: area,
-                        items: const [
-                          DropdownMenuItem(
-                            value: "النص",
-                            child: Text("النص"),
-                          ),
-                          DropdownMenuItem(
-                            value: "نص2",
-                            child: Text("2النص"),
-                          ),
-                        ],
-                        onChanged: (v) {
-                          setState(() {
-                            area = v!;
-                          });
-                        }),
                     const SizedBox(
                       height: 8,
                     ),
@@ -161,64 +157,26 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                       children: [
                         Expanded(
                           child: TextForm(
-                            controller: latitiudeController,
-                            validator: (v) {
-                              if (v!.isEmpty) {
-                                return "ارجو بكتابة خط العرض";
-                              }
-                              return null;
-                            },
-                            labelName: "خط العرض",
-                            hintText: "خط العرض",
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Expanded(
-                          child: TextForm(
-                            validator: (v) {
-                              if (v!.isEmpty) {
-                                return "ارجو بكتابة خط الطول";
-                              }
-                              return null;
-                            },
-                            controller: longitudeController,
-                            labelName: "خط الطول",
-                            hintText: "خط الطول",
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: GestureDetector(
-                            onTap: () {
-                              ref
-                                  .read(getLocationProvider.future)
-                                  .then((Position location) {
-                                setState(() {
-                                  latitiudeController.text =
-                                      location.latitude.toString();
-                                  longitudeController.text =
-                                      location.longitude.toString();
-                                });
+                            readOnly: true,
+                            suffixIcon: const Icon(Icons.location_pin),
+                            onTap: () async {
+                              final location =
+                                  await ref.read(getPlacemarkProvider.future);
+                              setState(() {
+                                locationController.text = location!.street!;
                               });
                             },
-                            child: Container(
-                              height: 55,
-                              padding: const EdgeInsets.all(12),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: AppColors.buttonColor),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: SvgPicture.asset(
-                                  "assets/img/icons/google_map.svg"),
-                            ),
+                            controller: locationController,
+                            validator: (v) {
+                              if (v!.isEmpty) {
+                                return "ارجو الضغط لكي تضيف عنوانك";
+                              }
+                              return null;
+                            },
+                            labelName: "العنوان",
+                            hintText: "اضعط لكي تضيف عنوانك",
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const Spacer(),
@@ -226,18 +184,18 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                       constraints: const BoxConstraints(
                           minWidth: double.infinity, minHeight: 54),
                       child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            final location =
+                                await ref.read(getLocationProvider.future);
                             if (formKey.currentState!.validate()) {
                               ref.read(addAddressProvider(
-                                  latitude:
-                                      double.parse(latitiudeController.text),
-                                  longitude:
-                                      double.parse(longitudeController.text),
+                                  latitude: location.latitude,
+                                  longitude: location.longitude,
                                   street: streetController.text,
                                   building: apartmentController.text,
                                   flat: houseController.text,
                                   city: city,
-                                  area: area));
+                                  area: areaController.text));
                             }
                           },
                           child: const Text("حفظ")),

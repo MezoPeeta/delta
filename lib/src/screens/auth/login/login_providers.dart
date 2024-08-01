@@ -48,7 +48,7 @@ Future<User> login(LoginRef ref,
   ref.watch(tokenSProvider.notifier).state = token;
   await StorageRepository().write(key: "token", value: token);
 
-  ref.watch(goRouterProvider).push("/");
+  ref.watch(goRouterProvider).go("/");
 
   return user;
 }

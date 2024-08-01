@@ -1,14 +1,15 @@
+import 'package:delta/src/app.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
-import 'package:delta/src/screens/settings/addresses/providers/address_providers.dart';
+import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:delta/src/shared/app_bar.dart';
 import 'package:delta/src/shared/navigation.dart';
+import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../shared/app_sheet.dart';
-import '../../styles/icons.dart';
 import '../auth/widgets/text_form.dart';
 import '../repair/repair_screen.dart';
 import 'providers/orders_providers.dart';
@@ -77,8 +78,15 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                AddContainer(
-                  address: ref.watch(choosenAddressProvider),
+                GestureDetector(
+                  onTap: () {
+                    context.push(
+                      "/addresses",
+                    );
+                  },
+                  child: AddContainer(
+                    address: ref.watch(choosenAddressProvider),
+                  ),
                 ),
                 const SizedBox(
                   height: 16,
@@ -88,9 +96,9 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                       minWidth: double.infinity, minHeight: 54),
                   child: OutlinedButton(
                       onPressed: () {
-                        context.push("/addresses");
+                        context.push("/add_address");
                       },
-                      child: const Text("اختيار عنوان اخر")),
+                      child: const Text("اضافة عنون")),
                 ),
                 const SizedBox(
                   height: 16,
@@ -139,9 +147,35 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                       ),
                       Column(
                         children: orderedProducts
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: SmallProductContainer(product: e),
+                            .map((e) => Dismissible(
+                                  key: UniqueKey(),
+                                  background: Container(
+                                    decoration: BoxDecoration(
+                                        color: AppColors.errorColor,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: const Center(
+                                      child: Text(
+                                        "حذف",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onDismissed: (_) {
+                                    ref.read(listOfProductsProvider).remove(e);
+                                    ref.read(deleteFromCartProvider(
+                                        productID: e.id));
+                                    snackbarKey.currentState!.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("تم حذف المنتج بنجاح")));
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: SmallProductContainer(product: e),
+                                  ),
                                 ))
                             .toList(),
                       ),
@@ -156,58 +190,60 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                                 onPressed: () async {
                                   final address =
                                       ref.read(choosenAddressProvider);
-                                  ref
-                                      .read(sendOrderProvider(
-                                              address: address!.id)
-                                          .future)
-                                      .then((e) {
-                                    if (e == 200) {
-                                      appBottomSheet(context,
-                                          header: "عرض طلب",
-                                          subHeader: "تم عرض الطلب بنجاح",
-                                          endHeader:
-                                              "يمكنك متابعة حالة الطلب في سجل الحجوزات لديك و شكرا لاستخدامك تطبيق الدلتا رقم الطلب : 21343434341",
-                                          coloredText: const TextSpan(),
-                                          isRow: false,
-                                          actionButtons: [
-                                            ConstrainedBox(
-                                              constraints: const BoxConstraints(
-                                                  minWidth: double.infinity,
-                                                  minHeight: 54),
-                                              child: ElevatedButton(
-                                                  onPressed: () {
-                                                    ref
-                                                        .read(
-                                                            currentIndexProvider
-                                                                .notifier)
-                                                        .state = 1;
-                                                    context.pop();
-                                                  },
-                                                  child: const Text(
-                                                      "سجل الحجوزات")),
-                                            ),
-                                            const SizedBox(
-                                              height: 18,
-                                            ),
-                                            ConstrainedBox(
-                                              constraints: const BoxConstraints(
-                                                  minWidth: double.infinity,
-                                                  minHeight: 54),
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    ref
-                                                        .read(
-                                                            currentIndexProvider
-                                                                .notifier)
-                                                        .state = 0;
-                                                    context.pop();
-                                                  },
-                                                  child:
-                                                      const Text("الرئيسية")),
-                                            ),
-                                          ]);
-                                    }
-                                  });
+                                  if (address == null) {
+                                    snackbarKey.currentState!.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("ارجو اختيار عنوان")));
+                                    return;
+                                  }
+                                  await ref.read(
+                                      sendOrderProvider(address: address.id)
+                                          .future);
+
+                                  if (!context.mounted) return;
+
+                                  appBottomSheet(context,
+                                      header: "عرض طلب",
+                                      subHeader: "تم عرض الطلب بنجاح",
+                                      endHeader:
+                                          "يمكنك متابعة حالة الطلب في سجل الحجوزات لديك و شكرا لاستخدامك تطبيق الدلتا رقم الطلب : 1",
+                                      coloredText: const TextSpan(),
+                                      isRow: false,
+                                      actionButtons: [
+                                        ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                              minWidth: double.infinity,
+                                              minHeight: 54),
+                                          child: ElevatedButton(
+                                              onPressed: () {
+                                                ref
+                                                    .read(currentIndexProvider
+                                                        .notifier)
+                                                    .state = 1;
+                                                context.pop();
+                                              },
+                                              child:
+                                                  const Text("سجل الحجوزات")),
+                                        ),
+                                        const SizedBox(
+                                          height: 18,
+                                        ),
+                                        ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                              minWidth: double.infinity,
+                                              minHeight: 54),
+                                          child: OutlinedButton(
+                                              onPressed: () {
+                                                ref
+                                                    .read(currentIndexProvider
+                                                        .notifier)
+                                                    .state = 0;
+                                                context.pop();
+                                              },
+                                              child: const Text("الرئيسية")),
+                                        ),
+                                      ]);
                                 },
                                 child: const Text("تقديم الطلب"));
                           })),

@@ -6,7 +6,7 @@ part of 'product_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getProductsHash() => r'afee51857dd4e81d95455622bca2dfb3bf5d64a9';
+String _$getProductsHash() => r'8831dedeeb581a13270ff3807c49834e5e19547b';
 
 /// See also [getProducts].
 @ProviderFor(getProducts)
@@ -21,7 +21,7 @@ final getProductsProvider = AutoDisposeFutureProvider<List<Product>>.internal(
 
 typedef GetProductsRef = AutoDisposeFutureProviderRef<List<Product>>;
 String _$getProductsbyCategoryHash() =>
-    r'98b0467c90c800e2c6003075f011da93875b18b4';
+    r'2e9b927b590ec7c38cf7b177d9c37e89d69ccc7a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -56,9 +56,11 @@ class GetProductsbyCategoryFamily extends Family<AsyncValue<List<Product>>> {
   /// See also [getProductsbyCategory].
   GetProductsbyCategoryProvider call({
     required String category,
+    required String page,
   }) {
     return GetProductsbyCategoryProvider(
       category: category,
+      page: page,
     );
   }
 
@@ -68,6 +70,7 @@ class GetProductsbyCategoryFamily extends Family<AsyncValue<List<Product>>> {
   ) {
     return call(
       category: provider.category,
+      page: provider.page,
     );
   }
 
@@ -92,10 +95,12 @@ class GetProductsbyCategoryProvider
   /// See also [getProductsbyCategory].
   GetProductsbyCategoryProvider({
     required String category,
+    required String page,
   }) : this._internal(
           (ref) => getProductsbyCategory(
             ref as GetProductsbyCategoryRef,
             category: category,
+            page: page,
           ),
           from: getProductsbyCategoryProvider,
           name: r'getProductsbyCategoryProvider',
@@ -107,6 +112,7 @@ class GetProductsbyCategoryProvider
           allTransitiveDependencies:
               GetProductsbyCategoryFamily._allTransitiveDependencies,
           category: category,
+          page: page,
         );
 
   GetProductsbyCategoryProvider._internal(
@@ -117,9 +123,11 @@ class GetProductsbyCategoryProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.category,
+    required this.page,
   }) : super.internal();
 
   final String category;
+  final String page;
 
   @override
   Override overrideWith(
@@ -135,6 +143,7 @@ class GetProductsbyCategoryProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         category: category,
+        page: page,
       ),
     );
   }
@@ -146,13 +155,16 @@ class GetProductsbyCategoryProvider
 
   @override
   bool operator ==(Object other) {
-    return other is GetProductsbyCategoryProvider && other.category == category;
+    return other is GetProductsbyCategoryProvider &&
+        other.category == category &&
+        other.page == page;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, category.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -161,6 +173,9 @@ class GetProductsbyCategoryProvider
 mixin GetProductsbyCategoryRef on AutoDisposeFutureProviderRef<List<Product>> {
   /// The parameter `category` of this provider.
   String get category;
+
+  /// The parameter `page` of this provider.
+  String get page;
 }
 
 class _GetProductsbyCategoryProviderElement
@@ -170,13 +185,16 @@ class _GetProductsbyCategoryProviderElement
 
   @override
   String get category => (origin as GetProductsbyCategoryProvider).category;
+  @override
+  String get page => (origin as GetProductsbyCategoryProvider).page;
 }
 
-String _$getCategoriesHash() => r'dbe1efb05199d29cf4dfbea135a92f6042c58c31';
+String _$getCategoriesHash() => r'c69343469455c3222b65f04c3b2c34a5329032a1';
 
 /// See also [getCategories].
 @ProviderFor(getCategories)
-final getCategoriesProvider = AutoDisposeFutureProvider<List>.internal(
+final getCategoriesProvider =
+    AutoDisposeFutureProvider<List<Category>>.internal(
   getCategories,
   name: r'getCategoriesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -186,7 +204,7 @@ final getCategoriesProvider = AutoDisposeFutureProvider<List>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetCategoriesRef = AutoDisposeFutureProviderRef<List>;
+typedef GetCategoriesRef = AutoDisposeFutureProviderRef<List<Category>>;
 String _$addToCartHash() => r'c5e7d0b7729d04b661039c3fd2cdda6b5c7eb6a4';
 
 /// See also [addToCart].
@@ -312,6 +330,134 @@ class _AddToCartProviderElement extends AutoDisposeFutureProviderElement<void>
 
   @override
   String get productID => (origin as AddToCartProvider).productID;
+}
+
+String _$deleteFromCartHash() => r'b0ea314ad610b595aede2b7c189b78d5ed3eba26';
+
+/// See also [deleteFromCart].
+@ProviderFor(deleteFromCart)
+const deleteFromCartProvider = DeleteFromCartFamily();
+
+/// See also [deleteFromCart].
+class DeleteFromCartFamily extends Family<AsyncValue<void>> {
+  /// See also [deleteFromCart].
+  const DeleteFromCartFamily();
+
+  /// See also [deleteFromCart].
+  DeleteFromCartProvider call({
+    required String productID,
+  }) {
+    return DeleteFromCartProvider(
+      productID: productID,
+    );
+  }
+
+  @override
+  DeleteFromCartProvider getProviderOverride(
+    covariant DeleteFromCartProvider provider,
+  ) {
+    return call(
+      productID: provider.productID,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'deleteFromCartProvider';
+}
+
+/// See also [deleteFromCart].
+class DeleteFromCartProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [deleteFromCart].
+  DeleteFromCartProvider({
+    required String productID,
+  }) : this._internal(
+          (ref) => deleteFromCart(
+            ref as DeleteFromCartRef,
+            productID: productID,
+          ),
+          from: deleteFromCartProvider,
+          name: r'deleteFromCartProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$deleteFromCartHash,
+          dependencies: DeleteFromCartFamily._dependencies,
+          allTransitiveDependencies:
+              DeleteFromCartFamily._allTransitiveDependencies,
+          productID: productID,
+        );
+
+  DeleteFromCartProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.productID,
+  }) : super.internal();
+
+  final String productID;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(DeleteFromCartRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DeleteFromCartProvider._internal(
+        (ref) => create(ref as DeleteFromCartRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        productID: productID,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _DeleteFromCartProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DeleteFromCartProvider && other.productID == productID;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, productID.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin DeleteFromCartRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `productID` of this provider.
+  String get productID;
+}
+
+class _DeleteFromCartProviderElement
+    extends AutoDisposeFutureProviderElement<void> with DeleteFromCartRef {
+  _DeleteFromCartProviderElement(super.provider);
+
+  @override
+  String get productID => (origin as DeleteFromCartProvider).productID;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

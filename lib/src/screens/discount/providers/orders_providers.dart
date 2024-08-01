@@ -22,3 +22,15 @@ Future<int> sendOrder(SendOrderRef ref, {required String address}) async {
 
   return request!.statusCode ?? 0;
 }
+
+@riverpod
+Future<int> downloadPDF(DownloadPDFRef ref, {required String userID}) async {
+  final token = await ref.watch(tokenProvider.future);
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP("/api/pdf/$userID/download", token: token ?? "");
+
+  log("[Download PDF]");
+
+  return request!.statusCode ?? 0;
+}

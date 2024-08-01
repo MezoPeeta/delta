@@ -23,6 +23,7 @@ import '../screens/products/products_screen.dart';
 import '../screens/settings/about/about_screen.dart';
 import '../screens/settings/addresses/add_address_screen.dart';
 import '../screens/settings/addresses/addresses_screen.dart';
+import '../screens/settings/contact/contact_screen.dart';
 import '../screens/settings/notifications/notifications_screen.dart';
 
 final goRouterProvider = StateProvider<GoRouter>((ref) => _routes);
@@ -85,6 +86,7 @@ final _routes = GoRouter(initialLocation: '/boarding', routes: [
       builder: (context, state) => AddAddressScreen(state.extra as Address?)),
   GoRoute(
       path: "/products", builder: (context, state) => const ProductsScreen()),
+  GoRoute(path: "/contact", builder: (context, state) => const ContactScreen()),
   GoRoute(
       path: "/products/detail",
       builder: (context, state) => ProductDetail(

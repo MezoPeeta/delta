@@ -8,9 +8,10 @@ import 'src/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  runApp(const ProviderScope(child: MyApp()));
   await Firebase.initializeApp(
+    // name: "devproject",
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseNotifications().init();
-  runApp(const ProviderScope(child: MyApp()));
 }
