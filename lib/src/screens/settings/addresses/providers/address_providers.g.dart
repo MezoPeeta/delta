@@ -6,7 +6,7 @@ part of 'address_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getUserAddressesHash() => r'b9df0caabf0c392992d89f698614ca5f4f0d46a7';
+String _$getUserAddressesHash() => r'1750b16b5996e32e000b2748fea3834e67f9162b';
 
 /// See also [getUserAddresses].
 @ProviderFor(getUserAddresses)
@@ -50,7 +50,7 @@ final getPlacemarkProvider = AutoDisposeFutureProvider<Placemark?>.internal(
 );
 
 typedef GetPlacemarkRef = AutoDisposeFutureProviderRef<Placemark?>;
-String _$addAddressHash() => r'd68e3472c92178f919d1fb380517f1065f195a7c';
+String _$addAddressHash() => r'dd170bdcd7502a0211acded37b96ed06a52daf3a';
 
 /// Copied from Dart SDK
 class _SystemHash {

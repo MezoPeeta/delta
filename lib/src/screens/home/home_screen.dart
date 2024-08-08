@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:delta/src/screens/auth/login/login_providers.dart';
-import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../providers/notification_provider.dart';
 import '../products/data/product.dart';
-import 'search_provider.dart';
+import '../products/provider/categories.dart';
+import 'provider/search_provider.dart';
 
 final queryProvider = StateProvider<String>((ref) => "");
 
@@ -35,16 +35,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
-    final categories = ref.watch(getCategoriesProvider);
-
+    final services = ref.watch(servicesProvider);
     return Scaffold(
         body: SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         child: user.when(
             data: (data) {
-              return LayoutBuilder(builder: (context, constraints) {
-                return Column(
+              return SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Visibility(
@@ -172,91 +171,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                     // HERE
-                    categories.when(
-                        data: (data) {
-                          return Wrap(
-                            spacing: 13, // Add space between children
-                            runSpacing: 10,
-
-                            children: data
-                                .map((e) => GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          category = e.title!;
-                                        });
-                                      },
-                                      child: CategoryWidget(
-                                        image: e.photo!,
-                                        isSelected: e.title == category,
-                                        text: e.title ?? "",
-                                      ),
-                                    ))
-                                .toList(),
-                          );
-                        },
-                        error: (e, s) {
-                          log("[Category Error]", error: e, stackTrace: s);
-                          return const Text("حدث خطأ ما");
-                        },
-                        loading: () => const SizedBox.shrink()),
+                    Visibility(
+                      visible: ref.watch(queryProvider).isEmpty,
+                      child: const Text(
+                        "احدث المنتجات",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                        width: double.infinity,
+                        height: 147,
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(12))),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Visibility(
+                      visible: ref.watch(queryProvider).isEmpty,
+                      child: const Text(
+                        "خدمتنا",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                    ),
                     const SizedBox(
                       height: 12,
                     ),
                     Visibility(
                       visible: ref.watch(queryProvider).isEmpty,
-                      child: Text(
-                        "منتجات - $category",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 13,
-                    ),
-                    Visibility(
-                      visible: ref.watch(queryProvider).isEmpty,
-                      child: Expanded(
-                        child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    crossAxisSpacing: 20,
-                                    mainAxisSpacing: 20,
-                                    mainAxisExtent: 270,
-                                    maxCrossAxisExtent: 200),
-                            itemBuilder: (context, index) {
-                              final page = index ~/ pageSize + 1;
-                              final indexInPage = index % pageSize;
-                              final products = ref.watch(
-                                  getProductsbyCategoryProvider(
-                                      category:
-                                          category == "الكل" ? "all" : category,
-                                      page: page.toString()));
-
-                              return products.when(
-                                  data: (data) {
-                                    if (indexInPage >= data.length) {
-                                      return null;
-                                    }
-                                    return ProductContainer(
-                                        product: data[indexInPage]);
-                                  },
-                                  error: (e, s) => const Text("حدث خطأ ما"),
-                                  loading: () => Center(
-                                          child: Container(
-                                        padding: const EdgeInsets.all(16),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.grayColor
-                                                .withOpacity(0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(12)),
-                                      )));
-                            }),
-                      ),
+                      child: GridView.builder(
+                          itemCount: services.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 12,
+                                  mainAxisExtent: 147,
+                                  maxCrossAxisExtent: 172),
+                          itemBuilder: (context, index) {
+                            return ProductContainer(
+                                product: Product(
+                                    id: "1",
+                                    name: services[index].title,
+                                    mainPhoto: services[index].photo));
+                          }),
                     ),
                   ],
-                );
-              });
+                ),
+              );
             },
             error: (e, s) {
               log("[Home Screen Error]", error: e, stackTrace: s);
@@ -274,11 +242,12 @@ class CategoryWidget extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.text,
-    required this.image,
+    this.image,
   });
 
   final bool isSelected;
-  final String text, image;
+  final String text;
+  final String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -307,7 +276,7 @@ class CategoryWidget extends StatelessWidget {
                   height: 28,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          fit: BoxFit.cover, image: NetworkImage(image))),
+                          fit: BoxFit.cover, image: NetworkImage(image!))),
                 )
               : const SizedBox.shrink(),
           Visibility(
@@ -340,31 +309,31 @@ class ProductContainer extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push("/products/detail", extra: product),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         width: double.infinity,
         decoration: BoxDecoration(
             color: AppColors.grayColor.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12)),
+            borderRadius: BorderRadius.circular(4)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
                 width: double.infinity,
-                height: 150,
+                height: 83,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(product.mainPhoto!)),
-                    borderRadius: BorderRadius.circular(12))),
+                        image: NetworkImage(product.mainPhoto ?? "")),
+                    borderRadius: BorderRadius.circular(5))),
             const SizedBox(
-              height: 18,
+              height: 10,
             ),
             Text(
               product.name!,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
             Text(
-              product.description!,
+              product.description ?? "",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

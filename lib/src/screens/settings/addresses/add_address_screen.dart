@@ -19,8 +19,6 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
 
   TextEditingController apartmentController = TextEditingController();
 
-  TextEditingController houseController = TextEditingController();
-
   TextEditingController areaController = TextEditingController();
 
   String city = "الدوحة";
@@ -29,7 +27,6 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
   void initState() {
     locationController.text = widget.address?.locationLink ?? "";
     streetController.text = widget.address?.street ?? "";
-    houseController.text = widget.address?.flat ?? "";
     city = widget.address?.city ?? "الدوحة";
     areaController.text = widget.address?.city ?? "";
     super.initState();
@@ -97,36 +94,36 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                       height: 8,
                     ),
                     TextForm(
-                      labelName: "المنطقة",
+                      labelName: "رقم المنطقة",
                       controller: areaController,
                       validator: (v) {
                         if (v!.isEmpty) {
-                          return "ارجو بكتابة اسم المنطقة";
+                          return "ارجو بكتابة رقم المنطقة";
                         }
                         return null;
                       },
-                      hintText: "قم بأدخال اسم المنطقة",
+                      hintText: "قم بأدخال رقم المنطقة",
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     TextForm(
-                      labelName: "الشارع",
+                      labelName: "رقم الشارع",
                       controller: streetController,
                       validator: (v) {
                         if (v!.isEmpty) {
-                          return "ارجو بكتابة اسم الشارع";
+                          return "ارجو بكتابة رقم الشارع";
                         }
                         return null;
                       },
-                      hintText: "قم بأدخال اسم الشارع",
+                      hintText: "قم بأدخال رقم الشارع",
                     ),
                     const SizedBox(
                       height: 16,
                     ),
                     TextForm(
                       controller: apartmentController,
-                      labelName: "المبني",
+                      labelName: "رقم المبني",
                       validator: (v) {
                         if (v!.isEmpty) {
                           return "ارجو بكتابة رقم المبني";
@@ -139,45 +136,24 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                       height: 16,
                     ),
                     TextForm(
-                      controller: houseController,
-                      labelName: "الشقة",
+                      readOnly: true,
+                      suffixIcon: const Icon(Icons.location_pin),
+                      onTap: () async {
+                        final location =
+                            await ref.read(getPlacemarkProvider.future);
+                        setState(() {
+                          locationController.text = location!.street!;
+                        });
+                      },
+                      controller: locationController,
                       validator: (v) {
                         if (v!.isEmpty) {
-                          return "ارجو بكتابة رقم الشقة";
+                          return "ارجو الضغط لكي تضيف لوكيشن";
                         }
                         return null;
                       },
-                      hintText: "قم بأدخل رقم الشقة",
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: TextForm(
-                            readOnly: true,
-                            suffixIcon: const Icon(Icons.location_pin),
-                            onTap: () async {
-                              final location =
-                                  await ref.read(getPlacemarkProvider.future);
-                              setState(() {
-                                locationController.text = location!.street!;
-                              });
-                            },
-                            controller: locationController,
-                            validator: (v) {
-                              if (v!.isEmpty) {
-                                return "ارجو الضغط لكي تضيف عنوانك";
-                              }
-                              return null;
-                            },
-                            labelName: "العنوان",
-                            hintText: "اضعط لكي تضيف عنوانك",
-                          ),
-                        ),
-                      ],
+                      labelName: "اللوكيشن",
+                      hintText: "اضعط لكي تضيف لوكيشن",
                     ),
                     const Spacer(),
                     ConstrainedBox(
@@ -193,7 +169,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                                   longitude: location.longitude,
                                   street: streetController.text,
                                   building: apartmentController.text,
-                                  flat: houseController.text,
+                                  flat: "test",
                                   city: city,
                                   area: areaController.text));
                             }

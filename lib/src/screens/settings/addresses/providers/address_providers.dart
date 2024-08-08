@@ -17,7 +17,7 @@ Future<List<Address>> getUserAddresses(GetUserAddressesRef ref) async {
       .watch(dioHelperProvider)
       .getHTTP("/api/addresses/?page=1&?limit=4", token: userToken ?? "");
   final addresses = request!.data["data"]["addresses"];
-
+  print(userToken);
   return addresses.map<Address>((e) => Address.fromJson(e)).toList();
 }
 
@@ -88,6 +88,7 @@ Future<void> addAddress(AddAddressRef ref,
         "locationLink": "https://maps.google.com/?q=$latitude,$longitude",
       },
       options: Options(headers: {"Authorization": "Bearer $userToken"}));
+  print(city);
 
   snackbarKey.currentState!
       .showSnackBar(const SnackBar(content: Text("تمت اضافة العنون بنجاح")));

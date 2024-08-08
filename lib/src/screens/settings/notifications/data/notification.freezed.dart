@@ -20,6 +20,7 @@ Notif _$NotifFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Notif {
+// ignore: invalid_annotation_target
   String? get userId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
@@ -121,6 +122,7 @@ class _$NotifImpl implements _Notif {
   factory _$NotifImpl.fromJson(Map<String, dynamic> json) =>
       _$$NotifImplFromJson(json);
 
+// ignore: invalid_annotation_target
   @override
   final String? userId;
   @override
@@ -168,7 +170,7 @@ abstract class _Notif implements Notif {
 
   factory _Notif.fromJson(Map<String, dynamic> json) = _$NotifImpl.fromJson;
 
-  @override 
+  @override // ignore: invalid_annotation_target
   String? get userId;
   @override
   String? get title;

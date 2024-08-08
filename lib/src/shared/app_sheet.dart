@@ -7,6 +7,7 @@ Future<dynamic> appBottomSheet(BuildContext context,
     bool isWarning = false,
     bool isDanger = false,
     bool isRow = true,
+    bool isCart = false,
     required TextSpan coloredText,
     required List<Widget> actionButtons,
     required String subHeader}) {
@@ -40,8 +41,12 @@ Future<dynamic> appBottomSheet(BuildContext context,
                         SvgPicture.asset('assets/img/icons/warning.svg'),
                       if (isDanger)
                         SvgPicture.asset('assets/img/icons/danger.svg'),
-                      if (isWarning == false && isDanger == false)
+                      if (isWarning == false &&
+                          isDanger == false &&
+                          isCart == false)
                         SvgPicture.asset('assets/img/icons/success.svg'),
+                      if (isCart) SvgPicture.asset('assets/img/icons/cart.svg'),
+
                       const SizedBox(
                         height: 24,
                       ),

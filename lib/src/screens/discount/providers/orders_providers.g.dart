@@ -281,5 +281,20 @@ class _DownloadPDFProviderElement extends AutoDisposeFutureProviderElement<int>
   @override
   String get userID => (origin as DownloadPDFProvider).userID;
 }
+
+String _$getCartHash() => r'650bc9b50fb84735d7fbb49566fddf4c1f3ac688';
+
+/// See also [getCart].
+@ProviderFor(getCart)
+final getCartProvider = AutoDisposeFutureProvider<List<CartItem>>.internal(
+  getCart,
+  name: r'getCartProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$getCartHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetCartRef = AutoDisposeFutureProviderRef<List<CartItem>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

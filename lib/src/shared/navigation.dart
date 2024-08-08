@@ -14,7 +14,6 @@ final currentIndexProvider = StateProvider<int>((ref) => 0);
 final List<Widget> _children = [
   const HomeScreen(),
   const BookingsScreen(),
-  const RepairScreen(),
   const DiscountScreen(),
   const SettingsScreen(),
 ];
@@ -73,19 +72,9 @@ class _NavigationState extends ConsumerState<Navigation> {
                     label: "الحجوزات"),
                 NavigationDestination(
                     icon: SvgPicture.asset(
-                      "assets/img/icons/repair.svg",
-                      colorFilter: ColorFilter.mode(
-                          ref.watch(currentIndexProvider) == 2
-                              ? AppColors.buttonColor
-                              : AppColors.grayColor,
-                          BlendMode.srcIn),
-                    ),
-                    label: "الصيانة"),
-                NavigationDestination(
-                    icon: SvgPicture.asset(
                       "assets/img/icons/order.svg",
                       colorFilter: ColorFilter.mode(
-                          ref.watch(currentIndexProvider) == 3
+                          ref.watch(currentIndexProvider) == 2
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),
@@ -95,7 +84,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                     icon: SvgPicture.asset(
                       "assets/img/icons/settings.svg",
                       colorFilter: ColorFilter.mode(
-                          ref.watch(currentIndexProvider) == 4
+                          ref.watch(currentIndexProvider) == 3
                               ? AppColors.buttonColor
                               : AppColors.grayColor,
                           BlendMode.srcIn),

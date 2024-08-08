@@ -6,8 +6,8 @@ part 'category.g.dart';
 @freezed
 class Category with _$Category {
   const factory Category(
-      {@JsonKey(name: '_id') required String id,
-      String? title,
+      {
+      required String title,
       String? photo,
      }) = _Category;
 

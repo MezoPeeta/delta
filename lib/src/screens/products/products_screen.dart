@@ -16,13 +16,12 @@ class ProductsScreen extends ConsumerStatefulWidget {
 }
 
 class _ProductsScreenState extends ConsumerState<ProductsScreen> {
-  String category = "all";
+  String category = "الكل";
   int selectedIndex = 0;
   final pageSize = 20;
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(getCategoriesProvider);
-
     return Scaffold(
       appBar:
           AppBar(title: const Text("منتجاتنا"), centerTitle: true, actions: [
@@ -46,33 +45,39 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                         .map((e) => GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  category = e.title!;
+                                  category = e.title;
                                 });
                               },
                               child: CategoryWidget(
-                                image: e.photo!,
+                                image: e.photo,
                                 isSelected: e.title == category,
-                                text: e.title!,
+                                text: e.title,
                               ),
                             ))
                         .toList(),
                   );
                 },
                 error: (e, s) {
-                  log("[Category Error]", error: e, stackTrace: s);
-                  return const Text("حدث خطأ ما");
+                  return const Text("حدث خطا ما");
                 },
                 loading: () => const SizedBox.shrink()),
             const SizedBox(
-              height: 24,
+              height: 16,
+            ),
+            Text(
+              "المنتجات - $category",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 12,
             ),
             Expanded(
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      mainAxisExtent: 270,
-                      maxCrossAxisExtent: 200),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 12,
+                      mainAxisExtent: 174,
+                      maxCrossAxisExtent: 172),
                   itemBuilder: (context, index) {
                     final page = index ~/ pageSize + 1;
                     final indexInPage = index % pageSize;

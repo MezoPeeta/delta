@@ -2,7 +2,7 @@ import 'package:delta/src/screens/products/data/product.dart';
 import 'package:delta/src/shared/routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../shared/dio_helper.dart';
+import '../../../shared/dio_helper.dart';
 
 part 'search_provider.g.dart';
 

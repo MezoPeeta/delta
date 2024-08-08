@@ -3,7 +3,6 @@ import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:delta/src/shared/app_bar.dart';
-import 'package:delta/src/shared/navigation.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -197,53 +196,44 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                                                 Text("ارجو اختيار عنوان")));
                                     return;
                                   }
-                                  await ref.read(
-                                      sendOrderProvider(address: address.id)
-                                          .future);
+                                  // await ref.read(
+                                  //     sendOrderProvider(address: address.id)
+                                  //         .future);
 
                                   if (!context.mounted) return;
-
-                                  appBottomSheet(context,
-                                      header: "عرض طلب",
-                                      subHeader: "تم عرض الطلب بنجاح",
-                                      endHeader:
-                                          "يمكنك متابعة حالة الطلب في سجل الحجوزات لديك و شكرا لاستخدامك تطبيق الدلتا رقم الطلب : 1",
-                                      coloredText: const TextSpan(),
-                                      isRow: false,
-                                      actionButtons: [
-                                        ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              minWidth: double.infinity,
-                                              minHeight: 54),
-                                          child: ElevatedButton(
-                                              onPressed: () {
-                                                ref
-                                                    .read(currentIndexProvider
-                                                        .notifier)
-                                                    .state = 1;
-                                                context.pop();
-                                              },
-                                              child:
-                                                  const Text("سجل الحجوزات")),
-                                        ),
-                                        const SizedBox(
-                                          height: 18,
-                                        ),
-                                        ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              minWidth: double.infinity,
-                                              minHeight: 54),
-                                          child: OutlinedButton(
-                                              onPressed: () {
-                                                ref
-                                                    .read(currentIndexProvider
-                                                        .notifier)
-                                                    .state = 0;
-                                                context.pop();
-                                              },
-                                              child: const Text("الرئيسية")),
-                                        ),
-                                      ]);
+                                  appBottomSheet(
+                                    context,
+                                    isCart: true,
+                                    header: "طلب عرض",
+                                    endHeader:
+                                        "لتقديم طلب عرض يجيب عليك اختيار كبية و ارضيه المصعد و باب المصعد ",
+                                    coloredText: const TextSpan(),
+                                    isRow: false,
+                                    actionButtons: [
+                                      ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                            minWidth: double.infinity,
+                                            minHeight: 54),
+                                        child: ElevatedButton(
+                                            onPressed: () {},
+                                            child: const Text("التالي")),
+                                      ),
+                                      const SizedBox(
+                                        height: 18,
+                                      ),
+                                      ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                            minWidth: double.infinity,
+                                            minHeight: 54),
+                                        child: OutlinedButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: const Text("السابق")),
+                                      ),
+                                    ],
+                                    subHeader: "طلب عرض",
+                                  );
                                 },
                                 child: const Text("تقديم الطلب"));
                           })),

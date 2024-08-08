@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:delta/src/screens/bookings/data/order.dart';
 import 'package:delta/src/shared/routes.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -33,4 +34,16 @@ Future<int> downloadPDF(DownloadPDFRef ref, {required String userID}) async {
   log("[Download PDF]");
 
   return request!.statusCode ?? 0;
+}
+
+@riverpod
+Future<List<CartItem>> getCart(GetCartRef ref) async {
+  final token = await ref.watch(tokenProvider.future);
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP("/api/carts/", token: token ?? "");
+
+  return request!.data["data"]["cart"]["items"]
+      .map((e) => CartItem.fromJson(e))
+      .toList();
 }

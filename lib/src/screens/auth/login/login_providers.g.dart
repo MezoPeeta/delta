@@ -20,7 +20,7 @@ final currentUserProvider = FutureProvider<User>.internal(
 );
 
 typedef CurrentUserRef = FutureProviderRef<User>;
-String _$loginHash() => r'e68d64667d03a0b925503447b2ea050891e62993';
+String _$loginHash() => r'ad33a819fb03b4919d89430fb30bb69aba9b441f';
 
 /// Copied from Dart SDK
 class _SystemHash {

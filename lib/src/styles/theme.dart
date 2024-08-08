@@ -10,6 +10,9 @@ class AppTheme {
       fontFamily: GoogleFonts.cairo().fontFamily,
       outlinedButtonTheme: OutlinedButtonThemeData(
           style: ButtonStyle(
+              foregroundColor: WidgetStatePropertyAll(AppColors.buttonColor),
+              side: WidgetStatePropertyAll(
+                  BorderSide(color: AppColors.buttonColor)),
               shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(_borderRadius))))),
       progressIndicatorTheme: ProgressIndicatorThemeData(
