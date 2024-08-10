@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../providers/notification_provider.dart';
 import '../products/data/product.dart';
-import '../products/provider/categories.dart';
+import '../products/provider/services.dart';
 import 'provider/search_provider.dart';
 
 final queryProvider = StateProvider<String>((ref) => "");

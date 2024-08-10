@@ -81,8 +81,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   itemBuilder: (context, index) {
                     final page = index ~/ pageSize + 1;
                     final indexInPage = index % pageSize;
-                    final products = ref.watch(getProductsbyCategoryProvider(
-                        category: category, page: page.toString()));
+
+                    final products = category != "الكل"
+                        ? ref.watch(getProductsbyCategoryProvider(
+                            category: category, page: page.toString()))
+                        : ref.watch(getProductsProvider(page: page.toString()));
 
                     log("index: $index, page: $page, indexInPage: $indexInPage");
                     return products.when(

@@ -91,7 +91,7 @@ Future<void> addAddress(AddAddressRef ref,
   print(city);
 
   snackbarKey.currentState!
-      .showSnackBar(const SnackBar(content: Text("تمت اضافة العنون بنجاح")));
+      .showSnackBar(const SnackBar(content: Text("تمت اضافة العنوان بنجاح")));
   ref.invalidate(getUserAddressesProvider);
 }
 
@@ -104,5 +104,5 @@ Future<void> deleteAddress(DeleteAddressRef ref,
       .deleteHTTP("/api/addresses/$addressID", {}, token: userToken ?? "");
 
   snackbarKey.currentState!
-      .showSnackBar(const SnackBar(content: Text("تمت حذف العنون بنجاح")));
+      .showSnackBar(const SnackBar(content: Text("تمت حذف العنوان بنجاح")));
 }

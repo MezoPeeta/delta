@@ -1,8 +1,10 @@
-
+import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/products/data/product.dart';
+import 'package:delta/src/screens/products/products_screen.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../styles/colors.dart';
@@ -123,6 +125,7 @@ class ProductDetail extends StatelessWidget {
                                   (state) => List.from(state)..add(product));
                               ref.read(
                                   addToCartProvider(productID: product.id));
+                              ref.invalidate(getCartProvider);
                             },
                             child: const Text("طلب العرض"));
                       })),

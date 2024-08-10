@@ -22,7 +22,7 @@ class Order with _$Order {
 class CartItem with _$CartItem {
   const factory CartItem(
       Product? product,
-      int quantity,
+      int? quantity,
      ) = _CartItem;
 
   factory CartItem.fromJson(Map<String, Object?> json) => _$CartItemFromJson(json);

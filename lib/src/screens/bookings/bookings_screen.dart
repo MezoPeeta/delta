@@ -1,12 +1,16 @@
 import 'dart:developer';
 
+import 'package:delta/src/screens/auth/login/login_providers.dart';
+import 'package:delta/src/screens/bookings/data/order.dart';
 import 'package:delta/src/screens/bookings/providers/bookings_providers.dart';
 import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:delta/src/shared/app_bar.dart';
+import 'package:delta/src/shared/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../shared/navigation.dart';
 import '../../styles/colors.dart';
 
 class BookingsScreen extends ConsumerWidget {
@@ -15,6 +19,7 @@ class BookingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orders = ref.watch(getOrdersProvider);
+    final user = ref.watch(userStorageProvider).requireValue;
     return Scaffold(
       appBar: const CustomAppBar(
         isSettings: false,
@@ -54,8 +59,48 @@ class BookingsScreen extends ConsumerWidget {
                           height: 16,
                         ),
                     itemBuilder: (context, index) => GestureDetector(
-                          onTap: () =>
-                              context.push("/order", extra: data[index]),
+                          onTap: () {
+                            if (user!.isUserHasContract) {
+                              context.push("/order", extra: data[index]);
+                              return;
+                            }
+                            appBottomSheet(context,
+                                header: "عرض طلب",
+                                subHeader: "تم عرض الطلب بنجاح",
+                                endHeader:
+                                    "يمكنك متابعة حالة الطلب في سجل الحجوزات لديك و شكرا لاستخدامك تطبيق الدلتا رقم الطلب : 21343434341",
+                                coloredText: const TextSpan(),
+                                isRow: false,
+                                actionButtons: [
+                                  ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        minWidth: double.infinity,
+                                        minHeight: 54),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        child: const Text("سجل الحجوزات")),
+                                  ),
+                                  const SizedBox(
+                                    height: 18,
+                                  ),
+                                  ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        minWidth: double.infinity,
+                                        minHeight: 54),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          ref
+                                              .read(
+                                                  currentIndexProvider.notifier)
+                                              .state = 0;
+                                          context.pop();
+                                        },
+                                        child: const Text("الرئيسية")),
+                                  ),
+                                ]);
+                          },
                           child: Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(

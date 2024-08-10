@@ -41,9 +41,9 @@ Future<List<CartItem>> getCart(GetCartRef ref) async {
   final token = await ref.watch(tokenProvider.future);
   final request = await ref
       .watch(dioHelperProvider)
-      .getHTTP("/api/carts/", token: token ?? "");
-
-  return request!.data["data"]["cart"]["items"]
-      .map((e) => CartItem.fromJson(e))
+      .getHTTP("/api/carts/?limit=50", token: token ?? "");
+  print(request!.data);
+  return request.data["data"]["cart"]["items"]
+      .map<CartItem>((e) => CartItem.fromJson(e))
       .toList();
 }

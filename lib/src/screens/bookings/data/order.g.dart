@@ -26,7 +26,7 @@ _$CartItemImpl _$$CartItemImplFromJson(Map<String, dynamic> json) =>
       json['product'] == null
           ? null
           : Product.fromJson(json['product'] as Map<String, dynamic>),
-      (json['quantity'] as num).toInt(),
+      (json['quantity'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$CartItemImplToJson(_$CartItemImpl instance) =>

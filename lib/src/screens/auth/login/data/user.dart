@@ -12,6 +12,8 @@ class User with _$User {
       required String email,
       required String role,
       required String phone,
+      required bool isUserHasContract,
+      required bool isUserHasMaintenanceRequest
      }) = _User;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);

@@ -50,7 +50,7 @@ final getPlacemarkProvider = AutoDisposeFutureProvider<Placemark?>.internal(
 );
 
 typedef GetPlacemarkRef = AutoDisposeFutureProviderRef<Placemark?>;
-String _$addAddressHash() => r'dd170bdcd7502a0211acded37b96ed06a52daf3a';
+String _$addAddressHash() => r'953e2ca3b859c5729dadf9ea023f2fe603e9163d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -296,7 +296,7 @@ class _AddAddressProviderElement extends AutoDisposeFutureProviderElement<void>
   double get longitude => (origin as AddAddressProvider).longitude;
 }
 
-String _$deleteAddressHash() => r'7aefd3698fb15326a6742518e9d05134af8ff04a';
+String _$deleteAddressHash() => r'afa0096217ed127ffd2a84d7f90b1af674fc3eef';
 
 /// See also [deleteAddress].
 @ProviderFor(deleteAddress)

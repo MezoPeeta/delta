@@ -1,3 +1,4 @@
+import 'package:delta/src/screens/products/data/category.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product.freezed.dart';
@@ -10,6 +11,7 @@ class Product with _$Product {
       String? name,
       String? description,
       String? mainPhoto,
+      Category? category,
       List<String>? photos,
      }) = _Product;
 

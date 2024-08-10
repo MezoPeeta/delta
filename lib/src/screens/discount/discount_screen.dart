@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:delta/src/app.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
+import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:delta/src/shared/app_bar.dart';
@@ -10,8 +13,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../shared/app_sheet.dart';
 import '../auth/widgets/text_form.dart';
+import '../products/data/product.dart';
 import '../repair/repair_screen.dart';
-import 'providers/orders_providers.dart';
+import 'providers/order_notifier.dart';
 
 class DiscountScreen extends ConsumerStatefulWidget {
   const DiscountScreen({super.key});
@@ -24,11 +28,59 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
   final formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    final isFirst = ref.read(checkDiscountProvider);
+    if (isFirst) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        appBottomSheet(
+          context,
+          isCart: true,
+          header: "طلب عرض",
+          endHeader:
+              "لتقديم طلب عرض يجيب عليك اختيار كبية و ارضيه المصعد و باب المصعد ",
+          coloredText: const TextSpan(),
+          isRow: false,
+          actionButtons: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                  minWidth: double.infinity, minHeight: 54),
+              child: ElevatedButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: const Text("التالي")),
+            ),
+            const SizedBox(
+              height: 18,
+            ),
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                  minWidth: double.infinity, minHeight: 54),
+              child: OutlinedButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: const Text("السابق")),
+            ),
+          ],
+          subHeader: "طلب عرض",
+        );
+      });
+      ref.read(checkDiscountProvider.notifier).toggle(false);
+    }
+  }
+
+  List<Product> addedProducts = [];
+  List<String> wantedCategories = ["ابواب", "ارضية", "كباين"];
+
+  @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider).requireValue;
     final nameController = TextEditingController(text: user!.name);
     final phoneController = TextEditingController(text: user.phone);
     final orderedProducts = ref.watch(listOfProductsProvider);
+    final cartItems = ref.watch(getCartProvider);
 
     return Scaffold(
       appBar: const CustomAppBar(title: "طلب عرض"),
@@ -97,7 +149,7 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                       onPressed: () {
                         context.push("/add_address");
                       },
-                      child: const Text("اضافة عنون")),
+                      child: const Text("اضافة عنوان")),
                 ),
                 const SizedBox(
                   height: 16,
@@ -133,7 +185,7 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                   height: 12,
                 ),
                 Visibility(
-                  visible: orderedProducts.isNotEmpty,
+                  visible: cartItems.hasValue || orderedProducts.isNotEmpty,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -144,9 +196,15 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Column(
-                        children: orderedProducts
-                            .map((e) => Dismissible(
+                      cartItems.when(
+                          data: (data) {
+                            return Column(
+                              children: data.map((e) {
+                                if (wantedCategories
+                                    .contains(e.product?.category?.title)) {
+                                  addedProducts.add(e.product!);
+                                }
+                                return Dismissible(
                                   key: UniqueKey(),
                                   background: Container(
                                     decoration: BoxDecoration(
@@ -165,19 +223,26 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                                   onDismissed: (_) {
                                     ref.read(listOfProductsProvider).remove(e);
                                     ref.read(deleteFromCartProvider(
-                                        productID: e.id));
-                                    snackbarKey.currentState!.showSnackBar(
-                                        const SnackBar(
-                                            content:
-                                                Text("تم حذف المنتج بنجاح")));
+                                        productID: e.product!.id));
+                                    addedProducts.remove(e);
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: SmallProductContainer(product: e),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
+                                  child: e.product != null
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: SmallProductContainer(
+                                              product: e.product),
+                                        )
+                                      : const SizedBox.shrink(),
+                                );
+                              }).toList(),
+                            );
+                          },
+                          error: (e, s) {
+                            log("Cant get cart items", error: e, stackTrace: s);
+                            return const Text("حدث خطأ ما");
+                          },
+                          loading: () => const CircularProgressIndicator()),
                       const SizedBox(
                         height: 12,
                       ),
@@ -186,54 +251,33 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
                               minWidth: double.infinity, minHeight: 54),
                           child: Consumer(builder: (context, ref, child) {
                             return ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: addedProducts.length < 3
+                                        ? WidgetStatePropertyAll(
+                                            AppColors.grayColor)
+                                        : null),
                                 onPressed: () async {
-                                  final address =
-                                      ref.read(choosenAddressProvider);
-                                  if (address == null) {
-                                    snackbarKey.currentState!.showSnackBar(
-                                        const SnackBar(
-                                            content:
-                                                Text("ارجو اختيار عنوان")));
+                                  if (addedProducts.length >= 3) {
+                                    final address =
+                                        ref.read(choosenAddressProvider);
+                                    if (address == null) {
+                                      snackbarKey.currentState!.showSnackBar(
+                                          const SnackBar(
+                                              content:
+                                                  Text("ارجو اختيار عنوان")));
+                                      return;
+                                    }
+                                    // await ref.read(
+                                    //     sendOrderProvider(address: address.id)
+                                    //         .future);
+
+                                    if (!context.mounted) return;
                                     return;
                                   }
-                                  // await ref.read(
-                                  //     sendOrderProvider(address: address.id)
-                                  //         .future);
-
-                                  if (!context.mounted) return;
-                                  appBottomSheet(
-                                    context,
-                                    isCart: true,
-                                    header: "طلب عرض",
-                                    endHeader:
-                                        "لتقديم طلب عرض يجيب عليك اختيار كبية و ارضيه المصعد و باب المصعد ",
-                                    coloredText: const TextSpan(),
-                                    isRow: false,
-                                    actionButtons: [
-                                      ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                            minWidth: double.infinity,
-                                            minHeight: 54),
-                                        child: ElevatedButton(
-                                            onPressed: () {},
-                                            child: const Text("التالي")),
-                                      ),
-                                      const SizedBox(
-                                        height: 18,
-                                      ),
-                                      ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                            minWidth: double.infinity,
-                                            minHeight: 54),
-                                        child: OutlinedButton(
-                                            onPressed: () {
-                                              context.pop();
-                                            },
-                                            child: const Text("السابق")),
-                                      ),
-                                    ],
-                                    subHeader: "طلب عرض",
-                                  );
+                                  snackbarKey.currentState!.showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "يرجي التأكد من اضافة مصعد و باب وارضية")));
                                 },
                                 child: const Text("تقديم الطلب"));
                           })),

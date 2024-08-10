@@ -13,11 +13,12 @@ import '../data/category.dart';
 part 'product_provider.g.dart';
 
 @riverpod
-Future<List<Product>> getProducts(GetProductsRef ref) async {
+Future<List<Product>> getProducts(GetProductsRef ref,
+    {required String page}) async {
   final userToken = await ref.watch(tokenProvider.future);
   final request = await ref
       .watch(dioHelperProvider)
-      .getHTTP("/api/products/?page=1&limit=4", token: userToken ?? "");
+      .getHTTP("/api/products/?page=$page&limit=4", token: userToken ?? "");
 
   return request!.data["data"]["products"]
       .map<Product>((e) => Product.fromJson(e))
@@ -48,9 +49,12 @@ Future<List<Category>> getCategories(
       .watch(dioHelperProvider)
       .getHTTP("/api/product-categories/?limit=6");
 
-  return request!.data["data"]["categories"]
+  List<Category> categories = request!.data["data"]["categories"]
       .map<Category>((e) => Category.fromJson(e))
       .toList();
+
+  categories.insert(0, const Category(title: "الكل"));
+  return categories;
 }
 
 @riverpod
@@ -60,7 +64,8 @@ Future<void> addToCart(AddToCartRef ref, {required String productID}) async {
   final request = await ref.watch(dioHelperProvider).postHTTP(
       "/api/carts/add", {"productId": productID},
       options: Options(headers: {"Authorization": "Bearer $userToken"}));
-  if (request!.statusCode == 200) {
+  log(request!.statusCode.toString());
+  if (request.statusCode == 200) {
     log("[Product Added: $productID]");
     snackbarKey.currentState!
         .showSnackBar(const SnackBar(content: Text("تم اضافة المنتج بنجاح")));

@@ -91,7 +91,7 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
                                 minWidth: double.infinity, minHeight: 54),
                             child: ElevatedButton(
                                 onPressed: () => context.push("/add_address"),
-                                child: const Text("اضافة عنون جديد")),
+                                child: const Text("اضافة عنوان جديد")),
                           ),
                   ],
                 );

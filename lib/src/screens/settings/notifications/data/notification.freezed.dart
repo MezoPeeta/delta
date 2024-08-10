@@ -25,8 +25,12 @@ mixin _$Notif {
   String? get title => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
 
+  /// Serializes this Notif to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Notif
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NotifCopyWith<Notif> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -48,6 +52,8 @@ class _$NotifCopyWithImpl<$Res, $Val extends Notif>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Notif
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -90,6 +96,8 @@ class __$$NotifImplCopyWithImpl<$Res>
       _$NotifImpl _value, $Res Function(_$NotifImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Notif
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -145,11 +153,13 @@ class _$NotifImpl implements _Notif {
             (identical(other.body, body) || other.body == body));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, userId, title, body);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Notif
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NotifImplCopyWith<_$NotifImpl> get copyWith =>
@@ -170,14 +180,18 @@ abstract class _Notif implements Notif {
 
   factory _Notif.fromJson(Map<String, dynamic> json) = _$NotifImpl.fromJson;
 
-  @override // ignore: invalid_annotation_target
+// ignore: invalid_annotation_target
+  @override
   String? get userId;
   @override
   String? get title;
   @override
   String? get body;
+
+  /// Create a copy of Notif
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NotifImplCopyWith<_$NotifImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

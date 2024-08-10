@@ -27,9 +27,15 @@ mixin _$User {
   String get email => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+  bool get isUserHasContract => throw _privateConstructorUsedError;
+  bool get isUserHasMaintenanceRequest => throw _privateConstructorUsedError;
 
+  /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -44,7 +50,9 @@ abstract class $UserCopyWith<$Res> {
       String name,
       String email,
       String role,
-      String phone});
+      String phone,
+      bool isUserHasContract,
+      bool isUserHasMaintenanceRequest});
 }
 
 /// @nodoc
@@ -57,6 +65,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -66,6 +76,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = null,
     Object? role = null,
     Object? phone = null,
+    Object? isUserHasContract = null,
+    Object? isUserHasMaintenanceRequest = null,
   }) {
     return _then(_value.copyWith(
       addresses: null == addresses
@@ -92,6 +104,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      isUserHasContract: null == isUserHasContract
+          ? _value.isUserHasContract
+          : isUserHasContract // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUserHasMaintenanceRequest: null == isUserHasMaintenanceRequest
+          ? _value.isUserHasMaintenanceRequest
+          : isUserHasMaintenanceRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -109,7 +129,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String name,
       String email,
       String role,
-      String phone});
+      String phone,
+      bool isUserHasContract,
+      bool isUserHasMaintenanceRequest});
 }
 
 /// @nodoc
@@ -119,6 +141,8 @@ class __$$UserImplCopyWithImpl<$Res>
   __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -128,6 +152,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? role = null,
     Object? phone = null,
+    Object? isUserHasContract = null,
+    Object? isUserHasMaintenanceRequest = null,
   }) {
     return _then(_$UserImpl(
       null == addresses
@@ -154,6 +180,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      isUserHasContract: null == isUserHasContract
+          ? _value.isUserHasContract
+          : isUserHasContract // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUserHasMaintenanceRequest: null == isUserHasMaintenanceRequest
+          ? _value.isUserHasMaintenanceRequest
+          : isUserHasMaintenanceRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -166,7 +200,9 @@ class _$UserImpl implements _User {
       required this.name,
       required this.email,
       required this.role,
-      required this.phone})
+      required this.phone,
+      required this.isUserHasContract,
+      required this.isUserHasMaintenanceRequest})
       : _addresses = addresses;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -191,10 +227,14 @@ class _$UserImpl implements _User {
   final String role;
   @override
   final String phone;
+  @override
+  final bool isUserHasContract;
+  @override
+  final bool isUserHasMaintenanceRequest;
 
   @override
   String toString() {
-    return 'User(addresses: $addresses, id: $id, name: $name, email: $email, role: $role, phone: $phone)';
+    return 'User(addresses: $addresses, id: $id, name: $name, email: $email, role: $role, phone: $phone, isUserHasContract: $isUserHasContract, isUserHasMaintenanceRequest: $isUserHasMaintenanceRequest)';
   }
 
   @override
@@ -208,10 +248,16 @@ class _$UserImpl implements _User {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.role, role) || other.role == role) &&
-            (identical(other.phone, phone) || other.phone == phone));
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.isUserHasContract, isUserHasContract) ||
+                other.isUserHasContract == isUserHasContract) &&
+            (identical(other.isUserHasMaintenanceRequest,
+                    isUserHasMaintenanceRequest) ||
+                other.isUserHasMaintenanceRequest ==
+                    isUserHasMaintenanceRequest));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -220,9 +266,13 @@ class _$UserImpl implements _User {
       name,
       email,
       role,
-      phone);
+      phone,
+      isUserHasContract,
+      isUserHasMaintenanceRequest);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
@@ -242,7 +292,9 @@ abstract class _User implements User {
       required final String name,
       required final String email,
       required final String role,
-      required final String phone}) = _$UserImpl;
+      required final String phone,
+      required final bool isUserHasContract,
+      required final bool isUserHasMaintenanceRequest}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -260,7 +312,14 @@ abstract class _User implements User {
   @override
   String get phone;
   @override
-  @JsonKey(ignore: true)
+  bool get isUserHasContract;
+  @override
+  bool get isUserHasMaintenanceRequest;
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -6,22 +6,7 @@ part of 'product_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getProductsHash() => r'8831dedeeb581a13270ff3807c49834e5e19547b';
-
-/// See also [getProducts].
-@ProviderFor(getProducts)
-final getProductsProvider = AutoDisposeFutureProvider<List<Product>>.internal(
-  getProducts,
-  name: r'getProductsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$getProductsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef GetProductsRef = AutoDisposeFutureProviderRef<List<Product>>;
-String _$getProductsbyCategoryHash() =>
-    r'2e9b927b590ec7c38cf7b177d9c37e89d69ccc7a';
+String _$getProductsHash() => r'249704df27c66a15518ad2e116259a6eefed2678';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,6 +28,136 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [getProducts].
+@ProviderFor(getProducts)
+const getProductsProvider = GetProductsFamily();
+
+/// See also [getProducts].
+class GetProductsFamily extends Family<AsyncValue<List<Product>>> {
+  /// See also [getProducts].
+  const GetProductsFamily();
+
+  /// See also [getProducts].
+  GetProductsProvider call({
+    required String page,
+  }) {
+    return GetProductsProvider(
+      page: page,
+    );
+  }
+
+  @override
+  GetProductsProvider getProviderOverride(
+    covariant GetProductsProvider provider,
+  ) {
+    return call(
+      page: provider.page,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getProductsProvider';
+}
+
+/// See also [getProducts].
+class GetProductsProvider extends AutoDisposeFutureProvider<List<Product>> {
+  /// See also [getProducts].
+  GetProductsProvider({
+    required String page,
+  }) : this._internal(
+          (ref) => getProducts(
+            ref as GetProductsRef,
+            page: page,
+          ),
+          from: getProductsProvider,
+          name: r'getProductsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getProductsHash,
+          dependencies: GetProductsFamily._dependencies,
+          allTransitiveDependencies:
+              GetProductsFamily._allTransitiveDependencies,
+          page: page,
+        );
+
+  GetProductsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.page,
+  }) : super.internal();
+
+  final String page;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Product>> Function(GetProductsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetProductsProvider._internal(
+        (ref) => create(ref as GetProductsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        page: page,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Product>> createElement() {
+    return _GetProductsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetProductsProvider && other.page == page;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetProductsRef on AutoDisposeFutureProviderRef<List<Product>> {
+  /// The parameter `page` of this provider.
+  String get page;
+}
+
+class _GetProductsProviderElement
+    extends AutoDisposeFutureProviderElement<List<Product>>
+    with GetProductsRef {
+  _GetProductsProviderElement(super.provider);
+
+  @override
+  String get page => (origin as GetProductsProvider).page;
+}
+
+String _$getProductsbyCategoryHash() =>
+    r'2e9b927b590ec7c38cf7b177d9c37e89d69ccc7a';
 
 /// See also [getProductsbyCategory].
 @ProviderFor(getProductsbyCategory)
@@ -189,7 +304,7 @@ class _GetProductsbyCategoryProviderElement
   String get page => (origin as GetProductsbyCategoryProvider).page;
 }
 
-String _$getCategoriesHash() => r'c69343469455c3222b65f04c3b2c34a5329032a1';
+String _$getCategoriesHash() => r'1186f5c8bb5e8f494abcdde9f8b66980401f2a29';
 
 /// See also [getCategories].
 @ProviderFor(getCategories)

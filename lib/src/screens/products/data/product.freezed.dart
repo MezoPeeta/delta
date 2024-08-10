@@ -25,10 +25,15 @@ mixin _$Product {
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get mainPhoto => throw _privateConstructorUsedError;
+  Category? get category => throw _privateConstructorUsedError;
   List<String>? get photos => throw _privateConstructorUsedError;
 
+  /// Serializes this Product to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -42,7 +47,10 @@ abstract class $ProductCopyWith<$Res> {
       String? name,
       String? description,
       String? mainPhoto,
+      Category? category,
       List<String>? photos});
+
+  $CategoryCopyWith<$Res>? get category;
 }
 
 /// @nodoc
@@ -55,6 +63,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -62,6 +72,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? name = freezed,
     Object? description = freezed,
     Object? mainPhoto = freezed,
+    Object? category = freezed,
     Object? photos = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,11 +92,29 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.mainPhoto
           : mainPhoto // ignore: cast_nullable_to_non_nullable
               as String?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as Category?,
       photos: freezed == photos
           ? _value.photos
           : photos // ignore: cast_nullable_to_non_nullable
               as List<String>?,
     ) as $Val);
+  }
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CategoryCopyWith<$Res>? get category {
+    if (_value.category == null) {
+      return null;
+    }
+
+    return $CategoryCopyWith<$Res>(_value.category!, (value) {
+      return _then(_value.copyWith(category: value) as $Val);
+    });
   }
 }
 
@@ -101,7 +130,11 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? name,
       String? description,
       String? mainPhoto,
+      Category? category,
       List<String>? photos});
+
+  @override
+  $CategoryCopyWith<$Res>? get category;
 }
 
 /// @nodoc
@@ -112,6 +145,8 @@ class __$$ProductImplCopyWithImpl<$Res>
       _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -119,6 +154,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? description = freezed,
     Object? mainPhoto = freezed,
+    Object? category = freezed,
     Object? photos = freezed,
   }) {
     return _then(_$ProductImpl(
@@ -138,6 +174,10 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.mainPhoto
           : mainPhoto // ignore: cast_nullable_to_non_nullable
               as String?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as Category?,
       photos: freezed == photos
           ? _value._photos
           : photos // ignore: cast_nullable_to_non_nullable
@@ -154,6 +194,7 @@ class _$ProductImpl implements _Product {
       this.name,
       this.description,
       this.mainPhoto,
+      this.category,
       final List<String>? photos})
       : _photos = photos;
 
@@ -169,6 +210,8 @@ class _$ProductImpl implements _Product {
   final String? description;
   @override
   final String? mainPhoto;
+  @override
+  final Category? category;
   final List<String>? _photos;
   @override
   List<String>? get photos {
@@ -181,7 +224,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, description: $description, mainPhoto: $mainPhoto, photos: $photos)';
+    return 'Product(id: $id, name: $name, description: $description, mainPhoto: $mainPhoto, category: $category, photos: $photos)';
   }
 
   @override
@@ -195,15 +238,19 @@ class _$ProductImpl implements _Product {
                 other.description == description) &&
             (identical(other.mainPhoto, mainPhoto) ||
                 other.mainPhoto == mainPhoto) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             const DeepCollectionEquality().equals(other._photos, _photos));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, description, mainPhoto,
-      const DeepCollectionEquality().hash(_photos));
+      category, const DeepCollectionEquality().hash(_photos));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
@@ -223,6 +270,7 @@ abstract class _Product implements Product {
       final String? name,
       final String? description,
       final String? mainPhoto,
+      final Category? category,
       final List<String>? photos}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
@@ -237,9 +285,14 @@ abstract class _Product implements Product {
   @override
   String? get mainPhoto;
   @override
-  List<String>? get photos;
+  Category? get category;
   @override
-  @JsonKey(ignore: true)
+  List<String>? get photos;
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
