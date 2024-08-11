@@ -49,6 +49,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
     "مدينة الزبارة",
   ];
 
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +97,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                     TextForm(
                       labelName: "رقم المنطقة",
                       controller: areaController,
+                      keyboardType: TextInputType.number,
                       validator: (v) {
                         if (v!.isEmpty) {
                           return "ارجو بكتابة رقم المنطقة";
@@ -110,6 +112,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                     TextForm(
                       labelName: "رقم الشارع",
                       controller: streetController,
+                      keyboardType: TextInputType.number,
                       validator: (v) {
                         if (v!.isEmpty) {
                           return "ارجو بكتابة رقم الشارع";
@@ -123,6 +126,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                     ),
                     TextForm(
                       controller: apartmentController,
+                      keyboardType: TextInputType.number,
                       labelName: "رقم المبني",
                       validator: (v) {
                         if (v!.isEmpty) {
@@ -161,20 +165,32 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                           minWidth: double.infinity, minHeight: 54),
                       child: ElevatedButton(
                           onPressed: () async {
+                            setState(() {
+                              loading = true;
+                            });
                             final location =
                                 await ref.read(getLocationProvider.future);
                             if (formKey.currentState!.validate()) {
-                              ref.read(addAddressProvider(
-                                  latitude: location.latitude,
-                                  longitude: location.longitude,
-                                  street: streetController.text,
-                                  building: apartmentController.text,
-                                  flat: "test",
-                                  city: city,
-                                  area: areaController.text));
+                              await ref.read(addAddressProvider(
+                                      latitude: location.latitude,
+                                      longitude: location.longitude,
+                                      street: streetController.text,
+                                      building: apartmentController.text,
+                                      flat: "test",
+                                      city: city,
+                                      area: areaController.text)
+                                  .future);
                             }
+                            setState(() {
+                              loading = false;
+                            });
                           },
-                          child: const Text("حفظ")),
+                          child: loading
+                              ? const CircularProgressIndicator.adaptive(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                )
+                              : const Text("حفظ")),
                     ),
                     const SizedBox(
                       height: 70,

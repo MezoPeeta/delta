@@ -1,3 +1,4 @@
+import 'package:delta/src/screens/repair/providers/repair_providers.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
   final orderController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
@@ -39,11 +41,6 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
               length: 2,
               child: Scaffold(
                 appBar: AppBar(
-                  leading: IconButton(
-                      onPressed: () {
-                        context.push("/profile", extra: user);
-                      },
-                      icon: const Icon(Icons.person_outline)),
                   title: const Text("الصيانة"),
                   centerTitle: true,
                   bottom: TabBar(
@@ -89,8 +86,13 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                                 const SizedBox(
                                   height: 8,
                                 ),
-                                AddContainer(
-                                  address: ref.watch(choosenAddressProvider),
+                                GestureDetector(
+                                  onTap: () {
+                                    context.push("/addresses");
+                                  },
+                                  child: AddContainer(
+                                    address: ref.watch(choosenAddressProvider),
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 16,
@@ -100,9 +102,9 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                                       minWidth: double.infinity, minHeight: 54),
                                   child: OutlinedButton(
                                       onPressed: () {
-                                        context.push("/addresses");
+                                        context.push("/add_address");
                                       },
-                                      child: const Text("اختيار عنوان اخر")),
+                                      child: const Text("اضافة عنوان")),
                                 ),
                                 const SizedBox(
                                   height: 16,
@@ -210,8 +212,13 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                                 const SizedBox(
                                   height: 8,
                                 ),
-                                AddContainer(
-                                  address: ref.watch(choosenAddressProvider),
+                                GestureDetector(
+                                  onTap: () {
+                                    context.push("/addresses");
+                                  },
+                                  child: AddContainer(
+                                    address: ref.watch(choosenAddressProvider),
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 16,
@@ -221,9 +228,9 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                                       minWidth: double.infinity, minHeight: 54),
                                   child: OutlinedButton(
                                       onPressed: () {
-                                        context.push("/addresses");
+                                        context.push("/add_address");
                                       },
-                                      child: const Text("اختيار عنوان اخر")),
+                                      child: const Text("اضافة عنوان")),
                                 ),
                                 const SizedBox(
                                   height: 16,
@@ -323,10 +330,45 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                         constraints: const BoxConstraints(
                             minWidth: double.infinity, minHeight: 54),
                         child: ElevatedButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {}
+                            onPressed: () async {
+                              setState(() {
+                                loading = true;
+                              });
+                              final address = ref.read(choosenAddressProvider);
+
+                              if (formKey.currentState!.validate()) {
+                                await ref.read(SendMaintenanceRequestProvider(
+                                        type: "طلب عاجل",
+                                        address: address?.id ?? "1",
+                                        description: orderController.text,
+                                        date: dateController.text,
+                                        time: timeController.text)
+                                    .future);
+                                setState(() {
+                                  loading = false;
+                                });
+                                return;
+                              }
+                              if (formKey2.currentState!.validate()) {
+                                await ref.read(SendMaintenanceRequestProvider(
+                                        type: "طلب عادي",
+                                        address: address?.id ?? "1",
+                                        description: orderController.text,
+                                        date: dateController.text,
+                                        time: timeController.text)
+                                    .future);
+                                setState(() {
+                                  loading = false;
+                                });
+                                return;
+                              }
                             },
-                            child: const Text("تاكيد")),
+                            child: loading
+                                ? const CircularProgressIndicator.adaptive(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                  )
+                                : const Text("تاكيد")),
                       ),
                     ],
                   ),
@@ -392,10 +434,7 @@ class AddContainer extends ConsumerWidget {
             ),
             IconButton(
                 onPressed: () {
-                  context.push(
-                    "/add_address",
-                    extra: address
-                  );
+                  context.push("/add_address", extra: address);
                 },
                 icon: const Icon(Icons.edit_outlined)),
           ],

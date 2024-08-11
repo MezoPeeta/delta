@@ -10,6 +10,7 @@ import 'package:readmore/readmore.dart';
 import '../../styles/colors.dart';
 
 final listOfProductsProvider = StateProvider<List<Product>>((ref) => []);
+final loadingProvider = StateProvider<bool>((ref) => false);
 
 class ProductDetail extends StatelessWidget {
   const ProductDetail({super.key, required this.product});
@@ -115,19 +116,29 @@ class ProductDetail extends StatelessWidget {
                       constraints: const BoxConstraints(
                           minWidth: double.infinity, minHeight: 54),
                       child: Consumer(builder: (context, ref, child) {
+                        final loading = ref.watch(loadingProvider);
                         return ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              ref.read(loadingProvider.notifier).state = true;
+
                               final products = ref.read(listOfProductsProvider);
                               if (products.contains(product)) {
                                 return;
                               }
                               ref.read(listOfProductsProvider.notifier).update(
                                   (state) => List.from(state)..add(product));
-                              ref.read(
-                                  addToCartProvider(productID: product.id));
+                              await ref.read(
+                                  addToCartProvider(productID: product.id)
+                                      .future);
                               ref.invalidate(getCartProvider);
+                              ref.read(loadingProvider.notifier).state = false;
                             },
-                            child: const Text("طلب العرض"));
+                            child: loading
+                                ? const CircularProgressIndicator.adaptive(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                  )
+                                : const Text("طلب العرض"));
                       })),
                 ],
               ),

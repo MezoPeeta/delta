@@ -26,23 +26,6 @@ class _NewPassScreenState extends State<NewPassScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
 
-  bool isValidPassword(String password) {
-    RegExp numberRegExp = RegExp(r'\d');
-    RegExp capitalLetterRegExp = RegExp(r'[A-Z]');
-
-    bool hasNumber = numberRegExp.hasMatch(password);
-    bool hasCapitalLetter = capitalLetterRegExp.hasMatch(password);
-    bool hasValidLength = password.length >= 8 && password.length >= 10;
-
-    setState(() {
-      hasNumPassword = hasNumber;
-      hasCapitalPassword = hasCapitalLetter;
-      isValidLength = hasValidLength;
-    });
-
-    return hasNumber && hasCapitalLetter && hasValidLength;
-  }
-
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -100,9 +83,6 @@ class _NewPassScreenState extends State<NewPassScreen> {
                               }
                               return null;
                             },
-                            onChanged: (value) {
-                              isValidPassword(value);
-                            },
                             decoration: InputDecoration(
                               hintText: "قم بأدخل كلمة المرور الخاصه بك",
                               prefixIcon: Container(
@@ -149,12 +129,12 @@ class _NewPassScreenState extends State<NewPassScreen> {
                           TextFormField(
                             controller: passwordConfirmController,
                             obscureText: isConfirmPassHidden,
-                            onChanged: (value) {
-                              isValidPassword(value);
-                            },
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "ارجو ادخال كلمة المرور الخاص بك";
+                              }
+                              if (value != passwordController.text) {
+                                return "يجب ان تتشابه الكلمتين";
                               }
                               return null;
                             },
@@ -182,87 +162,6 @@ class _NewPassScreenState extends State<NewPassScreen> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox.adaptive(
-                              value: isValidLength,
-                              onChanged: (v) {},
-                              activeColor: Colors.transparent,
-                              side: WidgetStateBorderSide.resolveWith(
-                                (states) => BorderSide(
-                                    width: 1.0, color: AppColors.grayColor),
-                              ),
-                              checkColor: AppColors.grayColor),
-                          Text(
-                            "10-8 احرف علي الاقل",
-                            style: TextStyle(color: AppColors.grayColor),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox.adaptive(
-                              value: hasNumPassword,
-                              onChanged: (v) {},
-                              activeColor: Colors.transparent,
-                              side: WidgetStateBorderSide.resolveWith(
-                                (states) => BorderSide(
-                                    width: 1.0, color: AppColors.errorColor),
-                              ),
-                              checkColor: AppColors.errorColor),
-                          Text(
-                            "رقم واحد علي الاقل",
-                            style: TextStyle(
-                                color: hasNumPassword
-                                    ? AppColors.errorColor
-                                    : AppColors.grayColor),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox.adaptive(
-                              value: hasCapitalPassword,
-                              onChanged: (v) {},
-                              activeColor: Colors.transparent,
-                              side: WidgetStateBorderSide.resolveWith(
-                                (states) => BorderSide(
-                                    width: 1.0, color: AppColors.doneColor),
-                              ),
-                              checkColor: AppColors.doneColor),
-                          Text(
-                            "حرف كبير واحد على الأقل",
-                            style: TextStyle(
-                                color: hasCapitalPassword
-                                    ? AppColors.doneColor
-                                    : AppColors.grayColor),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox.adaptive(
-                              value: passwordConfirmController.text ==
-                                      passwordController.text &&
-                                  passwordController.text.isNotEmpty,
-                              onChanged: (v) {},
-                              activeColor: Colors.transparent,
-                              side: WidgetStateBorderSide.resolveWith(
-                                (states) => BorderSide(
-                                    width: 1.0, color: AppColors.doneColor),
-                              ),
-                              checkColor: AppColors.doneColor),
-                          Text(
-                            "كلماتين المرور متشابهة",
-                            style: TextStyle(
-                                color: passwordConfirmController.text ==
-                                            passwordController.text &&
-                                        passwordController.text.isNotEmpty
-                                    ? AppColors.doneColor
-                                    : AppColors.grayColor),
                           ),
                         ],
                       ),
@@ -317,7 +216,10 @@ class _NewPassScreenState extends State<NewPassScreen> {
                                 });
                               },
                               child: loading
-                                  ? const CircularProgressIndicator.adaptive()
+                                  ? const CircularProgressIndicator.adaptive(
+                                      valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                    )
                                   : const Text("تاكيد")),
                         );
                       }),

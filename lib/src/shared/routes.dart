@@ -7,6 +7,7 @@ import 'package:delta/src/screens/auth/signup/signup_screen.dart';
 import 'package:delta/src/screens/boarding/boarding_screen.dart';
 import 'package:delta/src/screens/bookings/data/order.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
+import 'package:delta/src/screens/repair/repair_screen.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/change_pass/change_pass.dart';
 import 'package:delta/src/screens/settings/feedback/feedback_screen.dart';
@@ -45,6 +46,7 @@ final _routes = GoRouter(initialLocation: '/boarding', routes: [
       builder: (context, state) => OrderScreen(order: state.extra as Order)),
   GoRoute(
       path: "/boarding", builder: (context, state) => const BoardingScreen()),
+  GoRoute(path: "/repair", builder: (context, state) => const RepairScreen()),
   GoRoute(path: "/signin", builder: (context, state) => const SignInScreen()),
   GoRoute(path: "/signup", builder: (context, state) => const SignupScreen()),
   GoRoute(

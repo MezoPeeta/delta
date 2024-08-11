@@ -320,7 +320,7 @@ final getCategoriesProvider =
 );
 
 typedef GetCategoriesRef = AutoDisposeFutureProviderRef<List<Category>>;
-String _$addToCartHash() => r'c5e7d0b7729d04b661039c3fd2cdda6b5c7eb6a4';
+String _$addToCartHash() => r'9a05049e4a35b65c6a1bd6234e9757eb6592bd36';
 
 /// See also [addToCart].
 @ProviderFor(addToCart)

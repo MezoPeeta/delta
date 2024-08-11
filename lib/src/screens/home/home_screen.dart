@@ -215,11 +215,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   mainAxisExtent: 147,
                                   maxCrossAxisExtent: 172),
                           itemBuilder: (context, index) {
-                            return ProductContainer(
-                                product: Product(
-                                    id: "1",
-                                    name: services[index].title,
-                                    mainPhoto: services[index].photo));
+                            return GestureDetector(
+                              onTap: () {
+                                context.push(services[index].routePath);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                    color: AppColors.grayColor.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(4)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColors.grayColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      height: 83,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      services[index].title,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
                           }),
                     ),
                   ],
