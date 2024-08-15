@@ -1,5 +1,6 @@
 import 'package:delta/src/screens/repair/providers/repair_providers.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
+import 'package:delta/src/shared/app_sheet.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -331,36 +332,63 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                             minWidth: double.infinity, minHeight: 54),
                         child: ElevatedButton(
                             onPressed: () async {
-                              setState(() {
-                                loading = true;
-                              });
                               final address = ref.read(choosenAddressProvider);
-
-                              if (formKey.currentState!.validate()) {
-                                await ref.read(SendMaintenanceRequestProvider(
-                                        type: "طلب عاجل",
-                                        address: address?.id ?? "1",
-                                        description: orderController.text,
-                                        date: dateController.text,
-                                        time: timeController.text)
-                                    .future);
+                              if (formKey2.currentState == null) {
+                                setState(() {
+                                  loading = true;
+                                });
+                                if (formKey.currentState!.validate()) {
+                                  await ref.read(SendMaintenanceRequestProvider(
+                                          type: "urgent",
+                                          address: address?.id ?? "1",
+                                          description: orderController.text,
+                                          date: dateController.text,
+                                          time: timeController.text)
+                                      .future);
+                                }
                                 setState(() {
                                   loading = false;
                                 });
-                                return;
                               }
-                              if (formKey2.currentState!.validate()) {
-                                await ref.read(SendMaintenanceRequestProvider(
-                                        type: "طلب عادي",
-                                        address: address?.id ?? "1",
-                                        description: orderController.text,
-                                        date: dateController.text,
-                                        time: timeController.text)
-                                    .future);
+
+                              if (formKey.currentState == null) {
                                 setState(() {
-                                  loading = false;
+                                  loading = true;
                                 });
-                                return;
+                                if (formKey2.currentState!.validate()) {
+                                  await ref.read(SendMaintenanceRequestProvider(
+                                          type: "normal",
+                                          address: address?.id ?? "1",
+                                          description: orderController.text,
+                                          date: dateController.text,
+                                          time: timeController.text)
+                                      .future);
+                                }
+                              }
+                              setState(() {
+                                loading = false;
+                              });
+                              if (data!.isUserHasContract) {
+                                appBottomSheet(context,
+                                    header: "طلب صيانة",
+                                    isRepair: true,
+                                    endHeader:
+                                        "بكونك عميل مميز و لطلب مصعدك من الدلتا فخدمة الصيانة مجانية لمده سنه",
+                                    coloredText: const TextSpan(),
+                                    isRow: false,
+                                    actionButtons: [
+                                      ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                            minWidth: double.infinity,
+                                            minHeight: 54),
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              context.push('/sales');
+                                            },
+                                            child: const Text("التالي")),
+                                      ),
+                                    ],
+                                    subHeader: "عميل مميز");
                               }
                             },
                             child: loading

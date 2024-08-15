@@ -1,3 +1,4 @@
+import 'package:delta/src/screens/discount/providers/cart_notifier.dart';
 import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/products/data/product.dart';
 import 'package:delta/src/screens/products/products_screen.dart';
@@ -127,10 +128,9 @@ class ProductDetail extends StatelessWidget {
                               }
                               ref.read(listOfProductsProvider.notifier).update(
                                   (state) => List.from(state)..add(product));
-                              await ref.read(
-                                  addToCartProvider(productID: product.id)
-                                      .future);
-                              ref.invalidate(getCartProvider);
+                              await ref
+                                  .read(cartNotifierProvider.notifier)
+                                  .addToCart(productID: product.id);
                               ref.read(loadingProvider.notifier).state = false;
                             },
                             child: loading

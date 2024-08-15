@@ -8,6 +8,8 @@ import 'package:delta/src/screens/boarding/boarding_screen.dart';
 import 'package:delta/src/screens/bookings/data/order.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/repair/repair_screen.dart';
+import 'package:delta/src/screens/sales/sales_details.dart';
+import 'package:delta/src/screens/sales/sales_screen.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/change_pass/change_pass.dart';
 import 'package:delta/src/screens/settings/feedback/feedback_screen.dart';
@@ -21,6 +23,7 @@ import '../screens/auth/login/signin_screen.dart';
 import '../screens/order/order_screen.dart';
 import '../screens/products/data/product.dart';
 import '../screens/products/products_screen.dart';
+import '../screens/sales/data/sales.dart';
 import '../screens/settings/about/about_screen.dart';
 import '../screens/settings/addresses/add_address_screen.dart';
 import '../screens/settings/addresses/addresses_screen.dart';
@@ -89,6 +92,12 @@ final _routes = GoRouter(initialLocation: '/boarding', routes: [
   GoRoute(
       path: "/products", builder: (context, state) => const ProductsScreen()),
   GoRoute(path: "/contact", builder: (context, state) => const ContactScreen()),
+  GoRoute(path: "/sales", builder: (context, state) => const SalesScreen()),
+  GoRoute(
+      path: "/sales/detail",
+      builder: (context, state) => SalesDetails(
+            person: state.extra as Sales,
+          )),
   GoRoute(
       path: "/products/detail",
       builder: (context, state) => ProductDetail(

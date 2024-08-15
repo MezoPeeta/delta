@@ -168,9 +168,9 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                             setState(() {
                               loading = true;
                             });
-                            final location =
-                                await ref.read(getLocationProvider.future);
                             if (formKey.currentState!.validate()) {
+                              final location =
+                                  await ref.read(getLocationProvider.future);
                               await ref.read(addAddressProvider(
                                       latitude: location.latitude,
                                       longitude: location.longitude,

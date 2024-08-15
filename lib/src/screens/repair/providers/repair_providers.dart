@@ -27,8 +27,8 @@ Future<void> sendMaintenanceRequest(SendMaintenanceRequestRef ref,
         "time": time
       },
       options: Options(headers: {"Authorization": "Bearer $token"}));
-
-  if (request!.statusCode == 200) {
+  log(request!.data);
+  if (request.statusCode == 200) {
     snackbarKey.currentState!.showSnackBar(
         const SnackBar(content: Text("تم ارسال طلب صيانة بنجاح")));
   }

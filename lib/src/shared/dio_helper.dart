@@ -91,6 +91,10 @@ class DioHelper {
         snackbarKey.currentState!
             .showSnackBar(const SnackBar(content: Text("لا يوجد ايميل بهذا")));
       }
+      if (errorMessage == "You already have an active maintenance request") {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("لقد ارسلت طلب صيانة من قبل")));
+      }
       if (errorMessage == "Product is already in the cart") {
         snackbarKey.currentState!.showSnackBar(
             const SnackBar(content: Text("هذا المنتج موجود بالفعل")));
@@ -103,6 +107,7 @@ class DioHelper {
         snackbarKey.currentState!.showSnackBar(const SnackBar(
             content: Text("الحساب غير مفعل, ارجو من تفعيل الحساب")));
       }
+
       log("PostError", error: "$errorMessage | ${e.response!.statusCode}");
       return null;
     }

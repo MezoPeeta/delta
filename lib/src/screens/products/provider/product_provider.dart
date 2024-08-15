@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../app.dart';
 import '../../../shared/dio_helper.dart';
+import '../../bookings/data/order.dart';
 import '../data/category.dart';
 
 part 'product_provider.g.dart';
@@ -58,7 +59,8 @@ Future<List<Category>> getCategories(
 }
 
 @riverpod
-Future<void> addToCart(AddToCartRef ref, {required String productID}) async {
+Future<List<CartItem>> addToCart(AddToCartRef ref,
+    {required String productID}) async {
   final userToken = await ref.watch(tokenProvider.future);
 
   final request = await ref.watch(dioHelperProvider).postHTTP(
@@ -69,11 +71,16 @@ Future<void> addToCart(AddToCartRef ref, {required String productID}) async {
     log("[Product Added: $productID]");
     snackbarKey.currentState!
         .showSnackBar(const SnackBar(content: Text("تم اضافة المنتج بنجاح")));
+
+    return request.data["data"]["cart"]["items"]
+        .map<CartItem>((e) => CartItem.fromJson(e))
+        .toList();
   }
+  return [];
 }
 
 @riverpod
-Future<void> deleteFromCart(DeleteFromCartRef ref,
+Future<List<CartItem>> deleteFromCart(DeleteFromCartRef ref,
     {required String productID}) async {
   final userToken = await ref.watch(tokenProvider.future);
 
@@ -84,5 +91,9 @@ Future<void> deleteFromCart(DeleteFromCartRef ref,
     log("[Product Deleted: $productID]");
     snackbarKey.currentState!
         .showSnackBar(const SnackBar(content: Text("تم حذف المنتج بنجاح")));
+    return request.data["data"]["cart"]["items"]
+        .map<CartItem>((e) => CartItem.fromJson(e))
+        .toList();
   }
+  return [];
 }

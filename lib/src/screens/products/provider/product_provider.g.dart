@@ -320,14 +320,14 @@ final getCategoriesProvider =
 );
 
 typedef GetCategoriesRef = AutoDisposeFutureProviderRef<List<Category>>;
-String _$addToCartHash() => r'9a05049e4a35b65c6a1bd6234e9757eb6592bd36';
+String _$addToCartHash() => r'c3cb26d828e67b5bfa4ebdb1e0564b7a10cb4526';
 
 /// See also [addToCart].
 @ProviderFor(addToCart)
 const addToCartProvider = AddToCartFamily();
 
 /// See also [addToCart].
-class AddToCartFamily extends Family<AsyncValue<void>> {
+class AddToCartFamily extends Family<AsyncValue<List<CartItem>>> {
   /// See also [addToCart].
   const AddToCartFamily();
 
@@ -365,7 +365,7 @@ class AddToCartFamily extends Family<AsyncValue<void>> {
 }
 
 /// See also [addToCart].
-class AddToCartProvider extends AutoDisposeFutureProvider<void> {
+class AddToCartProvider extends AutoDisposeFutureProvider<List<CartItem>> {
   /// See also [addToCart].
   AddToCartProvider({
     required String productID,
@@ -399,7 +399,7 @@ class AddToCartProvider extends AutoDisposeFutureProvider<void> {
 
   @override
   Override overrideWith(
-    FutureOr<void> Function(AddToCartRef provider) create,
+    FutureOr<List<CartItem>> Function(AddToCartRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -416,7 +416,7 @@ class AddToCartProvider extends AutoDisposeFutureProvider<void> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<void> createElement() {
+  AutoDisposeFutureProviderElement<List<CartItem>> createElement() {
     return _AddToCartProviderElement(this);
   }
 
@@ -434,27 +434,27 @@ class AddToCartProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
-mixin AddToCartRef on AutoDisposeFutureProviderRef<void> {
+mixin AddToCartRef on AutoDisposeFutureProviderRef<List<CartItem>> {
   /// The parameter `productID` of this provider.
   String get productID;
 }
 
-class _AddToCartProviderElement extends AutoDisposeFutureProviderElement<void>
-    with AddToCartRef {
+class _AddToCartProviderElement
+    extends AutoDisposeFutureProviderElement<List<CartItem>> with AddToCartRef {
   _AddToCartProviderElement(super.provider);
 
   @override
   String get productID => (origin as AddToCartProvider).productID;
 }
 
-String _$deleteFromCartHash() => r'b0ea314ad610b595aede2b7c189b78d5ed3eba26';
+String _$deleteFromCartHash() => r'8372d6168655a12009acc530d8de0aa801a26c52';
 
 /// See also [deleteFromCart].
 @ProviderFor(deleteFromCart)
 const deleteFromCartProvider = DeleteFromCartFamily();
 
 /// See also [deleteFromCart].
-class DeleteFromCartFamily extends Family<AsyncValue<void>> {
+class DeleteFromCartFamily extends Family<AsyncValue<List<CartItem>>> {
   /// See also [deleteFromCart].
   const DeleteFromCartFamily();
 
@@ -492,7 +492,7 @@ class DeleteFromCartFamily extends Family<AsyncValue<void>> {
 }
 
 /// See also [deleteFromCart].
-class DeleteFromCartProvider extends AutoDisposeFutureProvider<void> {
+class DeleteFromCartProvider extends AutoDisposeFutureProvider<List<CartItem>> {
   /// See also [deleteFromCart].
   DeleteFromCartProvider({
     required String productID,
@@ -527,7 +527,7 @@ class DeleteFromCartProvider extends AutoDisposeFutureProvider<void> {
 
   @override
   Override overrideWith(
-    FutureOr<void> Function(DeleteFromCartRef provider) create,
+    FutureOr<List<CartItem>> Function(DeleteFromCartRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -544,7 +544,7 @@ class DeleteFromCartProvider extends AutoDisposeFutureProvider<void> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<void> createElement() {
+  AutoDisposeFutureProviderElement<List<CartItem>> createElement() {
     return _DeleteFromCartProviderElement(this);
   }
 
@@ -562,13 +562,14 @@ class DeleteFromCartProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
-mixin DeleteFromCartRef on AutoDisposeFutureProviderRef<void> {
+mixin DeleteFromCartRef on AutoDisposeFutureProviderRef<List<CartItem>> {
   /// The parameter `productID` of this provider.
   String get productID;
 }
 
 class _DeleteFromCartProviderElement
-    extends AutoDisposeFutureProviderElement<void> with DeleteFromCartRef {
+    extends AutoDisposeFutureProviderElement<List<CartItem>>
+    with DeleteFromCartRef {
   _DeleteFromCartProviderElement(super.provider);
 
   @override

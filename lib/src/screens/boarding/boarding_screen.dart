@@ -51,7 +51,6 @@ class _BoardingScreenState extends ConsumerState<BoardingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: PageView(
                 controller: _pageController,
-                reverse: true,
                 onPageChanged: (v) {
                   setState(() {
                     currentIndex = v;
@@ -72,11 +71,9 @@ class _BoardingScreenState extends ConsumerState<BoardingScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              const Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: LinearProgressIndicator(
-                                    value: 0.3,
-                                  )),
+                              const LinearProgressIndicator(
+                                value: 0.3,
+                              ),
                               const SizedBox(
                                 height: 24,
                               ),
@@ -127,11 +124,9 @@ class _BoardingScreenState extends ConsumerState<BoardingScreen> {
                         child: IntrinsicHeight(
                           child: Column(
                             children: [
-                              const Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: LinearProgressIndicator(
-                                    value: 0.6,
-                                  )),
+                              const LinearProgressIndicator(
+                                value: 0.6,
+                              ),
                               const SizedBox(
                                 height: 24,
                               ),
@@ -206,13 +201,11 @@ class _BoardingScreenState extends ConsumerState<BoardingScreen> {
                         child: IntrinsicHeight(
                           child: Column(
                             children: [
-                              Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: LinearProgressIndicator(
-                                    value: 1,
-                                    valueColor: AlwaysStoppedAnimation(
-                                        AppColors.buttonColor),
-                                  )),
+                              LinearProgressIndicator(
+                                value: 1,
+                                valueColor: AlwaysStoppedAnimation(
+                                    AppColors.buttonColor),
+                              ),
                               const SizedBox(
                                 height: 24,
                               ),

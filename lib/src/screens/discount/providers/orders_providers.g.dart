@@ -282,7 +282,7 @@ class _DownloadPDFProviderElement extends AutoDisposeFutureProviderElement<int>
   String get userID => (origin as DownloadPDFProvider).userID;
 }
 
-String _$getCartHash() => r'99c0e7d44e85f853594397e5a60c5e4e7d63da23';
+String _$getCartHash() => r'e53be77b8e75cbaa6b25c1551a6e539509727768';
 
 /// See also [getCart].
 @ProviderFor(getCart)

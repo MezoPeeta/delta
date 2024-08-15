@@ -1,6 +1,6 @@
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ContactScreen extends StatelessWidget {
@@ -25,17 +25,20 @@ class ContactScreen extends StatelessWidget {
 }
 
 class ContactList extends StatelessWidget {
-  const ContactList({super.key, required this.phone});
+  const ContactList({super.key, required this.phone, this.isWhatsApp = false});
   final String phone;
+  final bool isWhatsApp;
   @override
   Widget build(BuildContext context) {
     return ListTile(
       trailing: OutlinedButton(
-          onPressed: () => launchUrlString("tel://${phone.substring(1)}"),
-          child: const Text("اتصل بنا")),
-      title: const Text(
-        "رقم الهاتف",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          onPressed: () => isWhatsApp
+              ? launchUrlString("http://wa.me/$phone")
+              : launchUrlString("tel://${phone.substring(1)}"),
+          child: Text(isWhatsApp ? "تواصل مع البائع " : "اتصل بنا")),
+      title: Text(
+        isWhatsApp ? "رقم الواتساب" : "رقم الهاتف",
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
       subtitle: Directionality(
           textDirection: TextDirection.ltr,
@@ -49,10 +52,22 @@ class ContactList extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: AppColors.buttonColor.withOpacity(0.2)),
-        child: Icon(
-          Icons.phone,
-          color: AppColors.buttonColor,
-        ),
+        child: isWhatsApp
+            ? Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 40,
+                  child: SvgPicture.asset(
+                    "assets/img/icons/whatsapp.svg",
+                    colorFilter: ColorFilter.mode(
+                        AppColors.buttonColor, BlendMode.srcIn),
+                  ),
+                ),
+              )
+            : Icon(
+                Icons.phone,
+                color: AppColors.buttonColor,
+              ),
       ),
     );
   }

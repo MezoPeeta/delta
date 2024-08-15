@@ -68,7 +68,7 @@ class BookingsScreen extends ConsumerWidget {
                                 header: "عرض طلب",
                                 subHeader: "تم عرض الطلب بنجاح",
                                 endHeader:
-                                    "يمكنك متابعة حالة الطلب في سجل الحجوزات لديك و شكرا لاستخدامك تطبيق الدلتا رقم الطلب : 21343434341",
+                                    "يمكنك متابعة حالة الطلب في سجل الحجوزات لديك و شكرا لاستخدامك تطبيق الدلتا رقم الطلب : ${data[index].id}",
                                 coloredText: const TextSpan(),
                                 isRow: false,
                                 actionButtons: [

@@ -7,7 +7,7 @@ part of 'repair_providers.dart';
 // **************************************************************************
 
 String _$sendMaintenanceRequestHash() =>
-    r'a84cfb0416666e8717c58de1667283fe47a54719';
+    r'81522cbfb190e33c46111d7855cda00312983ca9';
 
 /// Copied from Dart SDK
 class _SystemHash {

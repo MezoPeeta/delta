@@ -31,6 +31,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () => context.push("/notifications"),
             icon: SvgPicture.asset(
+              width: 22,
               "assets/img/icons/notification.svg",
               colorFilter:
                   const ColorFilter.mode(Colors.black, BlendMode.srcIn),

@@ -42,8 +42,7 @@ Future<List<CartItem>> getCart(GetCartRef ref) async {
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP("/api/carts/?limit=50", token: token ?? "");
-  print(request!.data);
-  return request.data["data"]["cart"]["items"]
+  return request?.data["data"]["cart"]["items"]
       .map<CartItem>((e) => CartItem.fromJson(e))
       .toList();
 }

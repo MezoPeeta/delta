@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:delta/src/screens/auth/login/login_providers.dart';
+import 'package:delta/src/screens/home/provider/slider_provider.dart';
+import 'package:delta/src/shared/navigation.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../providers/notification_provider.dart';
+import '../discount/providers/cart_notifier.dart';
 import '../products/data/product.dart';
 import '../products/provider/services.dart';
 import 'provider/search_provider.dart';
@@ -36,10 +39,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
     final services = ref.watch(servicesProvider);
+    final slider = ref.watch(getSliderProvider);
     return Scaffold(
         body: SafeArea(
+      left: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: user.when(
             data: (data) {
               return SingleChildScrollView(
@@ -182,12 +187,55 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(
                       height: 12,
                     ),
-                    Container(
-                        width: double.infinity,
+                    SizedBox(
                         height: 147,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(12))),
+                        child: slider.when(
+                            data: (data) {
+                              if (data.isEmpty) {
+                                return const Center(
+                                  child: Text("لا يوجد عروض اليوم"),
+                                );
+                              }
+                              return ListView.separated(
+                                  itemCount: data.length,
+                                  padding: EdgeInsets.zero,
+                                  scrollDirection: Axis.horizontal,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        await ref
+                                            .read(cartNotifierProvider.notifier)
+                                            .addToCart(
+                                                productID:
+                                                    data[index].productId);
+                                        ref
+                                            .read(currentIndexProvider.notifier)
+                                            .state = 2;
+                                      },
+                                      child: Container(
+                                          width:
+                                              MediaQuery.sizeOf(context).width -
+                                                  20,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                      data[index].photoUrl)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12))),
+                                    );
+                                  });
+                            },
+                            error: (e, s) {
+                              log("Cannt get Slider", error: e, stackTrace: s);
+                              return const Text("حدث خطأ ما");
+                            },
+                            loading: () => const Center(
+                                child: CircularProgressIndicator.adaptive()))),
                     const SizedBox(
                       height: 16,
                     ),
@@ -209,11 +257,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 12,
-                                  mainAxisExtent: 147,
-                                  maxCrossAxisExtent: 172),
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 12,
+                            mainAxisExtent: 147,
+                          ),
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {

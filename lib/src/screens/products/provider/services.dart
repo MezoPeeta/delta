@@ -12,7 +12,7 @@ List<Services> _services = [
   Services(title: "المنتجات", routePath: "/products"),
   Services(title: "صيانة", routePath: "/repair"),
   Services(title: "تركيبات", routePath: ""),
-  Services(title: "شكاوي و اقتراحات", routePath: ""),
+  Services(title: "شكاوي و اقتراحات", routePath: "/feedback"),
 ];
 
 final servicesProvider = StateProvider<List<Services>>((ref) => _services);

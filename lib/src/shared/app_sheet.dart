@@ -8,6 +8,7 @@ Future<dynamic> appBottomSheet(BuildContext context,
     bool isDanger = false,
     bool isRow = true,
     bool isCart = false,
+    bool isRepair = false,
     required TextSpan coloredText,
     required List<Widget> actionButtons,
     required String subHeader}) {
@@ -43,9 +44,12 @@ Future<dynamic> appBottomSheet(BuildContext context,
                         SvgPicture.asset('assets/img/icons/danger.svg'),
                       if (isWarning == false &&
                           isDanger == false &&
-                          isCart == false)
+                          isCart == false &&
+                          isRepair == false)
                         SvgPicture.asset('assets/img/icons/success.svg'),
                       if (isCart) SvgPicture.asset('assets/img/icons/cart.svg'),
+                      if (isRepair)
+                        SvgPicture.asset('assets/img/icons/repair_circle.svg'),
 
                       const SizedBox(
                         height: 24,
@@ -72,6 +76,7 @@ Future<dynamic> appBottomSheet(BuildContext context,
                       Text(
                         endHeader,
                         textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 18),
                       ),
                       // const Spacer(),
                       const SizedBox(

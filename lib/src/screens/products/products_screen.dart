@@ -73,11 +73,12 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             ),
             Expanded(
               child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 12,
-                      mainAxisExtent: 174,
-                      maxCrossAxisExtent: 172),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 12,
+                    mainAxisExtent: 147,
+                  ),
                   itemBuilder: (context, index) {
                     final page = index ~/ pageSize + 1;
                     final indexInPage = index % pageSize;
