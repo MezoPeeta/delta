@@ -20,7 +20,7 @@ final getAllSalesProvider = AutoDisposeFutureProvider<List<Sales>>.internal(
 );
 
 typedef GetAllSalesRef = AutoDisposeFutureProviderRef<List<Sales>>;
-String _$getSalesByIDHash() => r'db06d43272fde642dcaf8f97a7a73ed003ab1b82';
+String _$getSalesByIDHash() => r'e1ec71dec4d992c1e7a2c034d0c3965ca2fb8f3e';
 
 /// Copied from Dart SDK
 class _SystemHash {

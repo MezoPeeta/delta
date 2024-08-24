@@ -12,8 +12,8 @@ Future<List<Order>> getOrders(GetOrdersRef ref) async {
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP("/api/orders/user", token: token ?? "");
-  print(request!.data);
-  return request.data["data"]["orders"]
+  print(request?.data);
+  return request?.data["data"]["orders"]
       .map<Order>((e) => Order.fromJson(e))
       .toList();
 }

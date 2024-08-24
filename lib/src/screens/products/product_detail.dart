@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/discount/providers/cart_notifier.dart';
 import 'package:delta/src/screens/discount/providers/orders_providers.dart';
@@ -76,7 +77,7 @@ class ProductDetail extends StatelessWidget {
                     bottomRight: Radius.circular(12),
                   ),
                   image: DecorationImage(
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitHeight,
                       image: NetworkImage(product.mainPhoto!))),
             ),
             const SizedBox(
@@ -207,8 +208,8 @@ class SmallProductContainer extends StatelessWidget {
             height: 55,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(product?.mainPhoto ?? "")),
+                    fit: BoxFit.fitHeight,
+                    image: CachedNetworkImageProvider(product?.mainPhoto ?? "")),
                 borderRadius: BorderRadius.circular(4)),
           ),
           const SizedBox(

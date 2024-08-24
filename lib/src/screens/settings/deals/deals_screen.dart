@@ -43,10 +43,8 @@ class DealsScreen extends ConsumerWidget {
                       const Text("عقد الصيانة"),
                       OutlinedButton(
                           onPressed: () {
-                            final userID =
-                                ref.read(userStorageProvider).requireValue?.id;
                             ref.read(
-                                downloadContractPDFProvider(userID: userID!));
+                                downloadContractPDFProvider(pdfID: ""));
                           },
                           child: const Text("تنزيل"))
                     ],

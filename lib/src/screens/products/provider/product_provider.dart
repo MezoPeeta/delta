@@ -16,10 +16,9 @@ part 'product_provider.g.dart';
 @riverpod
 Future<List<Product>> getProducts(GetProductsRef ref,
     {required String page}) async {
-  final userToken = await ref.watch(tokenProvider.future);
   final request = await ref
       .watch(dioHelperProvider)
-      .getHTTP("/api/products/?page=$page&limit=4", token: userToken ?? "");
+      .getHTTP("/api/products/?page=$page&limit=4");
 
   return request!.data["data"]["products"]
       .map<Product>((e) => Product.fromJson(e))
@@ -29,11 +28,9 @@ Future<List<Product>> getProducts(GetProductsRef ref,
 @riverpod
 Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
     {required String category, required String page}) async {
-  final userToken = await ref.watch(tokenProvider.future);
-
   final request = await ref.watch(dioHelperProvider).getHTTP(
-      "/api/products/?category=$category&page=$page",
-      token: userToken ?? "");
+        "/api/products/?category=$category&page=$page",
+      );
 
   List<Product> products = request!.data["data"]["products"]
       .map<Product>((e) => Product.fromJson(e))
@@ -45,11 +42,8 @@ Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
 @riverpod
 Future<List<Product>> getRelatedProducts(GetRelatedProductsRef ref,
     {required String productID}) async {
-  final userToken = await ref.watch(tokenProvider.future);
-
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP("/api/products/$productID", token: userToken ?? "");
+  final request =
+      await ref.watch(dioHelperProvider).getHTTP("/api/products/$productID");
 
   List<Product> products = request!.data["data"]["relatedProducts"]
       .map<Product>((e) => Product.fromJson(e))

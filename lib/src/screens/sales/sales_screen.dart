@@ -14,7 +14,7 @@ class SalesScreen extends ConsumerWidget {
     final sales = ref.watch(getAllSalesProvider);
     return Scaffold(
         appBar: const CustomAppBar(
-          title: "المبيعات",
+          title: "قسم المبيعات",
           isSettings: true,
         ),
         body: Padding(

@@ -21,10 +21,7 @@ Future<List<Sales>> getAllSales(GetAllSalesRef ref) async {
 
 @riverpod
 Future<Sales> getSalesByID(GetSalesByIDRef ref, {required String id}) async {
-  final token = await ref.watch(tokenProvider.future);
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP("/api/sells/$id", token: token ?? "");
+  final request = await ref.watch(dioHelperProvider).getHTTP("/api/sells/$id");
 
   return Sales.fromJson(request!.data["data"]["sells"]);
 }

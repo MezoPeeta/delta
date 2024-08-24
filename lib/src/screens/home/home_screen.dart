@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/home/provider/slider_provider.dart';
@@ -419,7 +420,8 @@ class CategoryWidget extends StatelessWidget {
                   height: 28,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          fit: BoxFit.cover, image: NetworkImage(image!))),
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(image!))),
                 )
               : const SizedBox.shrink(),
           Visibility(
@@ -466,8 +468,9 @@ class ProductContainer extends StatelessWidget {
                 height: 83,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(product.mainPhoto ?? "")),
+                        fit: BoxFit.fitHeight,
+                        image: CachedNetworkImageProvider(
+                            product.mainPhoto ?? "")),
                     borderRadius: BorderRadius.circular(5))),
             const SizedBox(
               height: 10,

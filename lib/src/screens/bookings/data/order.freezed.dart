@@ -24,11 +24,17 @@ mixin _$Order {
   String get id => throw _privateConstructorUsedError;
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String get userName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'phone')
+  String get userPhone => throw _privateConstructorUsedError;
   String get firstBatch => throw _privateConstructorUsedError;
   String get secondBatch => throw _privateConstructorUsedError;
   String get thirdBatch => throw _privateConstructorUsedError;
   String get contractStages => throw _privateConstructorUsedError;
   String get implementationStages => throw _privateConstructorUsedError;
+  String? get pdfId => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this Order to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,11 +54,15 @@ abstract class $OrderCopyWith<$Res> {
       {@JsonKey(name: '_id') String id,
       List<CartItem> cartItems,
       String status,
+      @JsonKey(name: 'name') String userName,
+      @JsonKey(name: 'phone') String userPhone,
       String firstBatch,
       String secondBatch,
       String thirdBatch,
       String contractStages,
-      String implementationStages});
+      String implementationStages,
+      String? pdfId,
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -73,11 +83,15 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? id = null,
     Object? cartItems = null,
     Object? status = null,
+    Object? userName = null,
+    Object? userPhone = null,
     Object? firstBatch = null,
     Object? secondBatch = null,
     Object? thirdBatch = null,
     Object? contractStages = null,
     Object? implementationStages = null,
+    Object? pdfId = freezed,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -91,6 +105,14 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      userPhone: null == userPhone
+          ? _value.userPhone
+          : userPhone // ignore: cast_nullable_to_non_nullable
               as String,
       firstBatch: null == firstBatch
           ? _value.firstBatch
@@ -112,6 +134,14 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.implementationStages
           : implementationStages // ignore: cast_nullable_to_non_nullable
               as String,
+      pdfId: freezed == pdfId
+          ? _value.pdfId
+          : pdfId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -127,11 +157,15 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       {@JsonKey(name: '_id') String id,
       List<CartItem> cartItems,
       String status,
+      @JsonKey(name: 'name') String userName,
+      @JsonKey(name: 'phone') String userPhone,
       String firstBatch,
       String secondBatch,
       String thirdBatch,
       String contractStages,
-      String implementationStages});
+      String implementationStages,
+      String? pdfId,
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -150,11 +184,15 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? id = null,
     Object? cartItems = null,
     Object? status = null,
+    Object? userName = null,
+    Object? userPhone = null,
     Object? firstBatch = null,
     Object? secondBatch = null,
     Object? thirdBatch = null,
     Object? contractStages = null,
     Object? implementationStages = null,
+    Object? pdfId = freezed,
+    Object? createdAt = null,
   }) {
     return _then(_$OrderImpl(
       id: null == id
@@ -168,6 +206,14 @@ class __$$OrderImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      userPhone: null == userPhone
+          ? _value.userPhone
+          : userPhone // ignore: cast_nullable_to_non_nullable
               as String,
       firstBatch: null == firstBatch
           ? _value.firstBatch
@@ -189,6 +235,14 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.implementationStages
           : implementationStages // ignore: cast_nullable_to_non_nullable
               as String,
+      pdfId: freezed == pdfId
+          ? _value.pdfId
+          : pdfId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -200,11 +254,15 @@ class _$OrderImpl implements _Order {
       {@JsonKey(name: '_id') required this.id,
       required final List<CartItem> cartItems,
       required this.status,
+      @JsonKey(name: 'name') required this.userName,
+      @JsonKey(name: 'phone') required this.userPhone,
       required this.firstBatch,
       required this.secondBatch,
       required this.thirdBatch,
       required this.contractStages,
-      required this.implementationStages})
+      required this.implementationStages,
+      this.pdfId,
+      required this.createdAt})
       : _cartItems = cartItems;
 
   factory _$OrderImpl.fromJson(Map<String, dynamic> json) =>
@@ -224,6 +282,12 @@ class _$OrderImpl implements _Order {
   @override
   final String status;
   @override
+  @JsonKey(name: 'name')
+  final String userName;
+  @override
+  @JsonKey(name: 'phone')
+  final String userPhone;
+  @override
   final String firstBatch;
   @override
   final String secondBatch;
@@ -233,10 +297,14 @@ class _$OrderImpl implements _Order {
   final String contractStages;
   @override
   final String implementationStages;
+  @override
+  final String? pdfId;
+  @override
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Order(id: $id, cartItems: $cartItems, status: $status, firstBatch: $firstBatch, secondBatch: $secondBatch, thirdBatch: $thirdBatch, contractStages: $contractStages, implementationStages: $implementationStages)';
+    return 'Order(id: $id, cartItems: $cartItems, status: $status, userName: $userName, userPhone: $userPhone, firstBatch: $firstBatch, secondBatch: $secondBatch, thirdBatch: $thirdBatch, contractStages: $contractStages, implementationStages: $implementationStages, pdfId: $pdfId, createdAt: $createdAt)';
   }
 
   @override
@@ -248,6 +316,10 @@ class _$OrderImpl implements _Order {
             const DeepCollectionEquality()
                 .equals(other._cartItems, _cartItems) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.userPhone, userPhone) ||
+                other.userPhone == userPhone) &&
             (identical(other.firstBatch, firstBatch) ||
                 other.firstBatch == firstBatch) &&
             (identical(other.secondBatch, secondBatch) ||
@@ -257,7 +329,10 @@ class _$OrderImpl implements _Order {
             (identical(other.contractStages, contractStages) ||
                 other.contractStages == contractStages) &&
             (identical(other.implementationStages, implementationStages) ||
-                other.implementationStages == implementationStages));
+                other.implementationStages == implementationStages) &&
+            (identical(other.pdfId, pdfId) || other.pdfId == pdfId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -267,11 +342,15 @@ class _$OrderImpl implements _Order {
       id,
       const DeepCollectionEquality().hash(_cartItems),
       status,
+      userName,
+      userPhone,
       firstBatch,
       secondBatch,
       thirdBatch,
       contractStages,
-      implementationStages);
+      implementationStages,
+      pdfId,
+      createdAt);
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.
@@ -294,11 +373,15 @@ abstract class _Order implements Order {
       {@JsonKey(name: '_id') required final String id,
       required final List<CartItem> cartItems,
       required final String status,
+      @JsonKey(name: 'name') required final String userName,
+      @JsonKey(name: 'phone') required final String userPhone,
       required final String firstBatch,
       required final String secondBatch,
       required final String thirdBatch,
       required final String contractStages,
-      required final String implementationStages}) = _$OrderImpl;
+      required final String implementationStages,
+      final String? pdfId,
+      required final DateTime createdAt}) = _$OrderImpl;
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$OrderImpl.fromJson;
 
@@ -310,6 +393,12 @@ abstract class _Order implements Order {
   @override
   String get status;
   @override
+  @JsonKey(name: 'name')
+  String get userName;
+  @override
+  @JsonKey(name: 'phone')
+  String get userPhone;
+  @override
   String get firstBatch;
   @override
   String get secondBatch;
@@ -319,6 +408,10 @@ abstract class _Order implements Order {
   String get contractStages;
   @override
   String get implementationStages;
+  @override
+  String? get pdfId;
+  @override
+  DateTime get createdAt;
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.

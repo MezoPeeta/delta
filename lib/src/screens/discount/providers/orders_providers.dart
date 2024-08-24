@@ -27,12 +27,12 @@ Future<int> sendOrder(SendOrderRef ref, {required String address}) async {
 
 @riverpod
 Future<int> downloadOrderPDF(DownloadOrderPDFRef ref,
-    {required String userID}) async {
+    {required String pdfID}) async {
   final token = await ref.watch(tokenProvider.future);
 
   final request = await ref
       .watch(dioHelperProvider)
-      .getHTTP("/api/order-contract/$userID/download", token: token ?? "");
+      .getHTTP("/api/order-contract/$pdfID/download", token: token ?? "");
 
   log("[Download PDF]");
 
@@ -40,25 +40,11 @@ Future<int> downloadOrderPDF(DownloadOrderPDFRef ref,
 }
 
 @riverpod
-Future<String> getPDFIDByUser(GetPDFIDByUserRef ref,
-    {required String userID, required bool isOrder}) async {
-  final token = await ref.watch(tokenProvider.future);
-  final String url = isOrder
-      ? "/api/order-contract/user/$userID"
-      : "/api/maintenance-contract/user/$userID";
-  final request =
-      await ref.watch(dioHelperProvider).getHTTP(url, token: token ?? "");
-
-  log("[Download PDF]");
-  return request?.data["message"];
-}
-
-@riverpod
 Future<int> downloadContractPDF(DownloadContractPDFRef ref,
-    {required String userID}) async {
+    {required String pdfID}) async {
   final token = await ref.watch(tokenProvider.future);
   final request = await ref.watch(dioHelperProvider).getHTTP(
-      "/api/maintenance-contract/$userID/download",
+      "/api/maintenance-contract/$pdfID/download",
       token: token ?? "");
 
   log("[Download PDF]");

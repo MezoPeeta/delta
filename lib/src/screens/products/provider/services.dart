@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Services {
@@ -19,7 +18,7 @@ List<Services> _services = [
       routePath: "/repair",
       icon: "assets/img/icons/repair_icon.svg"),
   Services(
-      title: "المبيعات",
+      title: "قسم المبيعات",
       routePath: "/sales",
       icon: "assets/img/icons/sales_icon.svg"),
   Services(

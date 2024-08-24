@@ -154,7 +154,7 @@ class _SendOrderProviderElement extends AutoDisposeFutureProviderElement<int>
   String get address => (origin as SendOrderProvider).address;
 }
 
-String _$downloadOrderPDFHash() => r'951adebfe592757a43f60a355eea74e223e86d08';
+String _$downloadOrderPDFHash() => r'b45d12e74a2fec17421c7e7dc28b68456c9d1970';
 
 /// See also [downloadOrderPDF].
 @ProviderFor(downloadOrderPDF)
@@ -167,10 +167,10 @@ class DownloadOrderPDFFamily extends Family<AsyncValue<int>> {
 
   /// See also [downloadOrderPDF].
   DownloadOrderPDFProvider call({
-    required String userID,
+    required String pdfID,
   }) {
     return DownloadOrderPDFProvider(
-      userID: userID,
+      pdfID: pdfID,
     );
   }
 
@@ -179,7 +179,7 @@ class DownloadOrderPDFFamily extends Family<AsyncValue<int>> {
     covariant DownloadOrderPDFProvider provider,
   ) {
     return call(
-      userID: provider.userID,
+      pdfID: provider.pdfID,
     );
   }
 
@@ -202,11 +202,11 @@ class DownloadOrderPDFFamily extends Family<AsyncValue<int>> {
 class DownloadOrderPDFProvider extends AutoDisposeFutureProvider<int> {
   /// See also [downloadOrderPDF].
   DownloadOrderPDFProvider({
-    required String userID,
+    required String pdfID,
   }) : this._internal(
           (ref) => downloadOrderPDF(
             ref as DownloadOrderPDFRef,
-            userID: userID,
+            pdfID: pdfID,
           ),
           from: downloadOrderPDFProvider,
           name: r'downloadOrderPDFProvider',
@@ -217,7 +217,7 @@ class DownloadOrderPDFProvider extends AutoDisposeFutureProvider<int> {
           dependencies: DownloadOrderPDFFamily._dependencies,
           allTransitiveDependencies:
               DownloadOrderPDFFamily._allTransitiveDependencies,
-          userID: userID,
+          pdfID: pdfID,
         );
 
   DownloadOrderPDFProvider._internal(
@@ -227,10 +227,10 @@ class DownloadOrderPDFProvider extends AutoDisposeFutureProvider<int> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.userID,
+    required this.pdfID,
   }) : super.internal();
 
-  final String userID;
+  final String pdfID;
 
   @override
   Override overrideWith(
@@ -245,7 +245,7 @@ class DownloadOrderPDFProvider extends AutoDisposeFutureProvider<int> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        userID: userID,
+        pdfID: pdfID,
       ),
     );
   }
@@ -257,21 +257,21 @@ class DownloadOrderPDFProvider extends AutoDisposeFutureProvider<int> {
 
   @override
   bool operator ==(Object other) {
-    return other is DownloadOrderPDFProvider && other.userID == userID;
+    return other is DownloadOrderPDFProvider && other.pdfID == pdfID;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, userID.hashCode);
+    hash = _SystemHash.combine(hash, pdfID.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin DownloadOrderPDFRef on AutoDisposeFutureProviderRef<int> {
-  /// The parameter `userID` of this provider.
-  String get userID;
+  /// The parameter `pdfID` of this provider.
+  String get pdfID;
 }
 
 class _DownloadOrderPDFProviderElement
@@ -279,156 +279,11 @@ class _DownloadOrderPDFProviderElement
   _DownloadOrderPDFProviderElement(super.provider);
 
   @override
-  String get userID => (origin as DownloadOrderPDFProvider).userID;
-}
-
-String _$getPDFIDByUserHash() => r'b430bc18b6fd24efa647647930562edf5e3fdee5';
-
-/// See also [getPDFIDByUser].
-@ProviderFor(getPDFIDByUser)
-const getPDFIDByUserProvider = GetPDFIDByUserFamily();
-
-/// See also [getPDFIDByUser].
-class GetPDFIDByUserFamily extends Family<AsyncValue<String>> {
-  /// See also [getPDFIDByUser].
-  const GetPDFIDByUserFamily();
-
-  /// See also [getPDFIDByUser].
-  GetPDFIDByUserProvider call({
-    required String userID,
-    required bool isOrder,
-  }) {
-    return GetPDFIDByUserProvider(
-      userID: userID,
-      isOrder: isOrder,
-    );
-  }
-
-  @override
-  GetPDFIDByUserProvider getProviderOverride(
-    covariant GetPDFIDByUserProvider provider,
-  ) {
-    return call(
-      userID: provider.userID,
-      isOrder: provider.isOrder,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'getPDFIDByUserProvider';
-}
-
-/// See also [getPDFIDByUser].
-class GetPDFIDByUserProvider extends AutoDisposeFutureProvider<String> {
-  /// See also [getPDFIDByUser].
-  GetPDFIDByUserProvider({
-    required String userID,
-    required bool isOrder,
-  }) : this._internal(
-          (ref) => getPDFIDByUser(
-            ref as GetPDFIDByUserRef,
-            userID: userID,
-            isOrder: isOrder,
-          ),
-          from: getPDFIDByUserProvider,
-          name: r'getPDFIDByUserProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$getPDFIDByUserHash,
-          dependencies: GetPDFIDByUserFamily._dependencies,
-          allTransitiveDependencies:
-              GetPDFIDByUserFamily._allTransitiveDependencies,
-          userID: userID,
-          isOrder: isOrder,
-        );
-
-  GetPDFIDByUserProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.userID,
-    required this.isOrder,
-  }) : super.internal();
-
-  final String userID;
-  final bool isOrder;
-
-  @override
-  Override overrideWith(
-    FutureOr<String> Function(GetPDFIDByUserRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: GetPDFIDByUserProvider._internal(
-        (ref) => create(ref as GetPDFIDByUserRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        userID: userID,
-        isOrder: isOrder,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<String> createElement() {
-    return _GetPDFIDByUserProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is GetPDFIDByUserProvider &&
-        other.userID == userID &&
-        other.isOrder == isOrder;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, userID.hashCode);
-    hash = _SystemHash.combine(hash, isOrder.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin GetPDFIDByUserRef on AutoDisposeFutureProviderRef<String> {
-  /// The parameter `userID` of this provider.
-  String get userID;
-
-  /// The parameter `isOrder` of this provider.
-  bool get isOrder;
-}
-
-class _GetPDFIDByUserProviderElement
-    extends AutoDisposeFutureProviderElement<String> with GetPDFIDByUserRef {
-  _GetPDFIDByUserProviderElement(super.provider);
-
-  @override
-  String get userID => (origin as GetPDFIDByUserProvider).userID;
-  @override
-  bool get isOrder => (origin as GetPDFIDByUserProvider).isOrder;
+  String get pdfID => (origin as DownloadOrderPDFProvider).pdfID;
 }
 
 String _$downloadContractPDFHash() =>
-    r'660ceda3ab7686dd37df4037859722a4e56a01a6';
+    r'f5051637724f53a46d2ba34b703e0485366bdd11';
 
 /// See also [downloadContractPDF].
 @ProviderFor(downloadContractPDF)
@@ -441,10 +296,10 @@ class DownloadContractPDFFamily extends Family<AsyncValue<int>> {
 
   /// See also [downloadContractPDF].
   DownloadContractPDFProvider call({
-    required String userID,
+    required String pdfID,
   }) {
     return DownloadContractPDFProvider(
-      userID: userID,
+      pdfID: pdfID,
     );
   }
 
@@ -453,7 +308,7 @@ class DownloadContractPDFFamily extends Family<AsyncValue<int>> {
     covariant DownloadContractPDFProvider provider,
   ) {
     return call(
-      userID: provider.userID,
+      pdfID: provider.pdfID,
     );
   }
 
@@ -476,11 +331,11 @@ class DownloadContractPDFFamily extends Family<AsyncValue<int>> {
 class DownloadContractPDFProvider extends AutoDisposeFutureProvider<int> {
   /// See also [downloadContractPDF].
   DownloadContractPDFProvider({
-    required String userID,
+    required String pdfID,
   }) : this._internal(
           (ref) => downloadContractPDF(
             ref as DownloadContractPDFRef,
-            userID: userID,
+            pdfID: pdfID,
           ),
           from: downloadContractPDFProvider,
           name: r'downloadContractPDFProvider',
@@ -491,7 +346,7 @@ class DownloadContractPDFProvider extends AutoDisposeFutureProvider<int> {
           dependencies: DownloadContractPDFFamily._dependencies,
           allTransitiveDependencies:
               DownloadContractPDFFamily._allTransitiveDependencies,
-          userID: userID,
+          pdfID: pdfID,
         );
 
   DownloadContractPDFProvider._internal(
@@ -501,10 +356,10 @@ class DownloadContractPDFProvider extends AutoDisposeFutureProvider<int> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.userID,
+    required this.pdfID,
   }) : super.internal();
 
-  final String userID;
+  final String pdfID;
 
   @override
   Override overrideWith(
@@ -519,7 +374,7 @@ class DownloadContractPDFProvider extends AutoDisposeFutureProvider<int> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        userID: userID,
+        pdfID: pdfID,
       ),
     );
   }
@@ -531,21 +386,21 @@ class DownloadContractPDFProvider extends AutoDisposeFutureProvider<int> {
 
   @override
   bool operator ==(Object other) {
-    return other is DownloadContractPDFProvider && other.userID == userID;
+    return other is DownloadContractPDFProvider && other.pdfID == pdfID;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, userID.hashCode);
+    hash = _SystemHash.combine(hash, pdfID.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin DownloadContractPDFRef on AutoDisposeFutureProviderRef<int> {
-  /// The parameter `userID` of this provider.
-  String get userID;
+  /// The parameter `pdfID` of this provider.
+  String get pdfID;
 }
 
 class _DownloadContractPDFProviderElement
@@ -553,7 +408,7 @@ class _DownloadContractPDFProviderElement
   _DownloadContractPDFProviderElement(super.provider);
 
   @override
-  String get userID => (origin as DownloadContractPDFProvider).userID;
+  String get pdfID => (origin as DownloadContractPDFProvider).pdfID;
 }
 
 String _$getCartHash() => r'e53be77b8e75cbaa6b25c1551a6e539509727768';

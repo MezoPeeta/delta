@@ -4,9 +4,9 @@ import 'package:delta/src/screens/order/data/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../styles/colors.dart';
-import '../auth/login/login_providers.dart';
 import '../bookings/data/order.dart';
 import '../products/product_detail.dart';
 
@@ -16,9 +16,14 @@ class OrderScreen extends ConsumerWidget {
     required this.order,
   });
   final Order order;
+
+  String formatDate(DateTime date) {
+    final formattedDate = DateFormat.yMd().format(date);
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userStorageProvider).requireValue;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +36,6 @@ class OrderScreen extends ConsumerWidget {
             height: 12,
           ),
           ...OrderStatus.values.mapIndexed((i, e) {
-            print(e);
             bool isActive = OrderStatus.values.indexOf(OrderStatus.values
                     .firstWhere((e) =>
                         e.name == order.implementationStages.toLowerCase())) >=
@@ -77,8 +81,11 @@ class OrderScreen extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     Text(
-                      user!.name,
+                      order.userName,
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
@@ -94,8 +101,11 @@ class OrderScreen extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     Text(
-                      user.phone,
+                      order.userPhone,
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
@@ -111,8 +121,11 @@ class OrderScreen extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     Text(
-                      order.firstBatch,
+                      formatDate(order.createdAt),
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
@@ -127,6 +140,9 @@ class OrderScreen extends ConsumerWidget {
                           color: AppColors.grayColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      width: 4,
                     ),
                     Text(
                       order.firstBatch,
@@ -145,6 +161,9 @@ class OrderScreen extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     Text(
                       order.secondBatch,
                       style: const TextStyle(
@@ -161,6 +180,9 @@ class OrderScreen extends ConsumerWidget {
                           color: AppColors.grayColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      width: 4,
                     ),
                     Text(
                       order.thirdBatch,
@@ -182,7 +204,8 @@ class OrderScreen extends ConsumerWidget {
                     ),
                     OutlinedButton.icon(
                       onPressed: () {
-                        ref.read(downloadOrderPDFProvider(userID: user.id));
+                        ref.read(
+                            downloadOrderPDFProvider(pdfID: order.pdfId ?? ""));
                       },
                       label: const Text(
                         "تنزيل",
