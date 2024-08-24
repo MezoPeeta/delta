@@ -1,4 +1,5 @@
 import 'package:delta/src/screens/auth/login/login_providers.dart';
+import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:delta/src/screens/settings/providers/settings_providers.dart';
 import 'package:delta/src/shared/app_bar.dart';
 import 'package:delta/src/shared/storage.dart';
@@ -27,6 +28,7 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isNotified = ref.watch(isNotifiedStorageProvider).value ?? true;
+    final isGuest = ref.watch(isGuestProvider);
     final List<Settings> tiles = [
       Settings(
         label: "الملف الشخصي",
@@ -35,22 +37,19 @@ class SettingsScreen extends ConsumerWidget {
         icon: const Icon(Icons.person_outline),
       ),
       Settings(
-        label: "العنواين",
+        label: "عقود الصيانة",
+        onTap: () => context.push("/deals"),
+        icon: const Icon(Icons.description_outlined),
+      ),
+      Settings(
+        label: "العناوين",
         onTap: () => context.push("/addresses"),
         icon: SvgPicture.asset("assets/img/icons/address.svg"),
       ),
       Settings(
-        label: "تغير كلمة السر",
-        onTap: () => context.push("/change_pass"),
-        icon: Container(
-          alignment: Alignment.center,
-          width: 18,
-          height: 18,
-          child: SvgPicture.asset(
-            "assets/img/icons/key.svg",
-          ),
-        ),
-      ),
+          label: "تغير كلمة السر",
+          onTap: () => context.push("/change_pass"),
+          icon: const Icon(Icons.key_outlined)),
       Settings(
         label: "حول الشركة",
         onTap: () => context.push("/about"),
@@ -194,18 +193,20 @@ class SettingsScreen extends ConsumerWidget {
           isSettings: true,
           title: "الاعدادات",
         ),
-        body: ListView.separated(
-            itemCount: tiles.length,
-            separatorBuilder: (context, index) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Divider()),
-            itemBuilder: (context, index) => SettingTile(
-                  label: tiles[index].label,
-                  icon: tiles[index].icon,
-                  trailing: tiles[index].trailing,
-                  onTap: tiles[index].onTap,
-                  isCritical: tiles[index].isCritical,
-                )));
+        body: isGuest
+            ? const LoginRequiredWidget()
+            : ListView.separated(
+                itemCount: tiles.length,
+                separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Divider()),
+                itemBuilder: (context, index) => SettingTile(
+                      label: tiles[index].label,
+                      icon: tiles[index].icon,
+                      trailing: tiles[index].trailing,
+                      onTap: tiles[index].onTap,
+                      isCritical: tiles[index].isCritical,
+                    )));
   }
 }
 

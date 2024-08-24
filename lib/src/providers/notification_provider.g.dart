@@ -6,7 +6,7 @@ part of 'notification_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendFCMTokenHash() => r'1f5fd4eff066d5d5bd531798118d09e6218616d5';
+String _$sendFCMTokenHash() => r'c261dcca48e6b6ff542d26053df62796d2701c59';
 
 /// See also [sendFCMToken].
 @ProviderFor(sendFCMToken)

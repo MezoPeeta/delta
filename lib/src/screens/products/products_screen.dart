@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:delta/src/screens/home/home_screen.dart';
+import 'package:delta/src/shared/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,14 +24,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   Widget build(BuildContext context) {
     final categories = ref.watch(getCategoriesProvider);
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("منتجاتنا"), centerTitle: true, actions: [
-        IconButton(
-            onPressed: () {
-              context.push('/notifications');
-            },
-            icon: const Icon(Icons.notifications_outlined)),
-      ]),
+      appBar: const CustomAppBar(
+        title: "منتجاتنا",
+        isSettings: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         child: Column(
@@ -77,7 +74,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 12,
-                    mainAxisExtent: 147,
+                    mainAxisExtent: 174,
                   ),
                   itemBuilder: (context, index) {
                     final page = index ~/ pageSize + 1;

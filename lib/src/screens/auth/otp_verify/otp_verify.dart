@@ -4,11 +4,9 @@ import 'package:delta/src/app.dart';
 import 'package:delta/src/screens/auth/otp_verify/providers/otp_providers.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:pinput/pinput.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
   const OtpVerifyScreen({super.key, required this.email});
@@ -20,6 +18,7 @@ class OtpVerifyScreen extends StatefulWidget {
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   int number = 60;
+  final otpController = TextEditingController();
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     Timer.periodic(
@@ -45,7 +44,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   }
 
   bool loading = false;
-  String otpValue = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,36 +64,24 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 "تم ارسال رمز التحقق علي بريدك الالكتروني  ",
                 textAlign: TextAlign.center,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(widget.email),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.edit_outlined,
-                        color: AppColors.buttonColor,
-                      ))
-                ],
-              ),
+              Text(widget.email),
               const SizedBox(
                 height: 32,
               ),
               Directionality(
                 textDirection: TextDirection.ltr,
-                child: OTPTextField(
+                child: Pinput(
                   length: 4,
-                  onCompleted: (value) {
-                    setState(() {
-                      otpValue = value;
-                    });
-                  },
-                  keyboardType: TextInputType.number,
-                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                  width: MediaQuery.sizeOf(context).width / 1.5,
-                  fieldWidth: 50,
-                  style: const TextStyle(fontSize: 17),
-                  fieldStyle: FieldStyle.box,
+                  controller: otpController,
+                  separatorBuilder: (i) => const SizedBox(
+                    width: 16,
+                  ),
+                  defaultPinTheme: PinTheme(
+                      width: 64,
+                      height: 62,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.grayColor),
+                          borderRadius: BorderRadius.circular(8))),
                 ),
               ),
               const Spacer(),
@@ -156,27 +142,31 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       minWidth: double.infinity, minHeight: 54),
                   child: ElevatedButton(
                       onPressed: () async {
-                        // print(otpValue);
                         setState(() {
                           loading = true;
                         });
-                        ref.read(verifyOTPProvider(
-                            email: widget.email, otp: otpValue));
+                        await ref.read(verifyOTPProvider(
+                                email: widget.email, otp: otpController.text)
+                            .future);
                         setState(() {
                           loading = false;
                         });
                         bool isResetPassword =
                             ref.watch(isResetPasswordProvider);
                         if (isResetPassword) {
+                          if (!context.mounted) return;
                           context.push("/pass_confirm", extra: widget.email);
 
                           return;
                         }
+                        if (!context.mounted) return;
 
                         context.push("/new_pass", extra: widget.email);
                       },
                       child: loading
-                          ? const CircularProgressIndicator.adaptive()
+                          ? const CircularProgressIndicator.adaptive(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
                           : const Text("تاكيد")),
                 );
               }),

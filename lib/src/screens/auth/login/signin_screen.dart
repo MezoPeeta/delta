@@ -29,9 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 10,
-      ),
+      appBar: AppBar(),
       body: LayoutBuilder(builder: (context, constraints) {
         return Padding(
           padding: const EdgeInsets.symmetric(
@@ -96,6 +94,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
+                            const SizedBox(
+                              height: 8,
+                            ),
                             IntlPhoneField(
                               initialCountryCode: 'QA',
                               languageCode: "ar",
@@ -141,6 +142,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text("كلمة المرور"),
+                            const SizedBox(
+                              height: 8,
+                            ),
                             TextFormField(
                               controller: passwordController,
                               obscureText: isPassHidden,
@@ -176,6 +180,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(
+                          height: 8,
                         ),
                         Align(
                           alignment: Alignment.topLeft,

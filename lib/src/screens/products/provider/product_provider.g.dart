@@ -304,6 +304,137 @@ class _GetProductsbyCategoryProviderElement
   String get page => (origin as GetProductsbyCategoryProvider).page;
 }
 
+String _$getRelatedProductsHash() =>
+    r'2a9b7a3de81f6087a04822580f6a0fe60dfc04d2';
+
+/// See also [getRelatedProducts].
+@ProviderFor(getRelatedProducts)
+const getRelatedProductsProvider = GetRelatedProductsFamily();
+
+/// See also [getRelatedProducts].
+class GetRelatedProductsFamily extends Family<AsyncValue<List<Product>>> {
+  /// See also [getRelatedProducts].
+  const GetRelatedProductsFamily();
+
+  /// See also [getRelatedProducts].
+  GetRelatedProductsProvider call({
+    required String productID,
+  }) {
+    return GetRelatedProductsProvider(
+      productID: productID,
+    );
+  }
+
+  @override
+  GetRelatedProductsProvider getProviderOverride(
+    covariant GetRelatedProductsProvider provider,
+  ) {
+    return call(
+      productID: provider.productID,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getRelatedProductsProvider';
+}
+
+/// See also [getRelatedProducts].
+class GetRelatedProductsProvider
+    extends AutoDisposeFutureProvider<List<Product>> {
+  /// See also [getRelatedProducts].
+  GetRelatedProductsProvider({
+    required String productID,
+  }) : this._internal(
+          (ref) => getRelatedProducts(
+            ref as GetRelatedProductsRef,
+            productID: productID,
+          ),
+          from: getRelatedProductsProvider,
+          name: r'getRelatedProductsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getRelatedProductsHash,
+          dependencies: GetRelatedProductsFamily._dependencies,
+          allTransitiveDependencies:
+              GetRelatedProductsFamily._allTransitiveDependencies,
+          productID: productID,
+        );
+
+  GetRelatedProductsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.productID,
+  }) : super.internal();
+
+  final String productID;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Product>> Function(GetRelatedProductsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetRelatedProductsProvider._internal(
+        (ref) => create(ref as GetRelatedProductsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        productID: productID,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Product>> createElement() {
+    return _GetRelatedProductsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetRelatedProductsProvider && other.productID == productID;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, productID.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetRelatedProductsRef on AutoDisposeFutureProviderRef<List<Product>> {
+  /// The parameter `productID` of this provider.
+  String get productID;
+}
+
+class _GetRelatedProductsProviderElement
+    extends AutoDisposeFutureProviderElement<List<Product>>
+    with GetRelatedProductsRef {
+  _GetRelatedProductsProviderElement(super.provider);
+
+  @override
+  String get productID => (origin as GetRelatedProductsProvider).productID;
+}
+
 String _$getCategoriesHash() => r'1186f5c8bb5e8f494abcdde9f8b66980401f2a29';
 
 /// See also [getCategories].
@@ -320,7 +451,7 @@ final getCategoriesProvider =
 );
 
 typedef GetCategoriesRef = AutoDisposeFutureProviderRef<List<Category>>;
-String _$addToCartHash() => r'c3cb26d828e67b5bfa4ebdb1e0564b7a10cb4526';
+String _$addToCartHash() => r'6d9c77322d367ea2bf7846742ddcffb66380c500';
 
 /// See also [addToCart].
 @ProviderFor(addToCart)

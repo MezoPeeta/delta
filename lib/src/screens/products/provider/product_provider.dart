@@ -43,6 +43,22 @@ Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
 }
 
 @riverpod
+Future<List<Product>> getRelatedProducts(GetRelatedProductsRef ref,
+    {required String productID}) async {
+  final userToken = await ref.watch(tokenProvider.future);
+
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP("/api/products/$productID", token: userToken ?? "");
+
+  List<Product> products = request!.data["data"]["relatedProducts"]
+      .map<Product>((e) => Product.fromJson(e))
+      .toList();
+
+  return products;
+}
+
+@riverpod
 Future<List<Category>> getCategories(
   GetCategoriesRef ref,
 ) async {
@@ -62,19 +78,22 @@ Future<List<Category>> getCategories(
 Future<List<CartItem>> addToCart(AddToCartRef ref,
     {required String productID}) async {
   final userToken = await ref.watch(tokenProvider.future);
+  try {
+    final request = await ref.watch(dioHelperProvider).postHTTP(
+        "/api/carts/add", {"productId": productID},
+        options: Options(headers: {"Authorization": "Bearer $userToken"}));
 
-  final request = await ref.watch(dioHelperProvider).postHTTP(
-      "/api/carts/add", {"productId": productID},
-      options: Options(headers: {"Authorization": "Bearer $userToken"}));
-  log(request!.statusCode.toString());
-  if (request.statusCode == 200) {
-    log("[Product Added: $productID]");
-    snackbarKey.currentState!
-        .showSnackBar(const SnackBar(content: Text("تم اضافة المنتج بنجاح")));
+    if (request?.statusCode == 200) {
+      log("[Product Added: $productID]");
+      snackbarKey.currentState!
+          .showSnackBar(const SnackBar(content: Text("تم اضافة المنتج بنجاح")));
 
-    return request.data["data"]["cart"]["items"]
-        .map<CartItem>((e) => CartItem.fromJson(e))
-        .toList();
+      return request?.data["data"]["cart"]["items"]
+          .map<CartItem>((e) => CartItem.fromJson(e))
+          .toList();
+    }
+  } catch (e) {
+    return [];
   }
   return [];
 }

@@ -54,7 +54,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            image:const DecorationImage(image:AssetImage("assets/img/brand.png")),
+                            image: const DecorationImage(
+                                image: AssetImage("assets/img/brand.png")),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
@@ -205,7 +206,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     minWidth: double.infinity, minHeight: 54),
                                 child: Consumer(builder: (context, ref, child) {
                                   return ElevatedButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (phoneNumber.isEmpty) {
                                           snackbarKey.currentState!
                                               .showSnackBar(const SnackBar(
@@ -218,17 +219,22 @@ class _SignupScreenState extends State<SignupScreen> {
                                             loading = true;
                                           });
 
-                                          ref.read(signUpProvider(
-                                              userName: nameController.text,
-                                              email: emailController.text,
-                                              phone: phoneNumber));
+                                          await ref.read(signUpProvider(
+                                                  userName: nameController.text,
+                                                  email: emailController.text,
+                                                  phone: phoneNumber)
+                                              .future);
                                         }
                                         setState(() {
                                           loading = false;
                                         });
                                       },
                                       child: loading
-                                          ? const CircularProgressIndicator()
+                                          ? const CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation(
+                                                      Colors.white),
+                                            )
                                           : const Text("انشاء الحساب"));
                                 }),
                               ),

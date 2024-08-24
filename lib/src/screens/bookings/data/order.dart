@@ -12,6 +12,12 @@ class Order with _$Order {
       {@JsonKey(name: '_id') required String id,
       required List<CartItem> cartItems,
       required String status,
+      required String firstBatch,
+      required String secondBatch,
+      required String thirdBatch,
+      required String contractStages,
+      required String implementationStages,
+
      }) = _Order;
 
   factory Order.fromJson(Map<String, Object?> json) => _$OrderFromJson(json);

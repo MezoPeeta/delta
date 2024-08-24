@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:delta/src/app.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,8 +17,23 @@ final userStorageProvider = FutureProvider<User?>((ref) async {
   if (user != null) {
     return user;
   }
-  final currentUser = await ref.watch(currentUserProvider.future);
-  return currentUser;
+  try {
+    final currentUser = await ref.watch(currentUserProvider.future);
+    return currentUser;
+  } catch (e) {
+    return const User([],
+        id: "id",
+        name: "زائر",
+        email: "email",
+        role: "role",
+        phone: "phone",
+        isUserHasContract: false,
+        isUserHasMaintenanceRequest: false);
+  }
+});
+
+final isGuestProvider = StateProvider<bool>((ref) {
+  return ref.watch(userStorageProvider).requireValue?.name == "زائر";
 });
 
 final userProvider = StateProvider<User?>((ref) {
@@ -32,23 +51,21 @@ Future<User> currentUser(CurrentUserRef ref) async {
 }
 
 @riverpod
-Future<User> login(LoginRef ref,
+Future<void> login(LoginRef ref,
     {required String phone, required String password}) async {
   final request = await ref
       .watch(dioHelperProvider)
       .postHTTP("/api/users/login", {"phone": phone, "password": password});
+  try {
+    final user = User.fromJson(request?.data["data"]["user"]);
 
+    ref.watch(userProvider.notifier).state = user;
+    final String token = request?.data["token"];
 
-  final user = User.fromJson(request?.data["data"]["user"]);
-
-  ref.watch(userProvider.notifier).state = user;
-
-  final String token = request?.data["token"];
-
-  ref.watch(tokenSProvider.notifier).state = token;
-  await StorageRepository().write(key: "token", value: token);
-
-  ref.watch(goRouterProvider).go("/");
-
-  return user;
+    ref.watch(tokenSProvider.notifier).state = token;
+    await StorageRepository().write(key: "token", value: token);
+    ref.watch(goRouterProvider).go("/");
+  } catch (e) {
+    return;
+  }
 }

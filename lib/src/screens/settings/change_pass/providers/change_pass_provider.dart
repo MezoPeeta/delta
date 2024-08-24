@@ -12,17 +12,24 @@ Future<void> changePassword(ChangePasswordRef ref,
     required String newPassword,
     required String confirmPassword}) async {
   final token = await ref.watch(tokenProvider.future);
-  final request = await ref.watch(dioHelperProvider).patchHTTP(
-      "/api/users/updateMyPassword",
-      {
-        "passwordCurrent": currentPassword,
-        "password": newPassword,
-        "confirm_password": confirmPassword
-      },
-      token: token!);
-  print(request!.data);
-  if (request.statusCode == 200) {
-    snackbarKey.currentState!.showSnackBar(
-        const SnackBar(content: Text("تم تغير كلمة المرور بنجاح")));
+  try {
+    final request = await ref.watch(dioHelperProvider).patchHTTP(
+        "/api/users/updateMyPassword",
+        {
+          "passwordCurrent": currentPassword,
+          "password": newPassword,
+          "confirm_password": confirmPassword
+        },
+        token: token!);
+    print(request?.data["message"]);
+    if (request?.statusCode == 200) {
+      snackbarKey.currentState!.showSnackBar(
+          const SnackBar(content: Text("تم تغير كلمة المرور بنجاح")));
+      return;
+    }
+    snackbarKey.currentState!
+        .showSnackBar(SnackBar(content: Text(request?.data["message"])));
+  } catch (e) {
+    print(e.runtimeType);
   }
 }

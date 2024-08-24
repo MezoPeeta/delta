@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readmore/readmore.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
-
+  final String email = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,7 @@ class AboutScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             ReadMoreText(
-              'وصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصفوصsdsdsdsdsdsdsdsdsdssdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddفوصفوصفوصفوصفوصفوص.',
+              "شركة دلتا هي شركة متخصصة في تقديم حلول مبتكرة ومتطورة في مجالات التكنولوجيا والخدمات الرقمية. تسعى دلتا دائمًا إلى تمكين الأفراد والشركات من خلال توفير تقنيات حديثة تُسهم في تحسين الكفاءة وزيادة الإنتاجية. من خلال التركيز على الجودة والإبداع، تلتزم دلتا بتقديم أفضل المنتجات والخدمات التي تلبي احتياجات عملائها وتساعدهم على تحقيق أهدافهم بنجاح. سواء كان ذلك من خلال تطوير البرمجيات، تقديم الاستشارات التقنية، أو توفير الحلول الذكية، دلتا دائماً في المقدمة.",
               trimMode: TrimMode.Line,
               trimLines: 5,
               style: TextStyle(color: AppColors.grayColor),
@@ -53,30 +54,6 @@ class AboutScreen extends StatelessWidget {
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(12)),
               child: ListTile(
-                leading: SvgPicture.asset("assets/img/icons/whatsapp.svg"),
-                title: const Text("واتساب"),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(12)),
-              child: ListTile(
-                leading: SvgPicture.asset("assets/img/icons/facebook.svg"),
-                title: const Text("فيسبوك"),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(12)),
-              child: ListTile(
                 leading: SvgPicture.asset("assets/img/icons/instagram.svg"),
                 title: const Text("انستاجرام"),
               ),
@@ -84,27 +61,21 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(12)),
-              child: ListTile(
-                leading: SvgPicture.asset("assets/img/icons/twitter.svg"),
-                title: const Text("تويتر (اكس)"),
-              ),
-            ),
             const SizedBox(
               height: 16,
             ),
             GestureDetector(
-              onTap: ()=>context.push("/contact"),
+              onTap: () async {
+                await launchUrlString(
+                    "mailto:$email?subject=تواصل بنا | دلتا&body=");
+              },
               child: Container(
                 decoration: BoxDecoration(
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(12)),
                 child: const ListTile(
-                  leading: Icon(Icons.phone),
-                  title: Text("اتصل بنا"),
+                  leading: Icon(Icons.email_outlined),
+                  title: Text("البريد الاكتروني"),
                 ),
               ),
             ),

@@ -32,7 +32,7 @@ class _BoardingScreenState extends ConsumerState<BoardingScreen> {
                   child: Align(
                       alignment: Alignment.topRight,
                       child: TextButton(
-                          onPressed: () => context.go("/signin"),
+                          onPressed: () => context.go("/intro"),
                           child: Text(
                             "تخطي",
                             style: TextStyle(
@@ -228,7 +228,7 @@ class _BoardingScreenState extends ConsumerState<BoardingScreen> {
                                   constraints: const BoxConstraints(
                                       minWidth: double.infinity, minHeight: 54),
                                   child: ElevatedButton(
-                                      onPressed: () => context.go("/signin"),
+                                      onPressed: () => context.go("/intro"),
                                       child: const Text("ابدا الان"))),
                               const SizedBox(
                                 height: 20,

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/home/provider/slider_provider.dart';
+import 'package:delta/src/screens/order/order_screen.dart';
 import 'package:delta/src/shared/navigation.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +35,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   String category = "الكل";
-  int selectedIndex = 0;
+  final pageController = PageController();
   final pageSize = 20;
+  bool loading = false;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userStorageProvider);
@@ -89,13 +93,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               width: 43,
                               height: 43,
                               decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
+                                  color: AppColors.notificationColor,
                                   borderRadius: BorderRadius.circular(8)),
                               child: Container(
                                 width: 18,
                                 height: 18,
                                 alignment: Alignment.center,
                                 child: SvgPicture.asset(
+                                  colorFilter: const ColorFilter.mode(
+                                      Colors.black, BlendMode.srcIn),
                                   "assets/img/icons/notification.svg",
                                 ),
                               ),
@@ -109,7 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(),
+                          border: Border.all(color: const Color(0xFFE0E0E0)),
                           borderRadius: BorderRadius.circular(12)),
                       child: SearchBar(
                         hintText: "ابحث هنا..",
@@ -122,9 +128,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         },
                         textInputAction: TextInputAction.search,
                         onChanged: (value) async {
+                          setState(() {
+                            loading = true;
+                          });
                           ref.read(queryProvider.notifier).state = value;
                           if (value != "") {
-                            ref
+                            await ref
                                 .read(searchProductProvider(productName: value)
                                     .future)
                                 .then((products) => setState(() {
@@ -136,6 +145,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               });
                             }
                           }
+                          setState(() {
+                            loading = false;
+                          });
                         },
                         leading: const Icon(Icons.search_outlined),
                         elevation: const WidgetStatePropertyAll<double>(0),
@@ -162,15 +174,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           const SizedBox(
                             height: 8,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: queryProducts
-                                .map((e) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12),
-                                      child: ProductContainer(product: e),
-                                    ))
-                                .toList(),
+                          Visibility(
+                              visible: loading,
+                              child: const Center(
+                                  child: CircularProgressIndicator())),
+                          Visibility(
+                            visible: !loading,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: queryProducts
+                                  .map((e) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 12),
+                                        child: ProductContainer(product: e),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ],
                       ),
@@ -181,61 +200,101 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: const Text(
                         "احدث المنتجات",
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ),
                     const SizedBox(
                       height: 12,
                     ),
-                    SizedBox(
-                        height: 147,
-                        child: slider.when(
-                            data: (data) {
-                              if (data.isEmpty) {
-                                return const Center(
-                                  child: Text("لا يوجد عروض اليوم"),
-                                );
-                              }
-                              return ListView.separated(
-                                  itemCount: data.length,
-                                  padding: EdgeInsets.zero,
-                                  scrollDirection: Axis.horizontal,
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        width: 10,
+                    Visibility(
+                      visible: ref.watch(queryProvider).isEmpty,
+                      child: SizedBox(
+                          height: 190,
+                          child: slider.when(
+                              data: (data) {
+                                if (data.isEmpty) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppColors.grayColor),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Center(
+                                      child: Text(
+                                        "لا يوجد عروض اليوم",
+                                        style: TextStyle(
+                                            color: AppColors.grayColor),
                                       ),
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        await ref
-                                            .read(cartNotifierProvider.notifier)
-                                            .addToCart(
-                                                productID:
-                                                    data[index].productId);
-                                        ref
-                                            .read(currentIndexProvider.notifier)
-                                            .state = 2;
-                                      },
-                                      child: Container(
-                                          width:
-                                              MediaQuery.sizeOf(context).width -
-                                                  20,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: NetworkImage(
-                                                      data[index].photoUrl)),
-                                              borderRadius:
-                                                  BorderRadius.circular(12))),
-                                    );
-                                  });
-                            },
-                            error: (e, s) {
-                              log("Cannt get Slider", error: e, stackTrace: s);
-                              return const Text("حدث خطأ ما");
-                            },
-                            loading: () => const Center(
-                                child: CircularProgressIndicator.adaptive()))),
+                                    ),
+                                  );
+                                }
+                                return Column(
+                                  children: [
+                                    Expanded(
+                                      child: PageView.builder(
+                                          controller: pageController,
+                                          itemCount: data.length,
+                                          onPageChanged: (value) {
+                                            setState(() {
+                                              selectedIndex = value;
+                                            });
+                                          },
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () async {
+                                                await ref
+                                                    .read(cartNotifierProvider
+                                                        .notifier)
+                                                    .addToCart(
+                                                        productID: data[index]
+                                                            .productId);
+                                                ref
+                                                    .read(currentIndexProvider
+                                                        .notifier)
+                                                    .state = 2;
+                                              },
+                                              child: Container(
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          20,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: NetworkImage(
+                                                              data[index]
+                                                                  .photoUrl)),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12))),
+                                            );
+                                          }),
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: data.mapIndexed((i, e) {
+                                          return SizedBox(
+                                            width: 25,
+                                            child: Radio(
+                                                activeColor: Colors.black,
+                                                value: i == selectedIndex,
+                                                groupValue: true,
+                                                onChanged: (_) {}),
+                                          );
+                                        }).toList()),
+                                  ],
+                                );
+                              },
+                              error: (e, s) {
+                                log("Cannt get Slider",
+                                    error: e, stackTrace: s);
+                                return const Text("حدث خطأ ما");
+                              },
+                              loading: () => const Center(
+                                  child:
+                                      CircularProgressIndicator.adaptive()))),
+                    ),
+
                     const SizedBox(
                       height: 16,
                     ),
@@ -244,7 +303,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: const Text(
                         "خدمتنا",
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ),
                     const SizedBox(
@@ -271,17 +330,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                    color: AppColors.grayColor.withOpacity(0.2),
+                                    color: AppColors.backContainerColor,
                                     borderRadius: BorderRadius.circular(4)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
+                                      width: double.infinity,
                                       decoration: BoxDecoration(
-                                          color: AppColors.grayColor,
+                                          border: Border.all(
+                                              color: AppColors.grayColor),
                                           borderRadius:
-                                              BorderRadius.circular(5)),
-                                      height: 83,
+                                              BorderRadius.circular(8)),
+                                      height: 80,
+                                      child: Container(
+                                        width: 32,
+                                        alignment: Alignment.center,
+                                        child: SvgPicture.asset(
+                                            width: 32, services[index].icon),
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -333,15 +400,15 @@ class CategoryWidget extends StatelessWidget {
       width: text.length <= 5
           ? text != "الكل"
               ? text == "ابواب"
-                  ? width / (width >= 481 ? 7 : 3.5)
+                  ? width / (width >= 481 ? 7 : 4)
                   : width / (width >= 481 ? 7 : 3.7)
               : 60
-          : 140,
+          : 150,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 13),
       decoration: BoxDecoration(
           color: isSelected
               ? Colors.blue.withOpacity(0.2)
-              : AppColors.grayColor.withOpacity(0.2),
+              : const Color(0xFFECECEC),
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -386,9 +453,10 @@ class ProductContainer extends StatelessWidget {
       onTap: () => context.push("/products/detail", extra: product),
       child: Container(
         padding: const EdgeInsets.all(12),
-        width: double.infinity,
+        width: 172,
+        height: 174,
         decoration: BoxDecoration(
-            color: AppColors.grayColor.withOpacity(0.2),
+            color: AppColors.backContainerColor,
             borderRadius: BorderRadius.circular(4)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

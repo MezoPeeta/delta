@@ -1,4 +1,5 @@
 import 'package:delta/src/app.dart';
+import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/shared/dio_helper.dart';
 import 'package:delta/src/shared/routes.dart';
 import 'package:delta/src/shared/storage.dart';
@@ -17,8 +18,8 @@ Future<void> logOut(LogOutRef ref) async {
       options: Options(headers: {"Authorization": "Bearer $token"}));
   await StorageRepository().delete(key: "token");
   await StorageRepository().delete(key: "user");
-
-  ref.watch(goRouterProvider).go("/signin");
+  ref.invalidate(userProvider);
+  ref.watch(goRouterProvider).go("/intro");
 }
 
 @riverpod
@@ -29,7 +30,9 @@ Future<void> deleteUser(DeleteUserRef ref) async {
       options: Options(headers: {"Authorization": "Bearer $token"}));
   await StorageRepository().delete(key: "token");
   await StorageRepository().delete(key: "user");
-  ref.watch(goRouterProvider).go("/signin");
+  ref.invalidate(userProvider);
+
+  ref.watch(goRouterProvider).go("/intro");
   snackbarKey.currentState!
       .showSnackBar(const SnackBar(content: Text("تم حذف الحساب بنجاح")));
 }

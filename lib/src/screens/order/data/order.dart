@@ -2,18 +2,18 @@ enum OrderStatus {
   pending(title: "", subTitle: "", description: ""),
 
   ordering(
-      subTitle: "بدء تصنيع المصعد",
+      subTitle: "طلب المصعد من المنصع",
       description:
           "يتم في هذه الخطوة التواصل مع المصنع و طلب المصعد المطلوب للعميل",
       title: "المرحلة الاولي"),
   shipping(
       subTitle: "الشحن",
       description: "شحن المصعد من المصنع",
-      title: "المرحلة الثالثة"),
+      title: "المرحلة الثانية"),
   fees(
       subTitle: "الجمارك",
       description: "تخليص كل الاوراق الخاصه بالجمارك",
-      title: "المرحلة الثانية"),
+      title: "المرحلة الثالثة"),
   delivering(
       subTitle: "الوصول للموقع",
       description: "وصول المصعد للموقع و التجهيز للتركيب",
@@ -27,7 +27,7 @@ enum OrderStatus {
       description: "",
       title: "المرحلة السادسة"),
   completed(
-      title: "تسليم المصعد", subTitle: "المرحلة السابعة", description: ""),
+      title: "المرحلة السابعة", subTitle: "تسليم المصعد", description: ""),
   cancelled(title: "", subTitle: "", description: "");
 
   final String title, subTitle, description;

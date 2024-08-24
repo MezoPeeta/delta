@@ -31,6 +31,7 @@ class ContactList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.zero,
       trailing: OutlinedButton(
           onPressed: () => isWhatsApp
               ? launchUrlString("http://wa.me/$phone")

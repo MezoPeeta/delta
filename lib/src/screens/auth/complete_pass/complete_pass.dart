@@ -18,28 +18,8 @@ class _CompletePassScreenState extends State<CompletePassScreen> {
   bool isPassHidden = true;
   bool isConfirmPassHidden = true;
 
-  bool hasNumPassword = false;
-  bool hasCapitalPassword = false;
-  bool isValidLength = false;
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
-
-  bool isValidPassword(String password) {
-    RegExp numberRegExp = RegExp(r'\d');
-    RegExp capitalLetterRegExp = RegExp(r'[A-Z]');
-
-    bool hasNumber = numberRegExp.hasMatch(password);
-    bool hasCapitalLetter = capitalLetterRegExp.hasMatch(password);
-    bool hasValidLength = password.length >= 8 && password.length >= 10;
-
-    setState(() {
-      hasNumPassword = hasNumber;
-      hasCapitalPassword = hasCapitalLetter;
-      isValidLength = hasValidLength;
-    });
-
-    return hasNumber && hasCapitalLetter && hasValidLength;
-  }
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -82,6 +62,15 @@ class _CompletePassScreenState extends State<CompletePassScreen> {
                         PasswordInput(
                           label: "كلمة المرور الجديدة",
                           passwordController: passwordController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "ارجو ادخال كلمة المرور الخاص بك";
+                            }
+                            if (value.length < 8) {
+                              return "يجب ان تكون كلمة المرور لا تقل عن 8 حروف";
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 16,
@@ -90,6 +79,16 @@ class _CompletePassScreenState extends State<CompletePassScreen> {
                           label: "تاكيد كلمة المرور الجديدة",
                           passwordController: passwordConfirmController,
                           hintText: "قم بتاكيد كلمة المرور الخاصه بك",
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "ارجو ادخال كلمة المرور الخاص بك";
+                            }
+
+                            if (value != passwordController.text) {
+                              return "يجب ان تتشابه الكلمتين";
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 8,
@@ -100,20 +99,21 @@ class _CompletePassScreenState extends State<CompletePassScreen> {
                             constraints: const BoxConstraints(
                                 minWidth: double.infinity, minHeight: 54),
                             child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     setState(() {
                                       loading = true;
                                     });
-                                    ref.read(resetPasswordProvider(
-                                        email: widget.email,
-                                        password: passwordController.text,
-                                        confirmPassword:
-                                            passwordConfirmController.text));
+                                    await ref.read(resetPasswordProvider(
+                                            email: widget.email,
+                                            password: passwordController.text,
+                                            confirmPassword:
+                                                passwordConfirmController.text)
+                                        .future);
                                     setState(() {
                                       loading = false;
                                     });
-                                    if (!mounted) return;
+                                    if (!context.mounted) return;
                                     appBottomSheet(context,
                                         actionButtons: [
                                           Expanded(
@@ -143,7 +143,10 @@ class _CompletePassScreenState extends State<CompletePassScreen> {
                                   }
                                 },
                                 child: loading
-                                    ? const CircularProgressIndicator.adaptive()
+                                    ? const CircularProgressIndicator.adaptive(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Colors.white),
+                                      )
                                     : const Text("تاكيد")),
                           );
                         }),

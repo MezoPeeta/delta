@@ -74,6 +74,7 @@ class DioHelper {
       if (errorMessage == "Incorrect phone or password") {
         snackbarKey.currentState!.showSnackBar(const SnackBar(
             content: Text("رقم الهاتف أو كلمة المرور غير صحيحة")));
+        return null;
       }
       if (errorMessage == "User already exists") {
         snackbarKey.currentState!.showSnackBar(
@@ -99,16 +100,29 @@ class DioHelper {
         snackbarKey.currentState!.showSnackBar(
             const SnackBar(content: Text("هذا المنتج موجود بالفعل")));
       }
-      if (e.response!.statusCode == 500) {
+      if (errorMessage.contains("(reading 'isVerified')")) {
         snackbarKey.currentState!.showSnackBar(
-            const SnackBar(content: Text("حدث خطأ ما, حاول من جديد")));
+            const SnackBar(content: Text("هذا الحساب غير موجود")));
+        return null;
+      }
+      if (errorMessage == "Cart is empty") {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("لا يوجد طلبات في السلة")));
+
+        return null;
+      }
+      if (errorMessage.contains("Your current password is wrong")) {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("كلمة المرور الحالية غير صحيحة")));
+        return null;
       }
       if (e.response!.statusCode == 403) {
         snackbarKey.currentState!.showSnackBar(const SnackBar(
             content: Text("الحساب غير مفعل, ارجو من تفعيل الحساب")));
       }
-
-      log("PostError", error: "$errorMessage | ${e.response!.statusCode}");
+      snackbarKey.currentState!.showSnackBar(
+          const SnackBar(content: Text("حدث خطأ ما, حاول من جديد")));
+      log("PostError", error: "$errorMessage | ${e.response?.statusCode}");
       return null;
     }
   }
@@ -123,8 +137,12 @@ class DioHelper {
               : null);
       return response;
     } on DioException catch (e) {
-      log("[PATCH Request Error]", error: e);
       log("[PATCH Request Error Data]| ${e.response!.data}");
+      if (e.response?.data["message"].contains("current password")) {
+        snackbarKey.currentState!.showSnackBar(
+            const SnackBar(content: Text("كلمة المرور الحالية غير صحيحة")));
+        return null;
+      }
     }
     return null;
   }

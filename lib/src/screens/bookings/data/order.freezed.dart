@@ -24,6 +24,11 @@ mixin _$Order {
   String get id => throw _privateConstructorUsedError;
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  String get firstBatch => throw _privateConstructorUsedError;
+  String get secondBatch => throw _privateConstructorUsedError;
+  String get thirdBatch => throw _privateConstructorUsedError;
+  String get contractStages => throw _privateConstructorUsedError;
+  String get implementationStages => throw _privateConstructorUsedError;
 
   /// Serializes this Order to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +47,12 @@ abstract class $OrderCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String id,
       List<CartItem> cartItems,
-      String status});
+      String status,
+      String firstBatch,
+      String secondBatch,
+      String thirdBatch,
+      String contractStages,
+      String implementationStages});
 }
 
 /// @nodoc
@@ -63,6 +73,11 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? id = null,
     Object? cartItems = null,
     Object? status = null,
+    Object? firstBatch = null,
+    Object? secondBatch = null,
+    Object? thirdBatch = null,
+    Object? contractStages = null,
+    Object? implementationStages = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -76,6 +91,26 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstBatch: null == firstBatch
+          ? _value.firstBatch
+          : firstBatch // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondBatch: null == secondBatch
+          ? _value.secondBatch
+          : secondBatch // ignore: cast_nullable_to_non_nullable
+              as String,
+      thirdBatch: null == thirdBatch
+          ? _value.thirdBatch
+          : thirdBatch // ignore: cast_nullable_to_non_nullable
+              as String,
+      contractStages: null == contractStages
+          ? _value.contractStages
+          : contractStages // ignore: cast_nullable_to_non_nullable
+              as String,
+      implementationStages: null == implementationStages
+          ? _value.implementationStages
+          : implementationStages // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -91,7 +126,12 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String id,
       List<CartItem> cartItems,
-      String status});
+      String status,
+      String firstBatch,
+      String secondBatch,
+      String thirdBatch,
+      String contractStages,
+      String implementationStages});
 }
 
 /// @nodoc
@@ -110,6 +150,11 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? id = null,
     Object? cartItems = null,
     Object? status = null,
+    Object? firstBatch = null,
+    Object? secondBatch = null,
+    Object? thirdBatch = null,
+    Object? contractStages = null,
+    Object? implementationStages = null,
   }) {
     return _then(_$OrderImpl(
       id: null == id
@@ -124,6 +169,26 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
+      firstBatch: null == firstBatch
+          ? _value.firstBatch
+          : firstBatch // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondBatch: null == secondBatch
+          ? _value.secondBatch
+          : secondBatch // ignore: cast_nullable_to_non_nullable
+              as String,
+      thirdBatch: null == thirdBatch
+          ? _value.thirdBatch
+          : thirdBatch // ignore: cast_nullable_to_non_nullable
+              as String,
+      contractStages: null == contractStages
+          ? _value.contractStages
+          : contractStages // ignore: cast_nullable_to_non_nullable
+              as String,
+      implementationStages: null == implementationStages
+          ? _value.implementationStages
+          : implementationStages // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -134,7 +199,12 @@ class _$OrderImpl implements _Order {
   const _$OrderImpl(
       {@JsonKey(name: '_id') required this.id,
       required final List<CartItem> cartItems,
-      required this.status})
+      required this.status,
+      required this.firstBatch,
+      required this.secondBatch,
+      required this.thirdBatch,
+      required this.contractStages,
+      required this.implementationStages})
       : _cartItems = cartItems;
 
   factory _$OrderImpl.fromJson(Map<String, dynamic> json) =>
@@ -153,10 +223,20 @@ class _$OrderImpl implements _Order {
 
   @override
   final String status;
+  @override
+  final String firstBatch;
+  @override
+  final String secondBatch;
+  @override
+  final String thirdBatch;
+  @override
+  final String contractStages;
+  @override
+  final String implementationStages;
 
   @override
   String toString() {
-    return 'Order(id: $id, cartItems: $cartItems, status: $status)';
+    return 'Order(id: $id, cartItems: $cartItems, status: $status, firstBatch: $firstBatch, secondBatch: $secondBatch, thirdBatch: $thirdBatch, contractStages: $contractStages, implementationStages: $implementationStages)';
   }
 
   @override
@@ -167,13 +247,31 @@ class _$OrderImpl implements _Order {
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._cartItems, _cartItems) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.firstBatch, firstBatch) ||
+                other.firstBatch == firstBatch) &&
+            (identical(other.secondBatch, secondBatch) ||
+                other.secondBatch == secondBatch) &&
+            (identical(other.thirdBatch, thirdBatch) ||
+                other.thirdBatch == thirdBatch) &&
+            (identical(other.contractStages, contractStages) ||
+                other.contractStages == contractStages) &&
+            (identical(other.implementationStages, implementationStages) ||
+                other.implementationStages == implementationStages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, const DeepCollectionEquality().hash(_cartItems), status);
+      runtimeType,
+      id,
+      const DeepCollectionEquality().hash(_cartItems),
+      status,
+      firstBatch,
+      secondBatch,
+      thirdBatch,
+      contractStages,
+      implementationStages);
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.
@@ -195,7 +293,12 @@ abstract class _Order implements Order {
   const factory _Order(
       {@JsonKey(name: '_id') required final String id,
       required final List<CartItem> cartItems,
-      required final String status}) = _$OrderImpl;
+      required final String status,
+      required final String firstBatch,
+      required final String secondBatch,
+      required final String thirdBatch,
+      required final String contractStages,
+      required final String implementationStages}) = _$OrderImpl;
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$OrderImpl.fromJson;
 
@@ -206,6 +309,16 @@ abstract class _Order implements Order {
   List<CartItem> get cartItems;
   @override
   String get status;
+  @override
+  String get firstBatch;
+  @override
+  String get secondBatch;
+  @override
+  String get thirdBatch;
+  @override
+  String get contractStages;
+  @override
+  String get implementationStages;
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.

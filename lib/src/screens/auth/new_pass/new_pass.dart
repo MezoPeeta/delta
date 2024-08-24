@@ -27,6 +27,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
   TextEditingController passwordConfirmController = TextEditingController();
 
   bool loading = false;
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,191 +43,204 @@ class _NewPassScreenState extends State<NewPassScreen> {
                       minWidth: constraints.maxWidth,
                       minHeight: constraints.maxHeight),
                   child: IntrinsicHeight(
-                    child: Column(mainAxisSize: MainAxisSize.max, children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "انشاء كلمة المرور",
-                        style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      const Text(
-                        "يرجي اضافة كلمة مرور قوية للحفاظ علي بياناتك",
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "كلمة المرور الجديدة",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          TextFormField(
-                            controller: passwordController,
-                            obscureText: isPassHidden,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "ارجو ادخال لكمة المرور الخاص بك";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: "قم بأدخل كلمة المرور الخاصه بك",
-                              prefixIcon: Container(
-                                width: 18,
-                                height: 18,
-                                alignment: Alignment.center,
-                                child: SvgPicture.asset(
-                                  AppAssets.lockPath,
-                                ),
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isPassHidden = !isPassHidden;
-                                  });
-                                },
-                                icon: Icon(
-                                  isPassHidden
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  size: 18,
-                                ),
+                    child: Form(
+                      key: formKey,
+                      child: Column(mainAxisSize: MainAxisSize.max, children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          "انشاء كلمة المرور",
+                          style: TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Text(
+                          "يرجي اضافة كلمة مرور قوية للحفاظ علي بياناتك",
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "كلمة المرور الجديدة",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "كلمة المرور الجديدة",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(
+                              height: 8,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          TextFormField(
-                            controller: passwordConfirmController,
-                            obscureText: isConfirmPassHidden,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "ارجو ادخال كلمة المرور الخاص بك";
-                              }
-                              if (value != passwordController.text) {
-                                return "يجب ان تتشابه الكلمتين";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: "قم بتاكيد كلمة المرور الخاصه بك",
-                              prefixIcon: Container(
-                                width: 18,
-                                height: 18,
-                                alignment: Alignment.center,
-                                child: SvgPicture.asset(
-                                  AppAssets.lockPath,
-                                ),
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isConfirmPassHidden = !isConfirmPassHidden;
-                                  });
-                                },
-                                icon: Icon(
-                                  isConfirmPassHidden
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  size: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Consumer(builder: (context, ref, child) {
-                        return ConstrainedBox(
-                          constraints: const BoxConstraints(
-                              minWidth: double.infinity, minHeight: 54),
-                          child: ElevatedButton(
-                              onPressed: () async {
-                                setState(() {
-                                  loading = true;
-                                });
-                                await ref
-                                    .read(setPasswordProvider(
-                                            email: widget.email,
-                                            password: passwordController.text,
-                                            confirmPassword:
-                                                passwordConfirmController.text)
-                                        .future)
-                                    .then((status) {
-                                  if (!mounted) return;
-                                  appBottomSheet(context,
-                                      actionButtons: [
-                                        Expanded(
-                                          child: ConstrainedBox(
-                                            constraints: const BoxConstraints(
-                                                minHeight: 54),
-                                            child: ElevatedButton(
-                                                onPressed: () =>
-                                                    context.push("/"),
-                                                child: const Text(
-                                                  "هيا بنا",
-                                                )),
-                                          ),
-                                        ),
-                                      ],
-                                      header: "انشاء حساب",
-                                      endHeader:
-                                          "شكرا لانضمامك الي تطبيق الدلتا يمكنك الان التمتع بجميع خدمات التطبيق",
-                                      subHeader: "تم تفعيل حسابك",
-                                      isWarning: false,
-                                      isDanger: false,
-                                      coloredText: TextSpan(
-                                        text: "بنجاح",
-                                        style: TextStyle(
-                                            color: AppColors.doneColor),
-                                      ));
-                                });
-                                setState(() {
-                                  loading = false;
-                                });
+                            TextFormField(
+                              controller: passwordController,
+                              obscureText: isPassHidden,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "ارجو ادخال كلمة المرور الخاص بك";
+                                }
+                                if (value.length < 8) {
+                                  return "يجب ان تكون كلمة المرور لا تقل عن 8 حروف";
+                                }
+                                return null;
                               },
-                              child: loading
-                                  ? const CircularProgressIndicator.adaptive(
-                                      valueColor:
-                                        AlwaysStoppedAnimation(Colors.white),
-                                    )
-                                  : const Text("تاكيد")),
-                        );
-                      }),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ]),
+                              decoration: InputDecoration(
+                                hintText: "قم بأدخل كلمة المرور الخاصه بك",
+                                prefixIcon: Container(
+                                  width: 18,
+                                  height: 18,
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    AppAssets.lockPath,
+                                  ),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isPassHidden = !isPassHidden;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    isPassHidden
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "تأكيد كلمة المرور الجديدة",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            TextFormField(
+                              controller: passwordConfirmController,
+                              obscureText: isConfirmPassHidden,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "ارجو ادخال كلمة المرور الخاص بك";
+                                }
+
+                                if (value != passwordController.text) {
+                                  return "يجب ان تتشابه الكلمتين";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                hintText: "قم بتاكيد كلمة المرور الخاصه بك",
+                                prefixIcon: Container(
+                                  width: 18,
+                                  height: 18,
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    AppAssets.lockPath,
+                                  ),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isConfirmPassHidden =
+                                          !isConfirmPassHidden;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    isConfirmPassHidden
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        Consumer(builder: (context, ref, child) {
+                          return ConstrainedBox(
+                            constraints: const BoxConstraints(
+                                minWidth: double.infinity, minHeight: 54),
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    await ref
+                                        .read(setPasswordProvider(
+                                                email: widget.email,
+                                                password:
+                                                    passwordController.text,
+                                                confirmPassword:
+                                                    passwordConfirmController
+                                                        .text)
+                                            .future)
+                                        .then((status) {
+                                      if (!context.mounted) return;
+                                      appBottomSheet(context,
+                                          actionButtons: [
+                                            Expanded(
+                                              child: ConstrainedBox(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        minHeight: 54),
+                                                child: ElevatedButton(
+                                                    onPressed: () =>
+                                                        context.push("/"),
+                                                    child: const Text(
+                                                      "هيا بنا",
+                                                    )),
+                                              ),
+                                            ),
+                                          ],
+                                          header: "انشاء حساب",
+                                          endHeader:
+                                              "شكرا لانضمامك الي تطبيق الدلتا يمكنك الان التمتع بجميع خدمات التطبيق",
+                                          subHeader: "تم تفعيل حسابك",
+                                          isWarning: false,
+                                          isDanger: false,
+                                          coloredText: TextSpan(
+                                            text: "بنجاح",
+                                            style: TextStyle(
+                                                color: AppColors.doneColor),
+                                          ));
+                                    });
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  }
+                                },
+                                child: loading
+                                    ? const CircularProgressIndicator.adaptive(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Colors.white),
+                                      )
+                                    : const Text("تاكيد")),
+                          );
+                        }),
+                        const SizedBox(
+                          height: 10,
+                        )
+                      ]),
+                    ),
                   ),
                 ),
               ));

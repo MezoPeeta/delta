@@ -5,17 +5,21 @@ import 'package:delta/src/screens/auth/otp_verify/otp_verify.dart';
 import 'package:delta/src/screens/auth/reset_pass/reset_pass.dart';
 import 'package:delta/src/screens/auth/signup/signup_screen.dart';
 import 'package:delta/src/screens/boarding/boarding_screen.dart';
+import 'package:delta/src/screens/boarding/intro_screen.dart';
 import 'package:delta/src/screens/bookings/data/order.dart';
+import 'package:delta/src/screens/contract/contract_screen.dart';
 import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/repair/repair_screen.dart';
 import 'package:delta/src/screens/sales/sales_details.dart';
 import 'package:delta/src/screens/sales/sales_screen.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/change_pass/change_pass.dart';
+import 'package:delta/src/screens/settings/deals/deals_screen.dart';
 import 'package:delta/src/screens/settings/feedback/feedback_screen.dart';
 import 'package:delta/src/screens/settings/profile/profile_screen.dart';
 import 'package:delta/src/shared/navigation.dart';
 import 'package:delta/src/shared/storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -93,6 +97,13 @@ final _routes = GoRouter(initialLocation: '/boarding', routes: [
       path: "/products", builder: (context, state) => const ProductsScreen()),
   GoRoute(path: "/contact", builder: (context, state) => const ContactScreen()),
   GoRoute(path: "/sales", builder: (context, state) => const SalesScreen()),
+  GoRoute(path: "/intro", builder: (context, state) => const IntroScreen()),
+  GoRoute(path: "/deals", builder: (context, state) => const DealsScreen()),
+  GoRoute(
+      path: "/contract",
+      builder: (context, state) => ContractScreen(
+            order: state.extra as Order,
+          )),
   GoRoute(
       path: "/sales/detail",
       builder: (context, state) => SalesDetails(

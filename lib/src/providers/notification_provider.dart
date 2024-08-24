@@ -15,6 +15,9 @@ part 'notification_provider.g.dart';
 Future<void> sendFCMToken(SendFCMTokenRef ref) async {
   final token = await FirebaseNotifications().getToken();
   final user = await ref.watch(userStorageProvider.future);
+  if (user?.name == "زائر") {
+    return;
+  }
   final userToken = await ref.watch(tokenProvider.future);
   final bool isNotify = await ref.watch(isNotifiedStorageProvider.future);
   if (isNotify) {

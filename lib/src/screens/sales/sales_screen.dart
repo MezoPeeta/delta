@@ -1,6 +1,5 @@
-import 'package:delta/src/screens/products/data/product.dart';
-import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/sales/provider/sales_provider.dart';
+import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:delta/src/shared/app_bar.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,15 @@ class SalesScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
             child: sales.when(
                 data: (data) {
+                  if (data.isEmpty) {
+                    return const Center(
+                      child: EmptyDataWidget(
+                          text: "المبيعات فارغة!",
+                          subText: "لم نقم باضافة مبيعات , عُد بعد قليل"),
+                    );
+                  }
                   return ListView.separated(
+                      padding: EdgeInsets.zero,
                       itemCount: data.length,
                       separatorBuilder: (context, index) => const SizedBox(
                             height: 12,

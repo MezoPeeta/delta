@@ -7,7 +7,7 @@ part of 'repair_providers.dart';
 // **************************************************************************
 
 String _$sendMaintenanceRequestHash() =>
-    r'81522cbfb190e33c46111d7855cda00312983ca9';
+    r'58aec8b357dfe5456240f73a826941981a90482b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,6 +43,8 @@ class SendMaintenanceRequestFamily extends Family<AsyncValue<void>> {
   SendMaintenanceRequestProvider call({
     required String type,
     required String address,
+    required List<File> photos,
+    required File video,
     required String description,
     required String date,
     required String time,
@@ -50,6 +52,8 @@ class SendMaintenanceRequestFamily extends Family<AsyncValue<void>> {
     return SendMaintenanceRequestProvider(
       type: type,
       address: address,
+      photos: photos,
+      video: video,
       description: description,
       date: date,
       time: time,
@@ -63,6 +67,8 @@ class SendMaintenanceRequestFamily extends Family<AsyncValue<void>> {
     return call(
       type: provider.type,
       address: provider.address,
+      photos: provider.photos,
+      video: provider.video,
       description: provider.description,
       date: provider.date,
       time: provider.time,
@@ -90,6 +96,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
   SendMaintenanceRequestProvider({
     required String type,
     required String address,
+    required List<File> photos,
+    required File video,
     required String description,
     required String date,
     required String time,
@@ -98,6 +106,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
             ref as SendMaintenanceRequestRef,
             type: type,
             address: address,
+            photos: photos,
+            video: video,
             description: description,
             date: date,
             time: time,
@@ -113,6 +123,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
               SendMaintenanceRequestFamily._allTransitiveDependencies,
           type: type,
           address: address,
+          photos: photos,
+          video: video,
           description: description,
           date: date,
           time: time,
@@ -127,6 +139,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
     required super.from,
     required this.type,
     required this.address,
+    required this.photos,
+    required this.video,
     required this.description,
     required this.date,
     required this.time,
@@ -134,6 +148,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
 
   final String type;
   final String address;
+  final List<File> photos;
+  final File video;
   final String description;
   final String date;
   final String time;
@@ -153,6 +169,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
         debugGetCreateSourceHash: null,
         type: type,
         address: address,
+        photos: photos,
+        video: video,
         description: description,
         date: date,
         time: time,
@@ -170,6 +188,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
     return other is SendMaintenanceRequestProvider &&
         other.type == type &&
         other.address == address &&
+        other.photos == photos &&
+        other.video == video &&
         other.description == description &&
         other.date == date &&
         other.time == time;
@@ -180,6 +200,8 @@ class SendMaintenanceRequestProvider extends AutoDisposeFutureProvider<void> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, type.hashCode);
     hash = _SystemHash.combine(hash, address.hashCode);
+    hash = _SystemHash.combine(hash, photos.hashCode);
+    hash = _SystemHash.combine(hash, video.hashCode);
     hash = _SystemHash.combine(hash, description.hashCode);
     hash = _SystemHash.combine(hash, date.hashCode);
     hash = _SystemHash.combine(hash, time.hashCode);
@@ -194,6 +216,12 @@ mixin SendMaintenanceRequestRef on AutoDisposeFutureProviderRef<void> {
 
   /// The parameter `address` of this provider.
   String get address;
+
+  /// The parameter `photos` of this provider.
+  List<File> get photos;
+
+  /// The parameter `video` of this provider.
+  File get video;
 
   /// The parameter `description` of this provider.
   String get description;
@@ -214,6 +242,10 @@ class _SendMaintenanceRequestProviderElement
   String get type => (origin as SendMaintenanceRequestProvider).type;
   @override
   String get address => (origin as SendMaintenanceRequestProvider).address;
+  @override
+  List<File> get photos => (origin as SendMaintenanceRequestProvider).photos;
+  @override
+  File get video => (origin as SendMaintenanceRequestProvider).video;
   @override
   String get description =>
       (origin as SendMaintenanceRequestProvider).description;

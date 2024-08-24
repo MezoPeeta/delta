@@ -1,8 +1,10 @@
+import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/discount/providers/cart_notifier.dart';
 import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/products/data/product.dart';
 import 'package:delta/src/screens/products/products_screen.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
+import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,8 +25,48 @@ class ProductDetail extends StatelessWidget {
         centerTitle: true,
         title: Text(product.name!),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ConstrainedBox(
+            constraints:
+                const BoxConstraints(minWidth: double.infinity, minHeight: 54),
+            child: Consumer(builder: (context, ref, child) {
+              final loading = ref.watch(loadingProvider);
+              return ElevatedButton(
+                  onPressed: () async {
+                    final isGuest = ref.read(isGuestProvider);
+                    if (isGuest) {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => LoginRequiredDialog(context));
+                      return;
+                    }
+                    ref.read(loadingProvider.notifier).state = true;
+
+                    final products = ref.read(listOfProductsProvider);
+                    if (products.contains(product)) {
+                      return;
+                    }
+                    ref
+                        .read(listOfProductsProvider.notifier)
+                        .update((state) => List.from(state)..add(product));
+                    await ref
+                        .read(cartNotifierProvider.notifier)
+                        .addToCart(productID: product.id);
+                    ref.read(loadingProvider.notifier).state = false;
+                    if (!context.mounted) return;
+                    context.go("/");
+                  },
+                  child: loading
+                      ? const CircularProgressIndicator.adaptive(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        )
+                      : const Text("طلب العرض"));
+            })),
+      ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 250,
@@ -40,24 +82,29 @@ class ProductDetail extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            SizedBox(
-              height: 50,
-              child: ListView.separated(
-                itemCount: product.photos?.length ?? 0,
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (context, index) => const SizedBox(
-                  width: 8,
+            Visibility(
+              visible: product.photos?.isNotEmpty ?? false,
+              child: SizedBox(
+                height: 50,
+                child: ListView.separated(
+                  itemCount: product.photos?.length ?? 0,
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 8,
+                  ),
+                  itemBuilder: (context, index) => Container(
+                      width: 50,
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(product.photos![index])))),
                 ),
-                itemBuilder: (context, index) => Container(
-                    width: 50,
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12),
-                        ),
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(product.photos![index])))),
               ),
             ),
             const SizedBox(
@@ -70,14 +117,15 @@ class ProductDetail extends StatelessWidget {
                 children: [
                   Text(
                     product.name!,
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   const Text(
                     "الوصف",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 16),
                   ),
                   const SizedBox(
                     height: 8,
@@ -100,46 +148,31 @@ class ProductDetail extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  const Text(
-                    "منتجات ذات صلة:",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  SmallProductContainer(
-                    product: product,
-                  ),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                  ConstrainedBox(
-                      constraints: const BoxConstraints(
-                          minWidth: double.infinity, minHeight: 54),
-                      child: Consumer(builder: (context, ref, child) {
-                        final loading = ref.watch(loadingProvider);
-                        return ElevatedButton(
-                            onPressed: () async {
-                              ref.read(loadingProvider.notifier).state = true;
-
-                              final products = ref.read(listOfProductsProvider);
-                              if (products.contains(product)) {
-                                return;
-                              }
-                              ref.read(listOfProductsProvider.notifier).update(
-                                  (state) => List.from(state)..add(product));
-                              await ref
-                                  .read(cartNotifierProvider.notifier)
-                                  .addToCart(productID: product.id);
-                              ref.read(loadingProvider.notifier).state = false;
-                            },
-                            child: loading
-                                ? const CircularProgressIndicator.adaptive(
-                                    valueColor:
-                                        AlwaysStoppedAnimation(Colors.white),
-                                  )
-                                : const Text("طلب العرض"));
-                      })),
+                  Consumer(builder: (context, ref, child) {
+                    final relatedProducts = ref.watch(
+                        getRelatedProductsProvider(productID: product.id));
+                    return relatedProducts.when(
+                        data: (data) {
+                          return Column(
+                            children: [
+                              const Text(
+                                "منتجات ذات صلة:",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Column(
+                                  children: data
+                                      .map((e) =>
+                                          SmallProductContainer(product: e))
+                                      .toList()),
+                            ],
+                          );
+                        },
+                        error: (e, s) => const Text("حدث خطا ما"),
+                        loading: () => const CircularProgressIndicator());
+                  }),
                 ],
               ),
             )

@@ -74,24 +74,28 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   constraints: const BoxConstraints(
                       minWidth: double.infinity, minHeight: 54),
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           setState(() {
                             loading = true;
                           });
-                          ref.read(
-                              sendOTPProvider(email: emailController.text));
+                          await ref.read(
+                              sendOTPProvider(email: emailController.text)
+                                  .future);
                           setState(() {
                             loading = false;
                           });
                           ref.read(isResetPasswordProvider.notifier).state =
                               true;
+                          if (!context.mounted) return;
                           context.push("/otp_verify",
-                              extra: emailController.text);
+                            extra: emailController.text);
                         }
                       },
                       child: loading
-                          ? const CircularProgressIndicator.adaptive()
+                          ? const CircularProgressIndicator.adaptive(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
                           : const Text("ارسال الرمز")),
                 );
               }),

@@ -51,6 +51,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         label: "كلمة المرور الجديدة",
                         hintText: "قم بادخال كلمة المرور الخاصه بك",
                         passwordController: newPasswordController,
+                        validator: (value) {
+                          if (value!.length < 8) {
+                            return "يجب ان تكون كلمة المرور لا تقل عن 8 حروف";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 16,
@@ -75,24 +81,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           constraints: const BoxConstraints(
                               minWidth: double.infinity, minHeight: 54),
                           child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() {
                                     loading = true;
                                   });
-                                  ref.read(changePasswordProvider(
-                                      currentPassword:
-                                          currentPasswordController.text,
-                                      newPassword: newPasswordController.text,
-                                      confirmPassword:
-                                          confirmPasswordController.text));
+                                  await ref.read(changePasswordProvider(
+                                          currentPassword:
+                                              currentPasswordController.text,
+                                          newPassword:
+                                              newPasswordController.text,
+                                          confirmPassword:
+                                              confirmPasswordController.text)
+                                      .future);
                                   setState(() {
                                     loading = false;
                                   });
                                 }
                               },
                               child: loading
-                                  ? const CircularProgressIndicator.adaptive()
+                                  ? const CircularProgressIndicator.adaptive(
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.white),
+                                    )
                                   : const Text("حفظ")),
                         );
                       }),

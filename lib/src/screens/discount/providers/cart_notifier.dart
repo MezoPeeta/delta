@@ -1,15 +1,7 @@
-import 'dart:developer';
-
 import 'package:delta/src/screens/bookings/data/order.dart';
 import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../app.dart';
-import '../../../shared/dio_helper.dart';
-import '../../../shared/routes.dart';
 
 part 'cart_notifier.g.dart';
 

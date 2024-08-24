@@ -20,7 +20,7 @@ final currentUserProvider = FutureProvider<User>.internal(
 );
 
 typedef CurrentUserRef = FutureProviderRef<User>;
-String _$loginHash() => r'ad33a819fb03b4919d89430fb30bb69aba9b441f';
+String _$loginHash() => r'95d625cfd741684abdfe1041179d753286f200dc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -48,7 +48,7 @@ class _SystemHash {
 const loginProvider = LoginFamily();
 
 /// See also [login].
-class LoginFamily extends Family<AsyncValue<User>> {
+class LoginFamily extends Family<AsyncValue<void>> {
   /// See also [login].
   const LoginFamily();
 
@@ -89,7 +89,7 @@ class LoginFamily extends Family<AsyncValue<User>> {
 }
 
 /// See also [login].
-class LoginProvider extends AutoDisposeFutureProvider<User> {
+class LoginProvider extends AutoDisposeFutureProvider<void> {
   /// See also [login].
   LoginProvider({
     required String phone,
@@ -128,7 +128,7 @@ class LoginProvider extends AutoDisposeFutureProvider<User> {
 
   @override
   Override overrideWith(
-    FutureOr<User> Function(LoginRef provider) create,
+    FutureOr<void> Function(LoginRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -146,7 +146,7 @@ class LoginProvider extends AutoDisposeFutureProvider<User> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<User> createElement() {
+  AutoDisposeFutureProviderElement<void> createElement() {
     return _LoginProviderElement(this);
   }
 
@@ -167,7 +167,7 @@ class LoginProvider extends AutoDisposeFutureProvider<User> {
   }
 }
 
-mixin LoginRef on AutoDisposeFutureProviderRef<User> {
+mixin LoginRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `phone` of this provider.
   String get phone;
 
@@ -175,7 +175,7 @@ mixin LoginRef on AutoDisposeFutureProviderRef<User> {
   String get password;
 }
 
-class _LoginProviderElement extends AutoDisposeFutureProviderElement<User>
+class _LoginProviderElement extends AutoDisposeFutureProviderElement<void>
     with LoginRef {
   _LoginProviderElement(super.provider);
 

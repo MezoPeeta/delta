@@ -19,191 +19,222 @@ class OrderScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStorageProvider).requireValue;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("رقم طلب: ${order.id}"),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "مراحل التنفيذ",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              ...OrderStatus.values.mapIndexed((i, e) {
-                bool isActive = OrderStatus.values.indexOf(OrderStatus.values
-                        .firstWhere(
-                            (e) => e.name == order.status.toLowerCase())) >=
-                    i;
-                if (e.title.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                return OrderStateItem(
-                    backgroundColor: AppColors.doneColor,
-                    icon: isActive ? Icons.check : Icons.arrow_back,
-                    iconColor: Colors.white,
-                    title: e.title,
-                    isActive: isActive,
-                    subTitle: e.subTitle,
-                    description: e.description,
-                    isFinalStep: e.name == "completed",
-                    clarifyTextColor:
-                        isActive ? AppColors.doneColor : AppColors.grayColor,
-                    clarifyText: isActive ? "اكتمل" : "قيد الانتظار");
-              }),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "معلومات المنتج",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Container(
-                padding: const EdgeInsets.only(right: 10, top: 8, bottom: 8),
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(12)),
-                child: Column(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "مراحل التنفيذ",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          ...OrderStatus.values.mapIndexed((i, e) {
+            print(e);
+            bool isActive = OrderStatus.values.indexOf(OrderStatus.values
+                    .firstWhere((e) =>
+                        e.name == order.implementationStages.toLowerCase())) >=
+                i;
+            if (e.title.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return OrderStateItem(
+                backgroundColor: AppColors.doneColor,
+                icon: isActive ? Icons.check : Icons.arrow_back,
+                iconColor: Colors.white,
+                title: e.title,
+                isActive: isActive,
+                subTitle: e.subTitle,
+                description: e.description,
+                isFinalStep: e.name == "completed",
+                clarifyTextColor:
+                    isActive ? AppColors.doneColor : AppColors.grayColor,
+                clarifyText: isActive ? "اكتمل" : "قيد الانتظار");
+          }),
+          const SizedBox(
+            height: 12,
+          ),
+          const Text(
+            "معلومات المنتج",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Container(
+            padding: const EdgeInsets.only(right: 10, top: 8, bottom: 8),
+            decoration: BoxDecoration(
+                border: Border.all(), borderRadius: BorderRadius.circular(12)),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "الاسم:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          user!.name,
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
+                    Text(
+                      "الاسم:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
                     ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        Text(
-                          "رقم الهاتف:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          user.phone,
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "رقم الطلب:",
-                              style: TextStyle(
-                                  color: AppColors.grayColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Text(
-                              order.id,
-                              style: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              await Clipboard.setData(
-                                  ClipboardData(text: order.id));
-                            },
-                            icon: const Icon(Icons.copy))
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "العقد:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            ref.read(downloadPDFProvider(userID: user.id));
-                          },
-                          label: const Text(
-                            "تنزيل",
-                            textAlign: TextAlign.center,
-                          ),
-                          iconAlignment: IconAlignment.end,
-                          icon: const Icon(
-                            Icons.download,
-                          ),
-                        )
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "الحالة:",
-                          style: TextStyle(
-                              color: AppColors.grayColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          color: const Color(0xFFFAEBDE),
-                          child: const Text("تم دفع جزئ من المبلغ"),
-                        )
-                      ],
+                    Text(
+                      user!.name,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "طلباتك",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Column(
-                children: order.cartItems
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: SmallProductContainer(product: e.product),
-                        ))
-                    .toList(),
-              ),
-            ],
+                const Divider(),
+                Row(
+                  children: [
+                    Text(
+                      "رقم الهاتف:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      user.phone,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Text(
+                      "التاريخ:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      order.firstBatch,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Text(
+                      "الدفعة الاولي:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      order.firstBatch,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Text(
+                      "الدفعة الثانية:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      order.secondBatch,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Text(
+                      "الدفعة الثالثة:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      order.thirdBatch,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "العقد:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        ref.read(downloadOrderPDFProvider(userID: user.id));
+                      },
+                      label: const Text(
+                        "تنزيل",
+                        textAlign: TextAlign.center,
+                      ),
+                      iconAlignment: IconAlignment.end,
+                      icon: const Icon(
+                        Icons.download,
+                      ),
+                    )
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "الحالة:",
+                      style: TextStyle(
+                          color: AppColors.grayColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      color: const Color(0xFFFAEBDE),
+                      child: Text(order.status),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
+          const SizedBox(
+            height: 12,
+          ),
+          const Text(
+            "طلباتك",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Column(
+            children: order.cartItems
+                .map((e) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: SmallProductContainer(product: e.product),
+                    ))
+                .toList(),
+          ),
+        ],
       ),
     );
   }

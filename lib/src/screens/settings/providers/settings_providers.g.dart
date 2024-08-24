@@ -6,7 +6,7 @@ part of 'settings_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$logOutHash() => r'22bf31d6162eaf037648639f01e4c04455863a22';
+String _$logOutHash() => r'7f57cb7f13ef3b4c31f2f55dd02b42285977dea6';
 
 /// See also [logOut].
 @ProviderFor(logOut)
@@ -20,7 +20,7 @@ final logOutProvider = AutoDisposeFutureProvider<void>.internal(
 );
 
 typedef LogOutRef = AutoDisposeFutureProviderRef<void>;
-String _$deleteUserHash() => r'fa8f4f95ab228ff74c977018496cd415c7673ff7';
+String _$deleteUserHash() => r'25e1fc72a823c5ae10aea072ba0f17fd54a16d8c';
 
 /// See also [deleteUser].
 @ProviderFor(deleteUser)

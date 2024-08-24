@@ -1,5 +1,6 @@
 import 'package:delta/src/screens/repair/repair_screen.dart';
 import 'package:delta/src/screens/settings/addresses/providers/address_providers.dart';
+import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -96,7 +97,12 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
                   ],
                 );
               },
-              error: (e, s) => const Center(child: Text("حدث خطأ ما")),
+              error: (e, s) {
+                if (e is TypeError) {
+                  return const LoginRequiredWidget();
+                }
+                return const Center(child: Text("حدث خطأ ما"));
+              },
               loading: () => const Center(child: CircularProgressIndicator()))),
     );
   }

@@ -12,6 +12,11 @@ _$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
           .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       status: json['status'] as String,
+      firstBatch: json['firstBatch'] as String,
+      secondBatch: json['secondBatch'] as String,
+      thirdBatch: json['thirdBatch'] as String,
+      contractStages: json['contractStages'] as String,
+      implementationStages: json['implementationStages'] as String,
     );
 
 Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
@@ -19,6 +24,11 @@ Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
       '_id': instance.id,
       'cartItems': instance.cartItems,
       'status': instance.status,
+      'firstBatch': instance.firstBatch,
+      'secondBatch': instance.secondBatch,
+      'thirdBatch': instance.thirdBatch,
+      'contractStages': instance.contractStages,
+      'implementationStages': instance.implementationStages,
     };
 
 _$CartItemImpl _$$CartItemImplFromJson(Map<String, dynamic> json) =>
