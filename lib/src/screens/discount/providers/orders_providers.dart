@@ -30,9 +30,9 @@ Future<int> downloadOrderPDF(DownloadOrderPDFRef ref,
     {required String pdfID}) async {
   final token = await ref.watch(tokenProvider.future);
 
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP("/api/order-contract/$pdfID/download", token: token ?? "");
+  final request = await ref.watch(dioHelperProvider).downloadHTTP(
+      "/api/order-contract/$pdfID/download", {},
+      token: token ?? "");
 
   log("[Download PDF]");
 
@@ -43,8 +43,8 @@ Future<int> downloadOrderPDF(DownloadOrderPDFRef ref,
 Future<int> downloadContractPDF(DownloadContractPDFRef ref,
     {required String pdfID}) async {
   final token = await ref.watch(tokenProvider.future);
-  final request = await ref.watch(dioHelperProvider).getHTTP(
-      "/api/maintenance-contract/$pdfID/download",
+  final request = await ref.watch(dioHelperProvider).downloadHTTP(
+      "/api/maintenance-contract/$pdfID/download", {},
       token: token ?? "");
 
   log("[Download PDF]");

@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:delta/src/app.dart';
 import 'package:delta/src/shared/storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 
 final dioHelperProvider = Provider(DioHelper.new);
 
@@ -159,6 +161,29 @@ class DioHelper {
     } on DioException catch (e) {
       log("[Delete Request Error]", error: e);
       log("[Delete Request Error Data]| ${e.response!.data}");
+    }
+    return null;
+  }
+
+  Future<Response?> downloadHTTP(String url, dynamic data,
+      {String token = ""}) async {
+    print("Downloading");
+    try {
+      final savePath = await getDownloadsDirectory();
+      final pdfPath = "${savePath?.path}/contract.pdf";
+
+      Response response = await dio.download(url, pdfPath,
+          data: data,
+          options: Options(headers: {
+            "Authorization": "Bearer $token",
+          }));
+      File file = File(pdfPath);
+      await file.writeAsBytes(response.data);
+      print(response.data);
+      return response;
+    } on DioException catch (e) {
+      log("[Download Request Error]", error: e);
+      log("[Download Request Error Data]| ${e.response!.data}");
     }
     return null;
   }

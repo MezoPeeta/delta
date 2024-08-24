@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:delta/src/app.dart';
 import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/order/data/order.dart';
 import 'package:flutter/material.dart';
@@ -204,8 +205,12 @@ class OrderScreen extends ConsumerWidget {
                     ),
                     OutlinedButton.icon(
                       onPressed: () {
-                        ref.read(
-                            downloadOrderPDFProvider(pdfID: order.pdfId ?? ""));
+                        if (order.pdfId == null) {
+                          snackbarKey.currentState!.showSnackBar(const SnackBar(
+                              content: Text("لا يوجد عقد حاليا")));
+                          return;
+                        }
+                        ref.read(downloadOrderPDFProvider(pdfID: order.pdfId!));
                       },
                       label: const Text(
                         "تنزيل",
