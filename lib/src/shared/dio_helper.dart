@@ -174,11 +174,7 @@ class DioHelper {
 
       Response response = await dio.download(url, pdfPath,
           data: data,
-          options: Options(headers: {
-            "Authorization": "Bearer $token",
-          }));
-      File file = File(pdfPath);
-      await file.writeAsBytes(response.data);
+          options: Options(headers: {"Content-Type": "application/json"}));
       print(response.data);
       return response;
     } on DioException catch (e) {

@@ -5,12 +5,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'deals_provider.g.dart';
 
 @riverpod
-Future<List<Object?>> getMaintenaceContracts(
+Future<List<String>> getMaintenaceContracts(
     GetMaintenaceContractsRef ref) async {
   final token = await ref.watch(tokenProvider.future);
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP("/api/maintenance-requests/user", token: token ?? "");
 
-  return request!.data["data"]["requests"];
+  return request!.data["data"]["requests"]
+      .map<String>((e) => e["pdfId"] as String)
+      .toList();
 }

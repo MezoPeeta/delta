@@ -28,9 +28,9 @@ mixin _$Order {
   String get userName => throw _privateConstructorUsedError;
   @JsonKey(name: 'phone')
   String get userPhone => throw _privateConstructorUsedError;
-  String get firstBatch => throw _privateConstructorUsedError;
-  String get secondBatch => throw _privateConstructorUsedError;
-  String get thirdBatch => throw _privateConstructorUsedError;
+  DateTime get firstBatch => throw _privateConstructorUsedError;
+  DateTime get secondBatch => throw _privateConstructorUsedError;
+  DateTime get thirdBatch => throw _privateConstructorUsedError;
   String get contractStages => throw _privateConstructorUsedError;
   String get implementationStages => throw _privateConstructorUsedError;
   String? get pdfId => throw _privateConstructorUsedError;
@@ -56,9 +56,9 @@ abstract class $OrderCopyWith<$Res> {
       String status,
       @JsonKey(name: 'name') String userName,
       @JsonKey(name: 'phone') String userPhone,
-      String firstBatch,
-      String secondBatch,
-      String thirdBatch,
+      DateTime firstBatch,
+      DateTime secondBatch,
+      DateTime thirdBatch,
       String contractStages,
       String implementationStages,
       String? pdfId,
@@ -117,15 +117,15 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       firstBatch: null == firstBatch
           ? _value.firstBatch
           : firstBatch // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       secondBatch: null == secondBatch
           ? _value.secondBatch
           : secondBatch // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       thirdBatch: null == thirdBatch
           ? _value.thirdBatch
           : thirdBatch // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       contractStages: null == contractStages
           ? _value.contractStages
           : contractStages // ignore: cast_nullable_to_non_nullable
@@ -159,9 +159,9 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       String status,
       @JsonKey(name: 'name') String userName,
       @JsonKey(name: 'phone') String userPhone,
-      String firstBatch,
-      String secondBatch,
-      String thirdBatch,
+      DateTime firstBatch,
+      DateTime secondBatch,
+      DateTime thirdBatch,
       String contractStages,
       String implementationStages,
       String? pdfId,
@@ -218,15 +218,15 @@ class __$$OrderImplCopyWithImpl<$Res>
       firstBatch: null == firstBatch
           ? _value.firstBatch
           : firstBatch // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       secondBatch: null == secondBatch
           ? _value.secondBatch
           : secondBatch // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       thirdBatch: null == thirdBatch
           ? _value.thirdBatch
           : thirdBatch // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       contractStages: null == contractStages
           ? _value.contractStages
           : contractStages // ignore: cast_nullable_to_non_nullable
@@ -288,11 +288,11 @@ class _$OrderImpl implements _Order {
   @JsonKey(name: 'phone')
   final String userPhone;
   @override
-  final String firstBatch;
+  final DateTime firstBatch;
   @override
-  final String secondBatch;
+  final DateTime secondBatch;
   @override
-  final String thirdBatch;
+  final DateTime thirdBatch;
   @override
   final String contractStages;
   @override
@@ -375,9 +375,9 @@ abstract class _Order implements Order {
       required final String status,
       @JsonKey(name: 'name') required final String userName,
       @JsonKey(name: 'phone') required final String userPhone,
-      required final String firstBatch,
-      required final String secondBatch,
-      required final String thirdBatch,
+      required final DateTime firstBatch,
+      required final DateTime secondBatch,
+      required final DateTime thirdBatch,
       required final String contractStages,
       required final String implementationStages,
       final String? pdfId,
@@ -399,11 +399,11 @@ abstract class _Order implements Order {
   @JsonKey(name: 'phone')
   String get userPhone;
   @override
-  String get firstBatch;
+  DateTime get firstBatch;
   @override
-  String get secondBatch;
+  DateTime get secondBatch;
   @override
-  String get thirdBatch;
+  DateTime get thirdBatch;
   @override
   String get contractStages;
   @override

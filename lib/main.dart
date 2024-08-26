@@ -14,7 +14,7 @@ void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await CacheHelper.init();
-
+   
     await SentryFlutter.init(
       (options) {
         options.dsn =

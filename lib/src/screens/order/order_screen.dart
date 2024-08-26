@@ -3,7 +3,6 @@ import 'package:delta/src/app.dart';
 import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/order/data/order.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -146,7 +145,7 @@ class OrderScreen extends ConsumerWidget {
                       width: 4,
                     ),
                     Text(
-                      order.firstBatch,
+                      formatDate(order.firstBatch),
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
@@ -166,7 +165,7 @@ class OrderScreen extends ConsumerWidget {
                       width: 4,
                     ),
                     Text(
-                      order.secondBatch,
+                      formatDate(order.secondBatch),
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
@@ -186,7 +185,7 @@ class OrderScreen extends ConsumerWidget {
                       width: 4,
                     ),
                     Text(
-                      order.thirdBatch,
+                      formatDate(order.thirdBatch),
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
