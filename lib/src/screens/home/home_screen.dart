@@ -200,7 +200,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Visibility(
                       visible: ref.watch(queryProvider).isEmpty,
                       child: const Text(
-                        "احدث المنتجات",
+                        "احدث العروض",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w600),
                       ),
@@ -261,7 +261,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                           20,
                                                   decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                          fit: BoxFit.cover,
+                                                          fit: BoxFit.fitHeight,
                                                           image: NetworkImage(
                                                               data[index]
                                                                   .photoUrl)),

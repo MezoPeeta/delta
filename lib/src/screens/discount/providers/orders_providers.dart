@@ -8,8 +8,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import '../../../shared/dio_helper.dart';
 
 part 'orders_providers.g.dart';
@@ -47,21 +45,22 @@ Future<int> downloadOrderPDF(DownloadOrderPDFRef ref,
   snackbarKey.currentState!
       .showSnackBar(const SnackBar(content: Text("جاري تحميل العقد")));
   if (Platform.isAndroid) {
-    FileDownloader.downloadFile(
-        url: downloadURL,
-        name: "العقد.pdf",
-        notificationType: NotificationType.all);
+    Directory? saveDir = Directory('/storage/emulated/0/Download');
+    savePath = saveDir.path;
+    // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+    // ignore: avoid_slow_async_io
+    if (!await saveDir.exists()) saveDir = await getExternalStorageDirectory();
+    savePath = '${saveDir?.path}/contract.pdf';
   } else {
     savePath = '${iosPath?.path}/contract.pdf';
-    await Dio().download(
-      downloadURL,
-      savePath,
-    );
   }
-
+  print(downloadURL);
+  await Dio().download(
+    downloadURL,
+    savePath,
+  );
   snackbarKey.currentState!.showSnackBar(
       const SnackBar(content: Text("تم الانتهاء من تحميل العقد")));
-
   return download?.statusCode ?? 0;
 }
 
@@ -81,21 +80,16 @@ Future<int> downloadContractPDF(DownloadContractPDFRef ref,
   snackbarKey.currentState!
       .showSnackBar(const SnackBar(content: Text("جاري تحميل العقد")));
   if (Platform.isAndroid) {
-    FileDownloader.downloadFile(
-        url: downloadURL,
-        name: "عقد الصيانة.pdf",
-        notificationType: NotificationType.all);
+    savePath = "/storage/emulated/0/Download/contract.pdf";
   } else {
-    savePath = '${iosPath?.path}/contract.pdf';
-    await Dio().download(
-      downloadURL,
-      savePath,
-    );
+    savePath = '${iosPath?.path}/عقد صيانة.pdf';
   }
-
+  await Dio().download(
+    downloadURL,
+    savePath,
+  );
   snackbarKey.currentState!.showSnackBar(
       const SnackBar(content: Text("تم الانتهاء من تحميل العقد")));
-
   return download?.statusCode ?? 0;
 }
 

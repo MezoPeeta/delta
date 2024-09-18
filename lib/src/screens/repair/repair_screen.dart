@@ -5,6 +5,7 @@ import 'package:delta/src/screens/repair/providers/repair_providers.dart';
 import 'package:delta/src/screens/settings/addresses/data/address.dart';
 import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:delta/src/shared/app_sheet.dart';
+import 'package:delta/src/shared/routes.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -689,7 +690,9 @@ class _RepairScreenState extends ConsumerState<RepairScreen> {
                                                   minHeight: 54),
                                               child: ElevatedButton(
                                                   onPressed: () {
-                                                    context.push('/sales');
+                                                    ref
+                                                        .read(goRouterProvider)
+                                                        .pop();
                                                   },
                                                   child: const Text("التالي")),
                                             ),

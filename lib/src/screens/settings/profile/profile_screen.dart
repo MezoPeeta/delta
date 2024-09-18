@@ -1,4 +1,5 @@
 import 'package:delta/src/screens/auth/login/data/user.dart';
+import 'package:delta/src/screens/products/product_detail.dart';
 import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
 import 'package:delta/src/screens/settings/profile/providers/profile_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,9 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final nameController = TextEditingController(text: user.name);
     final phoneController = TextEditingController(text: user.phone);
-    final newPhoneController = TextEditingController();
+    final newPhoneController = TextEditingController(text: user.anotherPhone);
     final isGuest = user.name == "زائر";
+    final loading = ref.watch(loadingProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("الملف الشخصي"),
@@ -73,15 +75,25 @@ class ProfileScreen extends ConsumerWidget {
                             constraints: const BoxConstraints(
                                 minWidth: double.infinity, minHeight: 54),
                             child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    ref.read(updateUserProvider(
-                                        userName: nameController.text,
-                                        phone: phoneController.text,
-                                        newPhone: newPhoneController.text));
+                                    ref.read(loadingProvider.notifier).state =
+                                        true;
+                                    await ref.read(updateUserProvider(
+                                            userName: nameController.text,
+                                            phone: phoneController.text,
+                                            newPhone: newPhoneController.text)
+                                        .future);
+                                    ref.read(loadingProvider.notifier).state =
+                                        false;
                                   }
                                 },
-                                child: const Text("حفظ")),
+                                child: loading
+                                    ? const CircularProgressIndicator.adaptive(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Colors.white),
+                                      )
+                                    : const Text("حفظ")),
                           ),
                           const SizedBox(
                             height: 16,

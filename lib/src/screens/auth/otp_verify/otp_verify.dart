@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:delta/src/app.dart';
 import 'package:delta/src/screens/auth/otp_verify/providers/otp_providers.dart';
+import 'package:delta/src/screens/auth/widgets/text_form.dart';
 import 'package:delta/src/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,8 +45,47 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   }
 
   bool loading = false;
+  final recoverEmailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if (widget.email == '') {
+      showDialog(
+          context: context,
+          builder: (context) => SizedBox(
+                height: 200,
+                child: AlertDialog.adaptive(
+                  title: const Text("كتابة الايميل"),
+                  content: TextForm(
+                      controller: recoverEmailController,
+                      labelName: "البريد الاكتروني",
+                      hintText: "اكتب البريد للتفعيل"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: const Text("الغاء")),
+                    Consumer(builder: (context, ref, child) {
+                      return TextButton(
+                          onPressed: () async {
+                            if (recoverEmailController.text.isEmpty) {
+                              return;
+                            }
+
+                            await ref.read(sendOTPProvider(
+                                    email: recoverEmailController.text)
+                                .future);
+
+                            if (!context.mounted) return;
+                            context.go("/otp_verify",
+                                extra: recoverEmailController.text);
+                          },
+                          child: const Text("تفعيل"));
+                    })
+                  ],
+                ),
+              ));
+    }
     return Scaffold(
       appBar: AppBar(),
       body: Padding(

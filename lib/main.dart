@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:delta/src/shared/cache_helper.dart';
 import 'package:delta/src/shared/notifications.dart';
@@ -9,12 +10,13 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'src/shared/firebase_options.dart';
 import 'src/app.dart';
+import 'src/shared/http_override.dart';
 
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await CacheHelper.init();
-   
+    HttpOverrides.global = MyHttpOverrides();
     await SentryFlutter.init(
       (options) {
         options.dsn =
@@ -28,7 +30,7 @@ void main() async {
   });
 
   await Firebase.initializeApp(
-    // name: "devproject",
+    name: Platform.isIOS ? "devproject" : null,
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseNotifications().init();

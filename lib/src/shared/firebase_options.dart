@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '746504547905',
     projectId: 'delta-project-delta',
     storageBucket: 'delta-project-delta.appspot.com',
-    iosBundleId: 'com.delta',
+    iosBundleId: 'com.delta_elevator',
   );
 }

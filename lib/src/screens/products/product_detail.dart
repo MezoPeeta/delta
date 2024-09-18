@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/discount/providers/cart_notifier.dart';
-import 'package:delta/src/screens/discount/providers/orders_providers.dart';
 import 'package:delta/src/screens/products/data/product.dart';
-import 'package:delta/src/screens/products/products_screen.dart';
 import 'package:delta/src/screens/products/provider/product_provider.dart';
 import 'package:delta/src/screens/settings/notifications/notifications_screen.dart';
+import 'package:delta/src/shared/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -56,6 +55,7 @@ class ProductDetail extends StatelessWidget {
                         .addToCart(productID: product.id);
                     ref.read(loadingProvider.notifier).state = false;
                     if (!context.mounted) return;
+                    ref.read(currentIndexProvider.notifier).state = 2;
                     context.go("/");
                   },
                   child: loading
@@ -209,7 +209,8 @@ class SmallProductContainer extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.fitHeight,
-                    image: CachedNetworkImageProvider(product?.mainPhoto ?? "")),
+                    image:
+                        CachedNetworkImageProvider(product?.mainPhoto ?? "")),
                 borderRadius: BorderRadius.circular(4)),
           ),
           const SizedBox(

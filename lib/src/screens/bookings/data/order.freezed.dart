@@ -28,9 +28,9 @@ mixin _$Order {
   String get userName => throw _privateConstructorUsedError;
   @JsonKey(name: 'phone')
   String get userPhone => throw _privateConstructorUsedError;
-  DateTime get firstBatch => throw _privateConstructorUsedError;
-  DateTime get secondBatch => throw _privateConstructorUsedError;
-  DateTime get thirdBatch => throw _privateConstructorUsedError;
+  Object? get firstBatch => throw _privateConstructorUsedError;
+  Object? get secondBatch => throw _privateConstructorUsedError;
+  Object? get thirdBatch => throw _privateConstructorUsedError;
   String get contractStages => throw _privateConstructorUsedError;
   String get implementationStages => throw _privateConstructorUsedError;
   String? get pdfId => throw _privateConstructorUsedError;
@@ -56,9 +56,9 @@ abstract class $OrderCopyWith<$Res> {
       String status,
       @JsonKey(name: 'name') String userName,
       @JsonKey(name: 'phone') String userPhone,
-      DateTime firstBatch,
-      DateTime secondBatch,
-      DateTime thirdBatch,
+      Object? firstBatch,
+      Object? secondBatch,
+      Object? thirdBatch,
       String contractStages,
       String implementationStages,
       String? pdfId,
@@ -85,9 +85,9 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? status = null,
     Object? userName = null,
     Object? userPhone = null,
-    Object? firstBatch = null,
-    Object? secondBatch = null,
-    Object? thirdBatch = null,
+    Object? firstBatch = freezed,
+    Object? secondBatch = freezed,
+    Object? thirdBatch = freezed,
     Object? contractStages = null,
     Object? implementationStages = null,
     Object? pdfId = freezed,
@@ -114,18 +114,9 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.userPhone
           : userPhone // ignore: cast_nullable_to_non_nullable
               as String,
-      firstBatch: null == firstBatch
-          ? _value.firstBatch
-          : firstBatch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      secondBatch: null == secondBatch
-          ? _value.secondBatch
-          : secondBatch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      thirdBatch: null == thirdBatch
-          ? _value.thirdBatch
-          : thirdBatch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      firstBatch: freezed == firstBatch ? _value.firstBatch : firstBatch,
+      secondBatch: freezed == secondBatch ? _value.secondBatch : secondBatch,
+      thirdBatch: freezed == thirdBatch ? _value.thirdBatch : thirdBatch,
       contractStages: null == contractStages
           ? _value.contractStages
           : contractStages // ignore: cast_nullable_to_non_nullable
@@ -159,9 +150,9 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       String status,
       @JsonKey(name: 'name') String userName,
       @JsonKey(name: 'phone') String userPhone,
-      DateTime firstBatch,
-      DateTime secondBatch,
-      DateTime thirdBatch,
+      Object? firstBatch,
+      Object? secondBatch,
+      Object? thirdBatch,
       String contractStages,
       String implementationStages,
       String? pdfId,
@@ -186,9 +177,9 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? status = null,
     Object? userName = null,
     Object? userPhone = null,
-    Object? firstBatch = null,
-    Object? secondBatch = null,
-    Object? thirdBatch = null,
+    Object? firstBatch = freezed,
+    Object? secondBatch = freezed,
+    Object? thirdBatch = freezed,
     Object? contractStages = null,
     Object? implementationStages = null,
     Object? pdfId = freezed,
@@ -215,18 +206,9 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.userPhone
           : userPhone // ignore: cast_nullable_to_non_nullable
               as String,
-      firstBatch: null == firstBatch
-          ? _value.firstBatch
-          : firstBatch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      secondBatch: null == secondBatch
-          ? _value.secondBatch
-          : secondBatch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      thirdBatch: null == thirdBatch
-          ? _value.thirdBatch
-          : thirdBatch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      firstBatch: freezed == firstBatch ? _value.firstBatch : firstBatch,
+      secondBatch: freezed == secondBatch ? _value.secondBatch : secondBatch,
+      thirdBatch: freezed == thirdBatch ? _value.thirdBatch : thirdBatch,
       contractStages: null == contractStages
           ? _value.contractStages
           : contractStages // ignore: cast_nullable_to_non_nullable
@@ -256,9 +238,9 @@ class _$OrderImpl implements _Order {
       required this.status,
       @JsonKey(name: 'name') required this.userName,
       @JsonKey(name: 'phone') required this.userPhone,
-      required this.firstBatch,
-      required this.secondBatch,
-      required this.thirdBatch,
+      this.firstBatch,
+      this.secondBatch,
+      this.thirdBatch,
       required this.contractStages,
       required this.implementationStages,
       this.pdfId,
@@ -288,11 +270,11 @@ class _$OrderImpl implements _Order {
   @JsonKey(name: 'phone')
   final String userPhone;
   @override
-  final DateTime firstBatch;
+  final Object? firstBatch;
   @override
-  final DateTime secondBatch;
+  final Object? secondBatch;
   @override
-  final DateTime thirdBatch;
+  final Object? thirdBatch;
   @override
   final String contractStages;
   @override
@@ -320,12 +302,12 @@ class _$OrderImpl implements _Order {
                 other.userName == userName) &&
             (identical(other.userPhone, userPhone) ||
                 other.userPhone == userPhone) &&
-            (identical(other.firstBatch, firstBatch) ||
-                other.firstBatch == firstBatch) &&
-            (identical(other.secondBatch, secondBatch) ||
-                other.secondBatch == secondBatch) &&
-            (identical(other.thirdBatch, thirdBatch) ||
-                other.thirdBatch == thirdBatch) &&
+            const DeepCollectionEquality()
+                .equals(other.firstBatch, firstBatch) &&
+            const DeepCollectionEquality()
+                .equals(other.secondBatch, secondBatch) &&
+            const DeepCollectionEquality()
+                .equals(other.thirdBatch, thirdBatch) &&
             (identical(other.contractStages, contractStages) ||
                 other.contractStages == contractStages) &&
             (identical(other.implementationStages, implementationStages) ||
@@ -344,9 +326,9 @@ class _$OrderImpl implements _Order {
       status,
       userName,
       userPhone,
-      firstBatch,
-      secondBatch,
-      thirdBatch,
+      const DeepCollectionEquality().hash(firstBatch),
+      const DeepCollectionEquality().hash(secondBatch),
+      const DeepCollectionEquality().hash(thirdBatch),
       contractStages,
       implementationStages,
       pdfId,
@@ -375,9 +357,9 @@ abstract class _Order implements Order {
       required final String status,
       @JsonKey(name: 'name') required final String userName,
       @JsonKey(name: 'phone') required final String userPhone,
-      required final DateTime firstBatch,
-      required final DateTime secondBatch,
-      required final DateTime thirdBatch,
+      final Object? firstBatch,
+      final Object? secondBatch,
+      final Object? thirdBatch,
       required final String contractStages,
       required final String implementationStages,
       final String? pdfId,
@@ -399,11 +381,11 @@ abstract class _Order implements Order {
   @JsonKey(name: 'phone')
   String get userPhone;
   @override
-  DateTime get firstBatch;
+  Object? get firstBatch;
   @override
-  DateTime get secondBatch;
+  Object? get secondBatch;
   @override
-  DateTime get thirdBatch;
+  Object? get thirdBatch;
   @override
   String get contractStages;
   @override

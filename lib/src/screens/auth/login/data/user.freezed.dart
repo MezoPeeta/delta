@@ -27,6 +27,7 @@ mixin _$User {
   String get email => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+  String? get anotherPhone => throw _privateConstructorUsedError;
   bool get isUserHasContract => throw _privateConstructorUsedError;
   bool get isUserHasMaintenanceRequest => throw _privateConstructorUsedError;
 
@@ -51,6 +52,7 @@ abstract class $UserCopyWith<$Res> {
       String email,
       String role,
       String phone,
+      String? anotherPhone,
       bool isUserHasContract,
       bool isUserHasMaintenanceRequest});
 }
@@ -76,6 +78,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = null,
     Object? role = null,
     Object? phone = null,
+    Object? anotherPhone = freezed,
     Object? isUserHasContract = null,
     Object? isUserHasMaintenanceRequest = null,
   }) {
@@ -104,6 +107,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      anotherPhone: freezed == anotherPhone
+          ? _value.anotherPhone
+          : anotherPhone // ignore: cast_nullable_to_non_nullable
+              as String?,
       isUserHasContract: null == isUserHasContract
           ? _value.isUserHasContract
           : isUserHasContract // ignore: cast_nullable_to_non_nullable
@@ -130,6 +137,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String email,
       String role,
       String phone,
+      String? anotherPhone,
       bool isUserHasContract,
       bool isUserHasMaintenanceRequest});
 }
@@ -152,6 +160,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? role = null,
     Object? phone = null,
+    Object? anotherPhone = freezed,
     Object? isUserHasContract = null,
     Object? isUserHasMaintenanceRequest = null,
   }) {
@@ -180,6 +189,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      anotherPhone: freezed == anotherPhone
+          ? _value.anotherPhone
+          : anotherPhone // ignore: cast_nullable_to_non_nullable
+              as String?,
       isUserHasContract: null == isUserHasContract
           ? _value.isUserHasContract
           : isUserHasContract // ignore: cast_nullable_to_non_nullable
@@ -201,6 +214,7 @@ class _$UserImpl implements _User {
       required this.email,
       required this.role,
       required this.phone,
+      this.anotherPhone,
       required this.isUserHasContract,
       required this.isUserHasMaintenanceRequest})
       : _addresses = addresses;
@@ -228,13 +242,15 @@ class _$UserImpl implements _User {
   @override
   final String phone;
   @override
+  final String? anotherPhone;
+  @override
   final bool isUserHasContract;
   @override
   final bool isUserHasMaintenanceRequest;
 
   @override
   String toString() {
-    return 'User(addresses: $addresses, id: $id, name: $name, email: $email, role: $role, phone: $phone, isUserHasContract: $isUserHasContract, isUserHasMaintenanceRequest: $isUserHasMaintenanceRequest)';
+    return 'User(addresses: $addresses, id: $id, name: $name, email: $email, role: $role, phone: $phone, anotherPhone: $anotherPhone, isUserHasContract: $isUserHasContract, isUserHasMaintenanceRequest: $isUserHasMaintenanceRequest)';
   }
 
   @override
@@ -249,6 +265,8 @@ class _$UserImpl implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.role, role) || other.role == role) &&
             (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.anotherPhone, anotherPhone) ||
+                other.anotherPhone == anotherPhone) &&
             (identical(other.isUserHasContract, isUserHasContract) ||
                 other.isUserHasContract == isUserHasContract) &&
             (identical(other.isUserHasMaintenanceRequest,
@@ -267,6 +285,7 @@ class _$UserImpl implements _User {
       email,
       role,
       phone,
+      anotherPhone,
       isUserHasContract,
       isUserHasMaintenanceRequest);
 
@@ -293,6 +312,7 @@ abstract class _User implements User {
       required final String email,
       required final String role,
       required final String phone,
+      final String? anotherPhone,
       required final bool isUserHasContract,
       required final bool isUserHasMaintenanceRequest}) = _$UserImpl;
 
@@ -311,6 +331,8 @@ abstract class _User implements User {
   String get role;
   @override
   String get phone;
+  @override
+  String? get anotherPhone;
   @override
   bool get isUserHasContract;
   @override

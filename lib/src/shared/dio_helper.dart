@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:delta/src/app.dart';
-import 'package:delta/src/shared/storage.dart';
+import 'package:delta/src/shared/routes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +13,7 @@ final dioHelperProvider = Provider(DioHelper.new);
 class DioHelper {
   final Ref ref;
   DioHelper(this.ref);
-  static const String url = 'https://delta-project-pzw4.onrender.com';
+  static const String url = 'https://api.delta-for-elmvators.me';
   static BaseOptions opts = BaseOptions(
     baseUrl: url,
     responseType: ResponseType.json,
@@ -23,31 +23,27 @@ class DioHelper {
     return Dio(opts);
   }
 
-  Dio addInterceptors(Dio dio) {
+  static Dio addInterceptors(Dio dio) {
     return dio
       ..interceptors.add(
         InterceptorsWrapper(
             onRequest: (RequestOptions options, handler) =>
                 handler.next(options),
             onError: (DioException e, handler) async {
+              if (e.response?.statusCode == 429) {
+                await Future.delayed(const Duration(hours: 1));
+              }
               return handler.next(e);
             }),
       );
   }
 
   static final dio = createDio();
-
-  static Future<RequestOptions> requestInterceptor(
-      RequestOptions options) async {
-    // Get your JWT token
-    final token = await StorageRepository().read(key: "token");
-    options.headers.addAll({"Authorization": "Bearer: $token"});
-    return options;
-  }
+  static final baseAPI = addInterceptors(dio);
 
   Future<Response?> getHTTP(String url, {String token = ""}) async {
     try {
-      Response response = await dio.get(url,
+      Response response = await baseAPI.get(url,
           options: token != ""
               ? Options(headers: {"Authorization": "Bearer $token"})
               : null);
@@ -68,7 +64,7 @@ class DioHelper {
   Future<Response?> postHTTP(String url, dynamic data,
       {Options? options}) async {
     try {
-      Response response = await dio.post(url, data: data, options: options);
+      Response response = await baseAPI.post(url, data: data, options: options);
       return response;
     } on DioException catch (e) {
       final errorMessage = e.response!.data["message"];
@@ -121,9 +117,10 @@ class DioHelper {
       if (e.response!.statusCode == 403) {
         snackbarKey.currentState!.showSnackBar(const SnackBar(
             content: Text("الحساب غير مفعل, ارجو من تفعيل الحساب")));
+        ref.watch(goRouterProvider).go("/otp_verify", extra: '');
       }
       snackbarKey.currentState!.showSnackBar(
-          const SnackBar(content: Text("حدث خطأ ما, حاول من جديد")));
+          SnackBar(content: Text("مشكلة سيرفر ${e.response?.statusCode}")));
       log("PostError", error: "$errorMessage | ${e.response?.statusCode}");
       return null;
     }
@@ -132,7 +129,7 @@ class DioHelper {
   Future<Response?> patchHTTP(String url, dynamic data,
       {String token = ""}) async {
     try {
-      Response response = await dio.patch(url,
+      Response response = await baseAPI.patch(url,
           data: data,
           options: token != ""
               ? Options(headers: {"Authorization": "Bearer $token"})
@@ -152,7 +149,7 @@ class DioHelper {
   Future<Response?> deleteHTTP(String url, dynamic data,
       {String token = ""}) async {
     try {
-      Response response = await dio.delete(url,
+      Response response = await baseAPI.delete(url,
           data: data,
           options: token != ""
               ? Options(headers: {"Authorization": "Bearer $token"})
@@ -172,7 +169,7 @@ class DioHelper {
       final savePath = await getDownloadsDirectory();
       final pdfPath = "${savePath?.path}/contract.pdf";
 
-      Response response = await dio.download(url, pdfPath,
+      Response response = await baseAPI.download(url, pdfPath,
           data: data,
           options: Options(headers: {"Content-Type": "application/json"}));
       print(response.data);

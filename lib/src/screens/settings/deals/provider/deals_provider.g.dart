@@ -7,7 +7,7 @@ part of 'deals_provider.dart';
 // **************************************************************************
 
 String _$getMaintenaceContractsHash() =>
-    r'8e37cb9871d2a1957544f86c8796bc996680592d';
+    r'01d84536fef01e34ddb11af5079b0326a6103662';
 
 /// See also [getMaintenaceContracts].
 @ProviderFor(getMaintenaceContracts)

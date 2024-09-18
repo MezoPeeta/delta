@@ -16,14 +16,13 @@ class FeedbackScreen extends ConsumerStatefulWidget {
 }
 
 class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
-  final nameController = TextEditingController();
-
   final messageController = TextEditingController();
   String phoneNumber = "";
   final _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final isGuest = ref.watch(isGuestProvider);
+    final user = ref.watch(userStorageProvider).requireValue;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,8 +44,10 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                         child: Column(
                           children: [
                             TextForm(
-                                controller: nameController,
+                                controller:
+                                    TextEditingController(text: user?.name),
                                 labelName: "اسمك",
+                                readOnly: true,
                                 validator: (v) {
                                   if (v!.isEmpty) {
                                     return "ارجو بكتابة الاسم";
@@ -73,12 +74,10 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                                   initialCountryCode: 'QA',
                                   showDropdownIcon: false,
                                   languageCode: "ar",
+                                  readOnly: true,
+                                  initialValue: user?.phone,
                                   searchText: "ابحث عن الدولة",
-                                  onChanged: (v) {
-                                    setState(() {
-                                      phoneNumber = v.completeNumber;
-                                    });
-                                  },
+                                  onChanged: (v) {},
                                   flagsButtonPadding:
                                       const EdgeInsets.symmetric(
                                           horizontal: 12),
@@ -106,17 +105,10 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                                   minWidth: double.infinity, minHeight: 54),
                               child: ElevatedButton(
                                   onPressed: () {
-                                    if (phoneNumber.isEmpty) {
-                                      snackbarKey.currentState!.showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "ارجوا باستكمال البيانات")));
-                                      return;
-                                    }
                                     if (_key.currentState!.validate()) {
                                       ref.read(sendFeedbackProvider(
-                                          userName: nameController.text,
-                                          phone: phoneNumber,
+                                          userName: user!.name,
+                                          phone: user.phone,
                                           message: messageController.text));
                                     }
                                   },

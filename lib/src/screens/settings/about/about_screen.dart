@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
-  final String email = "";
+  final String email = "sales@deltatechnologys.com";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,13 +49,19 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(12)),
-              child: ListTile(
-                leading: SvgPicture.asset("assets/img/icons/instagram.svg"),
-                title: const Text("انستاجرام"),
+            GestureDetector(
+              onTap: () async {
+                await launchUrlString(
+                    'https://www.instagram.com/delta.aelevator/');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(12)),
+                child: ListTile(
+                  leading: SvgPicture.asset("assets/img/icons/instagram.svg"),
+                  title: const Text("انستاجرام"),
+                ),
               ),
             ),
             const SizedBox(

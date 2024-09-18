@@ -16,7 +16,7 @@ Future<List<Address>> getUserAddresses(GetUserAddressesRef ref) async {
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP("/api/addresses/?page=1&?limit=4", token: userToken ?? "");
-  final addresses = request!.data["data"]["addresses"];
+  final addresses = request?.data["data"]["addresses"];
   print(userToken);
   return addresses.map<Address>((e) => Address.fromJson(e)).toList();
 }
@@ -45,6 +45,8 @@ Future<Position> getLocation(GetLocationRef ref) async {
   }
 
   if (permission == LocationPermission.deniedForever) {
+    snackbarKey.currentState!.showSnackBar(
+        const SnackBar(content: Text("يرجي العلم ان تحديد الموقع مغلق")));
     return Future.error(
         'Location permissions are permanently denied, we cannot request permissions.');
   }

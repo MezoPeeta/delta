@@ -17,9 +17,15 @@ class OrderScreen extends ConsumerWidget {
   });
   final Order order;
 
-  String formatDate(DateTime date) {
-    final formattedDate = DateFormat.yMd().format(date);
-    return formattedDate;
+  String formatDate(Object? date) {
+    if (date == null || date == '') {
+      return '';
+    }
+    if (date is DateTime) {
+      final formattedDate = DateFormat.yMd().format(date);
+      return formattedDate;
+    }
+    return "";
   }
 
   @override

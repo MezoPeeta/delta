@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:delta/src/screens/products/data/product.dart';
@@ -19,10 +20,16 @@ Future<List<Product>> getProducts(GetProductsRef ref,
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP("/api/products/?page=$page&limit=4");
+  if (request != null) {
+    log(request.data);
+    final requestStringJson = request.data.toString();
+    final requestJson = jsonDecode(requestStringJson);
 
-  return request!.data["data"]["products"]
-      .map<Product>((e) => Product.fromJson(e))
-      .toList();
+    return requestJson["data"]["products"]
+        .map<Product>((e) => Product.fromJson(e))
+        .toList();
+  }
+  return [];
 }
 
 @riverpod
@@ -31,12 +38,17 @@ Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
   final request = await ref.watch(dioHelperProvider).getHTTP(
         "/api/products/?category=$category&page=$page",
       );
+  if (request != null) {
+    final requestStringJson = request.data.toString();
+    final requestJson = jsonDecode(requestStringJson);
 
-  List<Product> products = request!.data["data"]["products"]
-      .map<Product>((e) => Product.fromJson(e))
-      .toList();
+    final products = requestJson["data"]["products"]
+        .map<Product>((e) => Product.fromJson(e))
+        .toList();
 
-  return products;
+    return products;
+  }
+  return [];
 }
 
 @riverpod
@@ -59,13 +71,17 @@ Future<List<Category>> getCategories(
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP("/api/product-categories/?limit=6");
+  if (request != null) {
+    final requestStringJson = request.data.toString();
+    final requestJson = jsonDecode(requestStringJson);
+    final categories = requestJson["data"]["categories"]
+        .map<Category>((e) => Category.fromJson(e))
+        .toList();
 
-  List<Category> categories = request!.data["data"]["categories"]
-      .map<Category>((e) => Category.fromJson(e))
-      .toList();
-
-  categories.insert(0, const Category(title: "الكل"));
-  return categories;
+    categories.insert(0, const Category(title: "الكل"));
+    return categories;
+  }
+  return [];
 }
 
 @riverpod

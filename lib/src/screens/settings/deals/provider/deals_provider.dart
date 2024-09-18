@@ -12,7 +12,7 @@ Future<List<String>> getMaintenaceContracts(
       .watch(dioHelperProvider)
       .getHTTP("/api/maintenance-requests/user", token: token ?? "");
 
-  return request!.data["data"]["requests"]
+  return request?.data["data"]["requests"]
       .map<String>((e) => e["pdfId"] as String)
       .toList();
 }

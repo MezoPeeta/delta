@@ -22,6 +22,6 @@ Future<void> updateUser(UpdateUserRef ref,
     snackbarKey.currentState!
         .showSnackBar(const SnackBar(content: Text("تم حفظ البيانات بنجاح")));
     ref.watch(userProvider.notifier).state =
-        user!.copyWith(name: userName!, phone: phone!);
+        user!.copyWith(name: userName!, phone: phone!, anotherPhone: newPhone);
   }
 }

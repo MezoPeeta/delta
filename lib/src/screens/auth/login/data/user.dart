@@ -12,6 +12,7 @@ class User with _$User {
       required String email,
       required String role,
       required String phone,
+      String? anotherPhone,
       required bool isUserHasContract,
       required bool isUserHasMaintenanceRequest
      }) = _User;

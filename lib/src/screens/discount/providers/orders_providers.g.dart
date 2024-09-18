@@ -154,7 +154,7 @@ class _SendOrderProviderElement extends AutoDisposeFutureProviderElement<int>
   String get address => (origin as SendOrderProvider).address;
 }
 
-String _$downloadOrderPDFHash() => r'cb47021c2a5a02510991993ade617b274751bc66';
+String _$downloadOrderPDFHash() => r'c360d7a6bb87e7d8256ada6b8c8d7a1015e1d104';
 
 /// See also [downloadOrderPDF].
 @ProviderFor(downloadOrderPDF)
@@ -283,7 +283,7 @@ class _DownloadOrderPDFProviderElement
 }
 
 String _$downloadContractPDFHash() =>
-    r'81577e38a419f6a33b9d533fd663ccfa23731a2e';
+    r'4bf4277e8ea13c1037b95fba22be9976230e75b8';
 
 /// See also [downloadContractPDF].
 @ProviderFor(downloadContractPDF)

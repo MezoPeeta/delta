@@ -85,7 +85,6 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                             category: category, page: page.toString()))
                         : ref.watch(getProductsProvider(page: page.toString()));
 
-                    log("index: $index, page: $page, indexInPage: $indexInPage");
                     return products.when(
                         data: (data) {
                           if (indexInPage >= data.length) {
@@ -93,7 +92,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           }
                           return ProductContainer(product: data[indexInPage]);
                         },
-                        error: (e, s) => const Text("حدث خطأ ما"),
+                        error: (e, s) {
+                          log("Error Product", error: e, stackTrace: s);
+                          return const Text("حدث خطأ ما");
+                        },
                         loading: () => Center(
                                 child: Container(
                               padding: const EdgeInsets.all(16),

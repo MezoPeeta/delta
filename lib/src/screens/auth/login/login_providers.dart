@@ -21,15 +21,9 @@ final userStorageProvider = FutureProvider<User?>((ref) async {
     final currentUser = await ref.watch(currentUserProvider.future);
     return currentUser;
   } catch (e) {
-    return const User([],
-        id: "id",
-        name: "زائر",
-        email: "email",
-        role: "role",
-        phone: "phone",
-        isUserHasContract: false,
-        isUserHasMaintenanceRequest: false);
+    ref.watch(goRouterProvider).go("/intro");
   }
+  return null;
 });
 
 final isGuestProvider = StateProvider<bool>((ref) {

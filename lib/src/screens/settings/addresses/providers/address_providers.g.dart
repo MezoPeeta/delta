@@ -6,7 +6,7 @@ part of 'address_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getUserAddressesHash() => r'1750b16b5996e32e000b2748fea3834e67f9162b';
+String _$getUserAddressesHash() => r'6453ccfb901fe86936bf086c38e641bf13b1a0ae';
 
 /// See also [getUserAddresses].
 @ProviderFor(getUserAddresses)
@@ -22,7 +22,7 @@ final getUserAddressesProvider =
 );
 
 typedef GetUserAddressesRef = AutoDisposeFutureProviderRef<List<Address>>;
-String _$getLocationHash() => r'e7926bb437cda4bdaa0f59b821d88b052975254c';
+String _$getLocationHash() => r'53c11ae8f4755fbd3ddb83a48918a0214ddadf3f';
 
 /// See also [getLocation].
 @ProviderFor(getLocation)
