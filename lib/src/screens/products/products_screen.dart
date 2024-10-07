@@ -19,7 +19,7 @@ class ProductsScreen extends ConsumerStatefulWidget {
 class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   String category = "الكل";
   int selectedIndex = 0;
-  final pageSize = 20;
+  final pageSize = 4;
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(getCategoriesProvider);
@@ -87,10 +87,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 
                     return products.when(
                         data: (data) {
-                          if (indexInPage >= data.length) {
+                          if (indexInPage >= data.data.products.length) {
                             return null;
                           }
-                          return ProductContainer(product: data[indexInPage]);
+                          return ProductContainer(
+                              product: data.data.products[indexInPage]);
                         },
                         error: (e, s) {
                           log("Error Product", error: e, stackTrace: s);

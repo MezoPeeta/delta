@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delta/src/screens/auth/login/login_providers.dart';
 import 'package:delta/src/screens/discount/providers/cart_notifier.dart';
@@ -69,16 +71,29 @@ class ProductDetail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FullScreenImage(
+                      imageUrl:
+                          product.mainPhoto!, // Replace with your image URL
+                    ),
                   ),
-                  image: DecorationImage(
-                      fit: BoxFit.fitHeight,
-                      image: NetworkImage(product.mainPhoto!))),
+                );
+              },
+              child: Container(
+                height: 250,
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                    image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: NetworkImage(product.mainPhoto!))),
+              ),
             ),
             const SizedBox(
               height: 12,
@@ -171,7 +186,10 @@ class ProductDetail extends StatelessWidget {
                             ],
                           );
                         },
-                        error: (e, s) => const Text("حدث خطا ما"),
+                        error: (e, s) {
+                          log("Error Product Detail", error: e, stackTrace: s);
+                          return const Text("حدث خطا ما");
+                        },
                         loading: () => const CircularProgressIndicator());
                   }),
                 ],
@@ -227,6 +245,39 @@ class SmallProductContainer extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String imageUrl;
+
+  const FullScreenImage({super.key, required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context); // Close fullscreen when tapped
+        },
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Center(
+                child: Image.network(imageUrl),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  child: CloseButton(),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

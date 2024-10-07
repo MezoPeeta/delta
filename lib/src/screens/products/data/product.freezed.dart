@@ -296,3 +296,454 @@ abstract class _Product implements Product {
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+Products _$ProductsFromJson(Map<String, dynamic> json) {
+  return _Products.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Products {
+  @JsonKey(name: "status")
+  String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: "results")
+  int get results => throw _privateConstructorUsedError;
+  @JsonKey(name: "data")
+  Data get data => throw _privateConstructorUsedError;
+
+  /// Serializes this Products to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ProductsCopyWith<Products> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ProductsCopyWith<$Res> {
+  factory $ProductsCopyWith(Products value, $Res Function(Products) then) =
+      _$ProductsCopyWithImpl<$Res, Products>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "status") String status,
+      @JsonKey(name: "results") int results,
+      @JsonKey(name: "data") Data data});
+
+  $DataCopyWith<$Res> get data;
+}
+
+/// @nodoc
+class _$ProductsCopyWithImpl<$Res, $Val extends Products>
+    implements $ProductsCopyWith<$Res> {
+  _$ProductsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? status = null,
+    Object? results = null,
+    Object? data = null,
+  }) {
+    return _then(_value.copyWith(
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      results: null == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as int,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Data,
+    ) as $Val);
+  }
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $DataCopyWith<$Res> get data {
+    return $DataCopyWith<$Res>(_value.data, (value) {
+      return _then(_value.copyWith(data: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$ProductsImplCopyWith<$Res>
+    implements $ProductsCopyWith<$Res> {
+  factory _$$ProductsImplCopyWith(
+          _$ProductsImpl value, $Res Function(_$ProductsImpl) then) =
+      __$$ProductsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "status") String status,
+      @JsonKey(name: "results") int results,
+      @JsonKey(name: "data") Data data});
+
+  @override
+  $DataCopyWith<$Res> get data;
+}
+
+/// @nodoc
+class __$$ProductsImplCopyWithImpl<$Res>
+    extends _$ProductsCopyWithImpl<$Res, _$ProductsImpl>
+    implements _$$ProductsImplCopyWith<$Res> {
+  __$$ProductsImplCopyWithImpl(
+      _$ProductsImpl _value, $Res Function(_$ProductsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? status = null,
+    Object? results = null,
+    Object? data = null,
+  }) {
+    return _then(_$ProductsImpl(
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      results: null == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as int,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Data,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ProductsImpl implements _Products {
+  const _$ProductsImpl(
+      {@JsonKey(name: "status") required this.status,
+      @JsonKey(name: "results") required this.results,
+      @JsonKey(name: "data") required this.data});
+
+  factory _$ProductsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProductsImplFromJson(json);
+
+  @override
+  @JsonKey(name: "status")
+  final String status;
+  @override
+  @JsonKey(name: "results")
+  final int results;
+  @override
+  @JsonKey(name: "data")
+  final Data data;
+
+  @override
+  String toString() {
+    return 'Products(status: $status, results: $results, data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProductsImpl &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.results, results) || other.results == results) &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, status, results, data);
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProductsImplCopyWith<_$ProductsImpl> get copyWith =>
+      __$$ProductsImplCopyWithImpl<_$ProductsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ProductsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Products implements Products {
+  const factory _Products(
+      {@JsonKey(name: "status") required final String status,
+      @JsonKey(name: "results") required final int results,
+      @JsonKey(name: "data") required final Data data}) = _$ProductsImpl;
+
+  factory _Products.fromJson(Map<String, dynamic> json) =
+      _$ProductsImpl.fromJson;
+
+  @override
+  @JsonKey(name: "status")
+  String get status;
+  @override
+  @JsonKey(name: "results")
+  int get results;
+  @override
+  @JsonKey(name: "data")
+  Data get data;
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ProductsImplCopyWith<_$ProductsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Data _$DataFromJson(Map<String, dynamic> json) {
+  return _Data.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Data {
+  @JsonKey(name: "products")
+  List<Product> get products => throw _privateConstructorUsedError;
+  @JsonKey(name: "total")
+  int get total => throw _privateConstructorUsedError;
+  @JsonKey(name: "totalPages")
+  int get totalPages => throw _privateConstructorUsedError;
+  @JsonKey(name: "currentPage")
+  int get currentPage => throw _privateConstructorUsedError;
+
+  /// Serializes this Data to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DataCopyWith<$Res> {
+  factory $DataCopyWith(Data value, $Res Function(Data) then) =
+      _$DataCopyWithImpl<$Res, Data>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "products") List<Product> products,
+      @JsonKey(name: "total") int total,
+      @JsonKey(name: "totalPages") int totalPages,
+      @JsonKey(name: "currentPage") int currentPage});
+}
+
+/// @nodoc
+class _$DataCopyWithImpl<$Res, $Val extends Data>
+    implements $DataCopyWith<$Res> {
+  _$DataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? products = null,
+    Object? total = null,
+    Object? totalPages = null,
+    Object? currentPage = null,
+  }) {
+    return _then(_value.copyWith(
+      products: null == products
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalPages: null == totalPages
+          ? _value.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
+  factory _$$DataImplCopyWith(
+          _$DataImpl value, $Res Function(_$DataImpl) then) =
+      __$$DataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "products") List<Product> products,
+      @JsonKey(name: "total") int total,
+      @JsonKey(name: "totalPages") int totalPages,
+      @JsonKey(name: "currentPage") int currentPage});
+}
+
+/// @nodoc
+class __$$DataImplCopyWithImpl<$Res>
+    extends _$DataCopyWithImpl<$Res, _$DataImpl>
+    implements _$$DataImplCopyWith<$Res> {
+  __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? products = null,
+    Object? total = null,
+    Object? totalPages = null,
+    Object? currentPage = null,
+  }) {
+    return _then(_$DataImpl(
+      products: null == products
+          ? _value._products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalPages: null == totalPages
+          ? _value.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DataImpl implements _Data {
+  const _$DataImpl(
+      {@JsonKey(name: "products") required final List<Product> products,
+      @JsonKey(name: "total") required this.total,
+      @JsonKey(name: "totalPages") required this.totalPages,
+      @JsonKey(name: "currentPage") required this.currentPage})
+      : _products = products;
+
+  factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DataImplFromJson(json);
+
+  final List<Product> _products;
+  @override
+  @JsonKey(name: "products")
+  List<Product> get products {
+    if (_products is EqualUnmodifiableListView) return _products;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_products);
+  }
+
+  @override
+  @JsonKey(name: "total")
+  final int total;
+  @override
+  @JsonKey(name: "totalPages")
+  final int totalPages;
+  @override
+  @JsonKey(name: "currentPage")
+  final int currentPage;
+
+  @override
+  String toString() {
+    return 'Data(products: $products, total: $total, totalPages: $totalPages, currentPage: $currentPage)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DataImpl &&
+            const DeepCollectionEquality().equals(other._products, _products) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.totalPages, totalPages) ||
+                other.totalPages == totalPages) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_products),
+      total,
+      totalPages,
+      currentPage);
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+      __$$DataImplCopyWithImpl<_$DataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Data implements Data {
+  const factory _Data(
+          {@JsonKey(name: "products") required final List<Product> products,
+          @JsonKey(name: "total") required final int total,
+          @JsonKey(name: "totalPages") required final int totalPages,
+          @JsonKey(name: "currentPage") required final int currentPage}) =
+      _$DataImpl;
+
+  factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
+
+  @override
+  @JsonKey(name: "products")
+  List<Product> get products;
+  @override
+  @JsonKey(name: "total")
+  int get total;
+  @override
+  @JsonKey(name: "totalPages")
+  int get totalPages;
+  @override
+  @JsonKey(name: "currentPage")
+  int get currentPage;
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

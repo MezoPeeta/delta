@@ -100,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             IntlPhoneField(
                               initialCountryCode: 'QA',
                               languageCode: "ar",
-                              searchText: "ابحث عن الدولة",
+                              searchText: "ابحث عن الدولة/المنطقة",
                               showDropdownIcon: false,
                               invalidNumberMessage:
                                   "الرجاء التاكد من الرقم الهاتف",

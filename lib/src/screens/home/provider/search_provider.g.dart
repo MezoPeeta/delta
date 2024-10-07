@@ -6,7 +6,7 @@ part of 'search_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchProductHash() => r'b3c1d4dc2f3780b2ba4b18573dfa78140ef4b4ca';
+String _$searchProductHash() => r'7d2a1bf017e3ebd2685dda53012c4885cb042874';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const searchProductProvider = SearchProductFamily();
 
 /// See also [searchProduct].
-class SearchProductFamily extends Family<AsyncValue<List<Product>>> {
+class SearchProductFamily extends Family<AsyncValue<Products>> {
   /// See also [searchProduct].
   const SearchProductFamily();
 
@@ -72,7 +72,7 @@ class SearchProductFamily extends Family<AsyncValue<List<Product>>> {
 }
 
 /// See also [searchProduct].
-class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
+class SearchProductProvider extends AutoDisposeFutureProvider<Products> {
   /// See also [searchProduct].
   SearchProductProvider({
     required String productName,
@@ -107,7 +107,7 @@ class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<Product>> Function(SearchProductRef provider) create,
+    FutureOr<Products> Function(SearchProductRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -124,7 +124,7 @@ class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Product>> createElement() {
+  AutoDisposeFutureProviderElement<Products> createElement() {
     return _SearchProductProviderElement(this);
   }
 
@@ -142,14 +142,13 @@ class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
   }
 }
 
-mixin SearchProductRef on AutoDisposeFutureProviderRef<List<Product>> {
+mixin SearchProductRef on AutoDisposeFutureProviderRef<Products> {
   /// The parameter `productName` of this provider.
   String get productName;
 }
 
 class _SearchProductProviderElement
-    extends AutoDisposeFutureProviderElement<List<Product>>
-    with SearchProductRef {
+    extends AutoDisposeFutureProviderElement<Products> with SearchProductRef {
   _SearchProductProviderElement(super.provider);
 
   @override

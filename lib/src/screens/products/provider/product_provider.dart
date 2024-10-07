@@ -6,7 +6,7 @@ import 'package:delta/src/shared/routes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../app.dart';
 import '../../../shared/dio_helper.dart';
 import '../../bookings/data/order.dart';
@@ -15,52 +15,40 @@ import '../data/category.dart';
 part 'product_provider.g.dart';
 
 @riverpod
-Future<List<Product>> getProducts(GetProductsRef ref,
-    {required String page}) async {
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP("/api/products/?page=$page&limit=4");
-  if (request != null) {
-    log(request.data);
-    final requestStringJson = request.data.toString();
-    final requestJson = jsonDecode(requestStringJson);
+Future<Products> getProducts(GetProductsRef ref, {required String page}) async {
+  final url = Uri.parse(
+      "https://api.delta-for-elmvators.me/api/products/?page=$page&limit=4");
 
-    return requestJson["data"]["products"]
-        .map<Product>((e) => Product.fromJson(e))
-        .toList();
-  }
-  return [];
+  final request = await http.get(url);
+
+  final requestJson = jsonDecode(request.body);
+  return Products.fromJson(requestJson);
 }
 
 @riverpod
-Future<List<Product>> getProductsbyCategory(GetProductsbyCategoryRef ref,
+Future<Products> getProductsbyCategory(GetProductsbyCategoryRef ref,
     {required String category, required String page}) async {
-  final request = await ref.watch(dioHelperProvider).getHTTP(
-        "/api/products/?category=$category&page=$page",
-      );
-  if (request != null) {
-    final requestStringJson = request.data.toString();
-    final requestJson = jsonDecode(requestStringJson);
+  final url = Uri.parse(
+      "https://api.delta-for-elmvators.me/api/products/?category=$category&page=$page");
 
-    final products = requestJson["data"]["products"]
-        .map<Product>((e) => Product.fromJson(e))
-        .toList();
+  final request = await http.get(url);
+  final requestStringJson = request.body.toString();
+  final requestJson = jsonDecode(requestStringJson);
 
-    return products;
-  }
-  return [];
+  return Products.fromJson(requestJson);
 }
 
 @riverpod
 Future<List<Product>> getRelatedProducts(GetRelatedProductsRef ref,
     {required String productID}) async {
-  final request =
-      await ref.watch(dioHelperProvider).getHTTP("/api/products/$productID");
+  final url =
+      Uri.parse("https://api.delta-for-elmvators.me/api/products/$productID");
 
-  List<Product> products = request!.data["data"]["relatedProducts"]
+  final request = await http.get(url);
+  final data = jsonDecode(request.body);
+  List<Product> products = data["data"]["relatedProducts"]
       .map<Product>((e) => Product.fromJson(e))
       .toList();
-
   return products;
 }
 
@@ -68,20 +56,19 @@ Future<List<Product>> getRelatedProducts(GetRelatedProductsRef ref,
 Future<List<Category>> getCategories(
   GetCategoriesRef ref,
 ) async {
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP("/api/product-categories/?limit=6");
-  if (request != null) {
-    final requestStringJson = request.data.toString();
-    final requestJson = jsonDecode(requestStringJson);
-    final categories = requestJson["data"]["categories"]
-        .map<Category>((e) => Category.fromJson(e))
-        .toList();
+  final url = Uri.parse(
+      "https://api.delta-for-elmvators.me/api/product-categories/?limit=9");
 
-    categories.insert(0, const Category(title: "الكل"));
-    return categories;
-  }
-  return [];
+  final request = await http.get(url);
+
+  final requestJson = jsonDecode(request.body);
+
+  final categories = requestJson["data"]["categories"]
+      .map<Category>((e) => Category.fromJson(e))
+      .toList();
+
+  categories.insert(0, const Category(title: "الكل"));
+  return categories;
 }
 
 @riverpod

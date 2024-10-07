@@ -28,3 +28,34 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'category': instance.category,
       'photos': instance.photos,
     };
+
+_$ProductsImpl _$$ProductsImplFromJson(Map<String, dynamic> json) =>
+    _$ProductsImpl(
+      status: json['status'] as String,
+      results: (json['results'] as num).toInt(),
+      data: Data.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$ProductsImplToJson(_$ProductsImpl instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'results': instance.results,
+      'data': instance.data,
+    };
+
+_$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
+      products: (json['products'] as List<dynamic>)
+          .map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      total: (json['total'] as num).toInt(),
+      totalPages: (json['totalPages'] as num).toInt(),
+      currentPage: (json['currentPage'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
+    <String, dynamic>{
+      'products': instance.products,
+      'total': instance.total,
+      'totalPages': instance.totalPages,
+      'currentPage': instance.currentPage,
+    };

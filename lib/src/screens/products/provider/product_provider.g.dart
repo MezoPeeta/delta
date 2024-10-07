@@ -6,7 +6,7 @@ part of 'product_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getProductsHash() => r'43dd6f235bb1521c6c824825abb5dfc934f156f0';
+String _$getProductsHash() => r'fffb72d1471a1f81a3ddee149b74a1c47b47e4e1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const getProductsProvider = GetProductsFamily();
 
 /// See also [getProducts].
-class GetProductsFamily extends Family<AsyncValue<List<Product>>> {
+class GetProductsFamily extends Family<AsyncValue<Products>> {
   /// See also [getProducts].
   const GetProductsFamily();
 
@@ -72,7 +72,7 @@ class GetProductsFamily extends Family<AsyncValue<List<Product>>> {
 }
 
 /// See also [getProducts].
-class GetProductsProvider extends AutoDisposeFutureProvider<List<Product>> {
+class GetProductsProvider extends AutoDisposeFutureProvider<Products> {
   /// See also [getProducts].
   GetProductsProvider({
     required String page,
@@ -107,7 +107,7 @@ class GetProductsProvider extends AutoDisposeFutureProvider<List<Product>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<Product>> Function(GetProductsRef provider) create,
+    FutureOr<Products> Function(GetProductsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -124,7 +124,7 @@ class GetProductsProvider extends AutoDisposeFutureProvider<List<Product>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Product>> createElement() {
+  AutoDisposeFutureProviderElement<Products> createElement() {
     return _GetProductsProviderElement(this);
   }
 
@@ -142,14 +142,13 @@ class GetProductsProvider extends AutoDisposeFutureProvider<List<Product>> {
   }
 }
 
-mixin GetProductsRef on AutoDisposeFutureProviderRef<List<Product>> {
+mixin GetProductsRef on AutoDisposeFutureProviderRef<Products> {
   /// The parameter `page` of this provider.
   String get page;
 }
 
 class _GetProductsProviderElement
-    extends AutoDisposeFutureProviderElement<List<Product>>
-    with GetProductsRef {
+    extends AutoDisposeFutureProviderElement<Products> with GetProductsRef {
   _GetProductsProviderElement(super.provider);
 
   @override
@@ -157,14 +156,14 @@ class _GetProductsProviderElement
 }
 
 String _$getProductsbyCategoryHash() =>
-    r'e097db69585ad4093b286d86faf3276a658292e7';
+    r'63261383d2ef29d8854729f07a3438fb9f62e71a';
 
 /// See also [getProductsbyCategory].
 @ProviderFor(getProductsbyCategory)
 const getProductsbyCategoryProvider = GetProductsbyCategoryFamily();
 
 /// See also [getProductsbyCategory].
-class GetProductsbyCategoryFamily extends Family<AsyncValue<List<Product>>> {
+class GetProductsbyCategoryFamily extends Family<AsyncValue<Products>> {
   /// See also [getProductsbyCategory].
   const GetProductsbyCategoryFamily();
 
@@ -206,7 +205,7 @@ class GetProductsbyCategoryFamily extends Family<AsyncValue<List<Product>>> {
 
 /// See also [getProductsbyCategory].
 class GetProductsbyCategoryProvider
-    extends AutoDisposeFutureProvider<List<Product>> {
+    extends AutoDisposeFutureProvider<Products> {
   /// See also [getProductsbyCategory].
   GetProductsbyCategoryProvider({
     required String category,
@@ -246,7 +245,7 @@ class GetProductsbyCategoryProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<Product>> Function(GetProductsbyCategoryRef provider) create,
+    FutureOr<Products> Function(GetProductsbyCategoryRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -264,7 +263,7 @@ class GetProductsbyCategoryProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Product>> createElement() {
+  AutoDisposeFutureProviderElement<Products> createElement() {
     return _GetProductsbyCategoryProviderElement(this);
   }
 
@@ -285,7 +284,7 @@ class GetProductsbyCategoryProvider
   }
 }
 
-mixin GetProductsbyCategoryRef on AutoDisposeFutureProviderRef<List<Product>> {
+mixin GetProductsbyCategoryRef on AutoDisposeFutureProviderRef<Products> {
   /// The parameter `category` of this provider.
   String get category;
 
@@ -294,7 +293,7 @@ mixin GetProductsbyCategoryRef on AutoDisposeFutureProviderRef<List<Product>> {
 }
 
 class _GetProductsbyCategoryProviderElement
-    extends AutoDisposeFutureProviderElement<List<Product>>
+    extends AutoDisposeFutureProviderElement<Products>
     with GetProductsbyCategoryRef {
   _GetProductsbyCategoryProviderElement(super.provider);
 
@@ -305,7 +304,7 @@ class _GetProductsbyCategoryProviderElement
 }
 
 String _$getRelatedProductsHash() =>
-    r'725303ba18bbe9c5ddf46aaa6a9c5dffc43c0378';
+    r'fd4a93c0cdbb2788fb726ab83d38348859247c46';
 
 /// See also [getRelatedProducts].
 @ProviderFor(getRelatedProducts)
@@ -435,7 +434,7 @@ class _GetRelatedProductsProviderElement
   String get productID => (origin as GetRelatedProductsProvider).productID;
 }
 
-String _$getCategoriesHash() => r'1186f5c8bb5e8f494abcdde9f8b66980401f2a29';
+String _$getCategoriesHash() => r'352768494c34bcb5ece9ad3483dbabbef1b8fb10';
 
 /// See also [getCategories].
 @ProviderFor(getCategories)

@@ -139,7 +139,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 .read(searchProductProvider(productName: value)
                                     .future)
                                 .then((products) => setState(() {
-                                      queryProducts = products;
+                                      queryProducts = products.data.products;
                                     }));
                             if (value.isEmpty) {
                               setState(() {
@@ -214,7 +214,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           height: 190,
                           child: slider.when(
                               data: (data) {
-                                if (data.isEmpty) {
+                                if (data.data.photos.isEmpty) {
                                   return Container(
                                     decoration: BoxDecoration(
                                         border: Border.all(
@@ -234,7 +234,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     Expanded(
                                       child: PageView.builder(
                                           controller: pageController,
-                                          itemCount: data.length,
+                                          itemCount: data.data.photos.length,
                                           onPageChanged: (value) {
                                             setState(() {
                                               selectedIndex = value;
@@ -247,7 +247,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                     .read(cartNotifierProvider
                                                         .notifier)
                                                     .addToCart(
-                                                        productID: data[index]
+                                                        productID: data
+                                                            .data
+                                                            .photos[index]
                                                             .productId);
                                                 ref
                                                     .read(currentIndexProvider
@@ -263,7 +265,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                       image: DecorationImage(
                                                           fit: BoxFit.fitHeight,
                                                           image: NetworkImage(
-                                                              data[index]
+                                                              data
+                                                                  .data
+                                                                  .photos[index]
                                                                   .photoUrl)),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -274,7 +278,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: data.mapIndexed((i, e) {
+                                        children:
+                                            data.data.photos.mapIndexed((i, e) {
                                           return SizedBox(
                                             width: 25,
                                             child: Radio(

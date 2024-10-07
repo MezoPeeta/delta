@@ -76,7 +76,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                                   languageCode: "ar",
                                   readOnly: true,
                                   initialValue: user?.phone,
-                                  searchText: "ابحث عن الدولة",
+                                  searchText: "ابحث عن الدولة/المنطقة",
                                   onChanged: (v) {},
                                   flagsButtonPadding:
                                       const EdgeInsets.symmetric(

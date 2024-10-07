@@ -43,7 +43,8 @@ class DioHelper {
 
   Future<Response?> getHTTP(String url, {String token = ""}) async {
     try {
-      Response response = await baseAPI.get(url,
+      
+      final response = await baseAPI.get(url,
           options: token != ""
               ? Options(headers: {"Authorization": "Bearer $token"})
               : null);
