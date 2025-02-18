@@ -18,7 +18,7 @@ class OtpVerifyScreen extends StatefulWidget {
 }
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
-  int number = 10;
+  int number = 600;
   final otpController = TextEditingController();
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -133,7 +133,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     width: 4,
                   ),
                   Text(
-                    "($number ثانية)",
+                    "($number دقيقة)",
                     style: TextStyle(
                         color: number == 0
                             ? AppColors.grayColor
