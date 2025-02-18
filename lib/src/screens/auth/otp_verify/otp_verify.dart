@@ -101,7 +101,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 height: 8,
               ),
               const Text(
-                "تم ارسال رمز التحقق علي بريدك الالكتروني  ",
+                "تم ارسال رمز التحقق علي بريدك الالكتروني ",
                 textAlign: TextAlign.center,
               ),
               Text(widget.email),

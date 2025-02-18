@@ -10,7 +10,7 @@ Future<void> resetPassword(ResetPasswordRef ref,
     required String password,
     required String confirmPassword}) async {
   final request = await ref.watch(dioHelperProvider).patchHTTP(
-      "/api/users/forgotPassword", {
+      "/api/users/resetPassword", {
     "email": email,
     "password": password,
     "confirm_password": confirmPassword
