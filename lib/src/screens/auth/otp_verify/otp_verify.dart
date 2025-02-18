@@ -133,7 +133,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     width: 4,
                   ),
                   Text(
-                    "($number دقيقة)",
+                    "($number ثانية)",
                     style: TextStyle(
                         color: number == 0
                             ? AppColors.grayColor
